@@ -17,7 +17,7 @@ namespace Dinder.Controllers
         public UserController(UserEntityContext uecontext)
         {
             _uecontext = uecontext;
-
+            //kommentar
             var user = _uecontext.Users.SingleOrDefault(u => u.Email == User.Identity.Name);
             if (user == null)
             {
