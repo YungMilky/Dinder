@@ -23,8 +23,40 @@
             <button id="update-profile-button" type="submit" class="btn btn-primary">Save</button>
         </form>
     </div>
-</div>
+    <div class="col-md-6">
+        <div>
+            <picture>
+                <img src="data:," id="profilePic" alt="Profile picture">
+                <input type="file" id="fileBrowser">
+            </picture>
+        </div>
+    </div>
 
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}
+    @section Scripts {
+
+        <script>
+            var pp; //profile pic
+
+            $("#profilePic").click(() => {
+                $("#fileBrowser").click();
+            });
+
+            $("input:file").change(function () {
+                if (this.files && this.files[0] && (this.files[0]["type"]).includes('image')) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        $('#profilePic').attr('src', e.target.result);
+                    }
+                    reader.readAsDataURL(this.files[0]);
+
+                    pp = $('#fileBrowser').prop('files')[0];
+                }
+            });
+
+            $(window).on("unload", function (e) {
+                //save pp to db
+            });
+        </script>
+
+        <partial name="_ValidationScriptsPartial" />
+    }
