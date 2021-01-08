@@ -20,17 +20,19 @@
                 <input asp-for="Input.PhoneNumber" class="form-control" />
                 <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
             </div>
+            @Html.Partial("~/Views/Shared/_ManagePartial.cshtml", new Dinder.Models.User())
             <button id="update-profile-button" type="submit" class="btn btn-primary">Save</button>
         </form>
     </div>
     <div class="col-md-6">
         <div>
             <picture>
-                <img src="data:," id="profilePic" alt="Profile picture">
+                <img src="~/default-profile-pic.png" id="profilePic" alt="Profile picture">
                 <input type="file" id="fileBrowser">
             </picture>
         </div>
     </div>
+</div>
 
     @section Scripts {
 

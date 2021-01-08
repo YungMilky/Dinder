@@ -22,10 +22,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Views\User\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Include="wwwroot\css\manage.css" />
   </ItemGroup>
 

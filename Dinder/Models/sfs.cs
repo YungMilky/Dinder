@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Dinder.Areas.Identity.Pages.Account.Manage;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -8,6 +9,7 @@ namespace Dinder.Models
 {
     public class UserViewModel
     {
-        public List<User> Users { get; set; }
+        //public IEnumerable<User> Users { get; set; }
+        public User Users { get; set; }
     }
 }
