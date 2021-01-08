@@ -32,6 +32,7 @@ namespace Dinder.Controllers
             return View();
         }
 
+        [HttpGet]
         public IActionResult Profile()
         {
             var userModel = _uecontext.Users.ToList();

@@ -2,7 +2,7 @@
 
 namespace DinderDL.Migrations
 {
-    public partial class Models : Migration
+    public partial class userMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -27,10 +27,8 @@ namespace DinderDL.Migrations
                 {
                     UserID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Firstname = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: true),
-                    Lastname = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: true),
-                    Password = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true)
+                    Name = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: true)
                 },
                 constraints: table =>
                 {
