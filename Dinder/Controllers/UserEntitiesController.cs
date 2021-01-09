@@ -28,8 +28,7 @@ namespace Dinder.Controllers
             {
                 Email = email
             });
-            Console.WriteLine(email);
-            //_uecontext.SaveChanges();
+            _uecontext.SaveChanges();
         }
 
         // GET: api/UserEntities

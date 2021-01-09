@@ -28,8 +28,13 @@
 
         $(document).ready(function () {
             $.post('../../api/UserEntities/insertEmail', {
-                email: "@Model.Email"  //User.Identity.Name does not exist in this context, so you have to use the registration model
-            }).then(alert('hello'));
+                data: JSON.stringify({
+                    email: "@Model.Email"  //User.Identity.Name does not exist in this context, so you have to use the registration model
+                })
+            },
+                function (data, status) {
+                    console.log(data);
+           });
         });
     </script>
 }
