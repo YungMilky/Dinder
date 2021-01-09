@@ -11,21 +11,19 @@ namespace Dinder.Controllers
 {
     public class UserController : Controller
     {
-        private readonly UserEntityContext _uecontext;
         private ApplicationDbContext _appDbContext;
+        private readonly UserEntityContext _uecontext;
 
         public UserController(UserEntityContext uecontext)
         {
             _uecontext = uecontext;
-            var user = _uecontext.Users.SingleOrDefault(u => u.Email == User.Identity.Name);
-            if (user == null)
-            {
-                uecontext.Users.Add(new DinderDL.Models.UserEntity
-                {
-                    Email = User.Identity.Name
-                });
-                _uecontext.SaveChanges();
-            }
+        }
+
+        public IActionResult Manage()
+        {
+            ViewBag.Message = "Welcome to my demo!";
+            User userModel = new User();
+            return View(userModel);
         }
 
         public IActionResult Index()
@@ -34,13 +32,14 @@ namespace Dinder.Controllers
             return View();
         }
 
-        public IActionResult ShowUsers()
+        [HttpGet]
+        public IActionResult Profile()
         {
-            var userEntities = _uecontext.Users.ToList();
-            //lala
-            return View(new UserViewModel { 
-            
-            });
+            var userModel = _uecontext.Users.ToList();
+
+            var user = userModel.Where(u => u.Email == User.Identity.Name).ToList();
+
+            return View(user);
         }
     }
 }

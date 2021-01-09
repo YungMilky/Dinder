@@ -11,15 +11,11 @@ namespace Dinder.Models
         [Display(Name = "User ID")]
         public int UserID { get; set; }
 
-        [Display(Name = "First name")]
+        [Display(Name = "Name")]
         [Required(ErrorMessage = "We need your name!")]
-        public String Firstname { get; set; }
+        public String Name { get; set; }
 
-        [Display(Name = "Last name")]
-        [Required(ErrorMessage = "We need your last name!")]
-        public String Lastname { get; set; }
-
-        [Display(Name = "Email adress")]
+        [Display(Name = "Email")]
         [DataType(DataType.EmailAddress)]
         [Required(ErrorMessage = "We need your email.")]
         public String Email { get; set; }

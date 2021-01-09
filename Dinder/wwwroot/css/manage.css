@@ -1,0 +1,9 @@
+﻿/* Stylesheet for the account management page (Identity/Account/Manage) */
+
+#fileBrowser {
+    display:none;
+}
+
+#profilePic {
+    width: 100%;
+}
