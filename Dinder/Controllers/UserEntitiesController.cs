@@ -22,11 +22,12 @@ namespace Dinder.Controllers
         }
 
         [Route("insertEmail")]
-        public void Insert(string email)
+        public void Insert([FromBody] UserEntity data)
         {
+            Console.WriteLine("lala"+ data);
             _uecontext.Users.Add(new DinderDL.Models.UserEntity
             {
-                Email = email
+                Email = data.Email
             });
             _uecontext.SaveChanges();
         }
