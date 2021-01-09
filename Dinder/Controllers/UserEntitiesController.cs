@@ -14,25 +14,36 @@ namespace Dinder.Controllers
     [ApiController]
     public class UserEntitiesController : ControllerBase
     {
-        private readonly UserEntityContext _context;
+        private readonly UserEntityContext _uecontext;
 
         public UserEntitiesController(UserEntityContext context)
         {
-            _context = context;
+            _uecontext = context;
+        }
+
+        [Route("insertEmail")]
+        public void Insert(string email)
+        {
+            _uecontext.Users.Add(new DinderDL.Models.UserEntity
+            {
+                Email = email
+            });
+            Console.WriteLine(email);
+            //_uecontext.SaveChanges();
         }
 
         // GET: api/UserEntities
         [HttpGet]
         public async Task<ActionResult<IEnumerable<UserEntity>>> GetUsers()
         {
-            return await _context.Users.ToListAsync();
+            return await _uecontext.Users.ToListAsync();
         }
 
         // GET: api/UserEntities/5
         [HttpGet("{id}")]
         public async Task<ActionResult<UserEntity>> GetUserEntity(int id)
         {
-            var userEntity = await _context.Users.FindAsync(id);
+            var userEntity = await _uecontext.Users.FindAsync(id);
 
             if (userEntity == null)
             {
@@ -52,11 +63,11 @@ namespace Dinder.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(userEntity).State = EntityState.Modified;
+            _uecontext.Entry(userEntity).State = EntityState.Modified;
 
             try
             {
-                await _context.SaveChangesAsync();
+                await _uecontext.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -78,8 +89,8 @@ namespace Dinder.Controllers
         [HttpPost]
         public async Task<ActionResult<UserEntity>> PostUserEntity(UserEntity userEntity)
         {
-            _context.Users.Add(userEntity);
-            await _context.SaveChangesAsync();
+            _uecontext.Users.Add(userEntity);
+            await _uecontext.SaveChangesAsync();
 
             return CreatedAtAction("GetUserEntity", new { id = userEntity.UserID }, userEntity);
         }
@@ -88,21 +99,21 @@ namespace Dinder.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUserEntity(int id)
         {
-            var userEntity = await _context.Users.FindAsync(id);
+            var userEntity = await _uecontext.Users.FindAsync(id);
             if (userEntity == null)
             {
                 return NotFound();
             }
 
-            _context.Users.Remove(userEntity);
-            await _context.SaveChangesAsync();
+            _uecontext.Users.Remove(userEntity);
+            await _uecontext.SaveChangesAsync();
 
             return NoContent();
         }
 
         private bool UserEntityExists(int id)
         {
-            return _context.Users.Any(e => e.UserID == id);
+            return _uecontext.Users.Any(e => e.UserID == id);
         }
     }
 }
