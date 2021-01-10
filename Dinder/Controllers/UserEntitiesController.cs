@@ -22,14 +22,31 @@ namespace Dinder.Controllers
         }
 
         [Route("insertEmail")]
-        public void Insert([FromBody] UserEntity data)
+        public void InsertEmail([FromBody] UserEntity data)
         {
-            Console.WriteLine("lala"+ data);
             _uecontext.Users.Add(new DinderDL.Models.UserEntity
             {
                 Email = data.Email
             });
             _uecontext.SaveChanges();
+        }
+
+        [Route("insertName")]
+        public void InsertName([FromBody] UserEntity data)
+        {
+            var user = _uecontext.Users.First(u => u.Email == User.Identity.Name);
+            user.Name = data.Name;
+
+            _uecontext.SaveChanges();
+        }
+
+        [Route("getProfile")]
+        public List<UserEntity> Profile()
+        {
+            var userModel = _uecontext.Users.ToList();
+
+            var user = userModel.Where(u => u.Email == User.Identity.Name).ToList();
+            return user;
         }
 
         // GET: api/UserEntities
