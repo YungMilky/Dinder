@@ -43,6 +43,7 @@ namespace Dinder.Controllers
         [Route("getProfile")]
         public List<Object> Profile()
         {
+            //_uecontext NEEDS TO BE REFRESHED, OR AJAX GETS OLD NAME DATA
             List<Object> fullProfile = new List<Object>();
             var userModel = _uecontext.Users.ToList();
 

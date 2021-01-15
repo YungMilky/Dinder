@@ -53,31 +53,31 @@
                 }
             });
 
-            $(window).on("load", function () {
-                $.get("../../../../api/UserEntities/getProfile").then((result) => {
-                    console.log(result);
-                    $("#name").attr("value", result[0].name); //NOT REPLACING THE NAME TEXT
-                });
-            });
-
             $(window).on("unload", function (e) {
                 //save pp to db
             });
 
             //Save info on leave
-            $(window).bind('beforeunload', function () {
-                var data = {
-                    Name: $('#name').val()
-                };
+            $(document).ready(function () {
+                $.get("../../../../api/UserEntities/getProfile").then((result) => {
+                    $("#name").attr("value", result[0].name); //NOT REPLACING THE NAME TEXT
+                });
 
-                $.ajax({
-                    type: "POST",
-                    url: '../../api/UserEntities/insertName',
-                    contentType: 'application/json',
-                    data: JSON.stringify(data),
-                    success: function () {
-                        //...
-                    }
+                $("#name").on("focusout", function () {
+                    console.log("works");
+                    var data = {
+                        Name: $('#name').val()
+                    };
+
+                    $.ajax({
+                        type: "POST",
+                        url: '../../api/UserEntities/insertName',
+                        contentType: 'application/json',
+                        data: JSON.stringify(data),
+                        success: function () {
+                            //...
+                        }
+                    });
                 });
             });
         </script>
