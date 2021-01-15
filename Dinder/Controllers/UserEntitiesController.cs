@@ -41,12 +41,33 @@ namespace Dinder.Controllers
         }
 
         [Route("getProfile")]
-        public List<UserEntity> Profile()
+        public List<Object> Profile()
         {
+            //_uecontext NEEDS TO BE REFRESHED, OR AJAX GETS OLD NAME DATA
+            List<Object> fullProfile = new List<Object>();
             var userModel = _uecontext.Users.ToList();
 
-            var user = userModel.Where(u => u.Email == User.Identity.Name).ToList();
-            return user;
+            fullProfile.Add(userModel.Where(u => u.Email == User.Identity.Name).ToList());
+            fullProfile.Add(Posts());
+            return fullProfile;
+        }
+
+        public Object Posts()
+        {
+            var userID = GetUserID();
+
+            var posts = from up in _uecontext.UserPosts
+                        join p in _uecontext.Posts
+                        on up.PostID equals p.PostID
+                        where up.UserID.Equals(userID)
+                        select new { 
+                            PostID = up.PostID,
+                            AuthorID = up.UserID,
+                            Author = p.Author,
+                            Title = p.Title,
+                            Content = p.Content
+                        };
+            return posts.ToList();
         }
 
         // GET: api/UserEntities
@@ -131,6 +152,11 @@ namespace Dinder.Controllers
         private bool UserEntityExists(int id)
         {
             return _uecontext.Users.Any(e => e.UserID == id);
+        }
+
+        public int GetUserID()
+        {
+            return _uecontext.Users.First(id => id.Email == User.Identity.Name).UserID;
         }
     }
 }

@@ -15,6 +15,9 @@ namespace DinderDL.Models
 
         [StringLength(60)]
         public String Email { get; set; }
+        public int Phone { get; set; }
+
+        public String Bio { get; set; }
 
         public ICollection<UserPosts> UserPosts { get; set; }
         public FilesEntity File { get; set; }
