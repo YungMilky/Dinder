@@ -29,7 +29,6 @@ namespace Dinder.Controllers
 
         public IActionResult Index()
         {
-
             return View();
         }
 
@@ -37,9 +36,7 @@ namespace Dinder.Controllers
         public IActionResult Profile()
         {
             var userModel = _uecontext.Users.ToList();
-
             var user = userModel.Where(u => u.Email == User.Identity.Name).ToList();
-
             return View(user);
         }
     }

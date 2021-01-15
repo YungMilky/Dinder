@@ -1,4 +1,5 @@
 ﻿using Dinder.Models;
+using DinderDL;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -13,15 +14,18 @@ namespace Dinder.Controllers
     {
 
         private readonly ILogger<HomeController> _logger;
+        private readonly UserEntityContext _uecontext;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, UserEntityContext uecontext)
         {
+            _uecontext = uecontext;
             _logger = logger;
         }
 
         public IActionResult Index()
         {
-            return View();
+            var user = _uecontext.Users.ToList();
+            return View(user);
         }
 
         public IActionResult Privacy()
