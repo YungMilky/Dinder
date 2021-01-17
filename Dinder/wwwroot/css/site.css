@@ -89,17 +89,39 @@ h5{
     padding:20px;
 }
 
-.nav-items {
-    background-color: #1f1f1f;
+#author {
+    color: white;
 }
 
-#myTab li.active a {
-    border-bottom-color: transparent;
-    background-color: Yellow;
+#content{
+    color: white;
 }
 
+#Posts {
+    background-color: transparent;
+    color: white;
+    outline: 0;
+    border-width: 0 0 1px;
+    border-radius: 0;
+}
 
+.form-control:focus {
+    border-color: #fecea8;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
 
+#postbtn {
+    border: none;
+    border-radius: 0.1em;
+    background-color: grey;
+    padding: 1px 12px 2px;
+    margin-top: 6px;
+    color: black;
+    font-weight:500;
+    font-size:0.9em;
+    letter-spacing:0.03em;
+}
 
 
 body {
@@ -176,14 +198,17 @@ body {
 }
 
     .profile-head .nav-tabs .nav-link {
+        color: white;
         font-weight: 600;
         border: none;
+        background-color: none;
     }
 
         .profile-head .nav-tabs .nav-link.active {
+            color: #e84a5f;
             border: none;
-            border-bottom: 2px solid #0062cc;
-            background-color:none;
+            border-bottom: 2px solid #e84a5f;
+            background-color: #414141;
         }
 
 .profile-work {

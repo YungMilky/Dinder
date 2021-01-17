@@ -15,11 +15,11 @@
             </div>
             <div class="col-md-7">
                 <div class="profile-head">
-                    
+
                     <h5>
                         @Model.FirstOrDefault().Name
                     </h5>
-                    
+
                     <ul class="nav nav-tabs" id="myTab" role="tablist">
                         <li class="nav-item">
                             <a class="nav-link active" id="timeline-tab" data-toggle="tab" href="#timeline" role="tab" aria-controls="timeline" aria-selected="true">Timeline</a>
@@ -37,7 +37,6 @@
                             </div>
                         </li>
                     </ul>
-                    
                 </div>
                 <div class="col-auto">
                     <div class="tab-content profile-tab" id="myTabContent">
@@ -48,9 +47,9 @@
                             <div class="col-auto col-md-16">
                                 <div class="form-group">
                                     <div class="input-group">
-                                        <textarea type="text" class="form-control" id="Posts" placeholder="Post..."></textarea>
-                                        <button type="submit" onclick="getPosts(true)" class="btn btn-primary">Post</button>
+                                        <input type="text" class="form-control" id="Posts" placeholder="Post..."></>
                                     </div>
+                                    <button id="postbtn" type="submit" onclick="getPosts(true)" class="btn btn-primary float-right">SEND</button>
                                 </div>
                             </div>
                         </div>
@@ -106,6 +105,14 @@
                     $('#friendship').text("Add friend")
                 }
             })
+
+            $("#Posts").on("input", function (){
+                if ($("#Posts").val() != "") {
+                    $("#postbtn").css("background-color", "#e84a5f");
+                } else {
+                    $("#postbtn").css("background-color", "grey");
+                }
+            });
         });
 
         function getPosts(getRecentPost, PostList) {
@@ -114,7 +121,7 @@
             } else {
                 $.each(PostList, function (index, value) {
                     var text1 = '<div class="col-md-3">' +
-                        '<label><b>' + value.author + '</b></label>' +
+                        '<label id="author"><b>' + value.author + '</b></label>' +
                         '<p id="content">' + value.content + '</p>' +
                         '</div>' +
                         '<hr />' +
