@@ -1,4 +1,4 @@
-﻿@Model  Dinder.Model.Users
+﻿@model IEnumerable<DinderDL.Models.UserEntity>
 
 @{
     ViewData["Title"] = "Home Page";
@@ -8,4 +8,16 @@
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
-@Model.First().Name
+@Model.Last().Email
+
+@foreach (var user in Model)
+{
+    <div class="card" style="width: 18rem;">
+        <img id="cardPicture" class="card-img-top" src="data.," alt="Card profile picture">
+        <div class="card-body">
+            <h5 class="card-title">@Html.DisplayFor(modelItem => user.Email)</h5>
+            <p class="card-text">@Html.DisplayFor(modelItem => user.Bio)</p>
+            <a href="#" class="btn btn-primary">Profile</a>
+        </div>
+    </div>
+}
