@@ -84,6 +84,10 @@ body {
     height:100%;
     margin-right:-18px;
 }
+#bio {
+    color: rgba(255, 255, 255, 0.60);
+    padding:20px;
+}
 
 h5 {
     margin: 0;
@@ -96,8 +100,12 @@ h5 {
     margin-top:5%;
 }
 
-#bio {
-    padding:20px;
+#about label {
+    color: rgba(255, 255, 255, 0.87);
+}
+
+#about p {
+    color: rgba(255, 255, 255, 0.60);
 }
 
 #author {
