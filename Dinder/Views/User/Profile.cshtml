@@ -49,7 +49,7 @@
                                     <div class="input-group">
                                         <input type="text" class="form-control" id="Posts" placeholder="Post..."></>
                                     </div>
-                                    <button id="postbtn" type="submit" onclick="getPosts(true)" class="btn btn-primary float-right">SEND</button>
+                                    <button id="postbtn" type="submit" onclick="getPosts(true)" class="btn btn-primary shadow-none float-right" disabled>SEND</button>
                                 </div>
                             </div>
                         </div>
@@ -106,11 +106,14 @@
                 }
             })
 
+            //undim button when text is entered
             $("#Posts").on("input", function (){
                 if ($("#Posts").val() != "") {
                     $("#postbtn").css("background-color", "#e84a5f");
+                    $("#postbtn").prop("disabled", false);
                 } else {
                     $("#postbtn").css("background-color", "grey");
+                    $("#postbtn").prop("disabled", true);
                 }
             });
         });
