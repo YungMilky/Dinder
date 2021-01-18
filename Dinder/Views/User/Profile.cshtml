@@ -44,12 +44,12 @@
                             <div class="posts">
 
                             </div>
-                            <div class="col-auto col-md-16">
+                            <div class="col-auto col-md-12">
                                 <div class="form-group">
                                     <div class="input-group">
                                         <input type="text" class="form-control" id="Posts" placeholder="Post..."></>
+                                        <button id="postbtn" type="submit" onclick="getPosts(true)" class="btn btn-primary shadow-none float-right" disabled>SEND</button>
                                     </div>
-                                    <button id="postbtn" type="submit" onclick="getPosts(true)" class="btn btn-primary shadow-none float-right" disabled>SEND</button>
                                 </div>
                             </div>
                         </div>
@@ -112,7 +112,7 @@
                     $("#postbtn").css("background-color", "#e84a5f");
                     $("#postbtn").prop("disabled", false);
                 } else {
-                    $("#postbtn").css("background-color", "grey");
+                    $("#postbtn").css("background-color", "#2d2d2d");
                     $("#postbtn").prop("disabled", true);
                 }
             });
@@ -123,12 +123,14 @@
                 //...
             } else {
                 $.each(PostList, function (index, value) {
-                    var text1 = '<div class="col-md-3">' +
+                    var text1 = '<section class="post-section">' +
+                        '<div class="col-md-3">' +
                         '<label id="author"><b>' + value.author + '</b></label>' +
                         '<p id="content">' + value.content + '</p>' +
                         '</div>' +
                         '<hr />' +
-                        '   ';
+                        '   ' +
+                        '</section>';
                     $(".posts").after(text1);
                 });
             }
