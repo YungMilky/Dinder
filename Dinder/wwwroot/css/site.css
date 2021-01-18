@@ -74,13 +74,22 @@ body {
 
 
 
+.content-bg {
+    background-color: rgba(0, 0, 0, 0.16);
+    padding:40px;
+    margin-right:-90px;
+}
+.ppbio-bg {
+    background-color: rgba(0, 0, 0, 0.16);
+    height:100%;
+    margin-right:-18px;
+}
 
-
-h5{
+h5 {
     margin: 0;
-    display:inline-block;
-    font-size:1.8em;
-    font-weight:100;
+    display: inline-block;
+    font-size: 1.8em;
+    font-weight: 100;
 }
 
 #myTab{
@@ -140,7 +149,6 @@ h5{
     .input-group input {
         flex-grow: 2;
         border: none;
-
     }
 
 .post-section {
