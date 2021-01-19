@@ -16,8 +16,8 @@
                 <input asp-for="Username" class="form-control" disabled />
             </div>
             <div class="form-group">
-                <label asp-for="Input.PhoneNumber"></label>
-                <input asp-for="Input.PhoneNumber" class="form-control" />
+                <label id="phone" asp-for="Input.PhoneNumber"></label>
+                <input id="phone-val" asp-for="Input.PhoneNumber" class="form-control" Placeholder="Phone number"/>
                 <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
             </div>
             @Html.Partial("~/Views/Shared/_ManagePartial.cshtml", new Dinder.Models.User())
@@ -60,11 +60,11 @@
             //Save info on leave
             $(document).ready(function () {
                 $.get("../../../../api/UserEntities/getProfile").then((result) => {
-                    $("#name").attr("value", result[0].name); //NOT REPLACING THE NAME TEXT
+                    $("#name").attr("value", result[0][0].name); 
+                    $("#phone").attr("value", result[0][0].phone);
                 });
 
                 $("#name").on("focusout", function () {
-                    console.log("works");
                     var data = {
                         Name: $('#name').val()
                     };
@@ -72,6 +72,22 @@
                     $.ajax({
                         type: "POST",
                         url: '../../api/UserEntities/insertName',
+                        contentType: 'application/json',
+                        data: JSON.stringify(data),
+                        success: function () {
+                            //...
+                        }
+                    });
+                });
+
+                $("#phone-val").on("focusout", function () {
+                    var data = {
+                        Phone: $('#phone').val()
+                    };
+
+                    $.ajax({
+                        type: "POST",
+                        url: '../../api/UserEntities/insertPhone',
                         contentType: 'application/json',
                         data: JSON.stringify(data),
                         success: function () {

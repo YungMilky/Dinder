@@ -40,6 +40,16 @@ namespace Dinder.Controllers
             _uecontext.SaveChanges();
         }
 
+        [Route("insertPhone")]
+        public void InsertPhone([FromBody] UserEntity data)
+        {
+            Console.WriteLine("hello");
+            var user = _uecontext.Users.First(u => u.Email == User.Identity.Name);
+            user.Phone = data.Phone;
+
+            _uecontext.SaveChanges();
+        }
+
         [Route("getProfile")]
         public List<Object> Profile()
         {
