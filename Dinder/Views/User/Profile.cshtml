@@ -3,7 +3,7 @@
     ViewData["Title"] = "Profile";
 }
 <div class="container emp-profile">
-    <form method="post">
+    <form>
         <div class="row">
             <div class="col-md-4">
                 <section class="ppbio-bg">
@@ -51,7 +51,7 @@
                                     <div class="form-group">
                                         <div class="input-group">
                                             <input type="text" class="form-control" id="Posts" placeholder="Post..."></>
-                                            <button id="postbtn" type="submit" onclick="getPosts(true)" class="btn btn-primary shadow-none float-right" disabled>SEND</button>
+                                            <button id="postbtn" onclick="getPosts(true)" class="btn btn-primary shadow-none float-right" disabled>SEND</button>
                                         </div>
                                     </div>
                                 </div>
@@ -98,20 +98,7 @@
     <script>
         $(document).ready(function () {
             
-            var data = {
-                Email: $("#email").text()
-            };
-
-            $.ajax({
-                type: 'POST',
-                url: '../../api/UserEntities/getProfile',
-                contentType: 'application/json',
-                dataType: 'json',
-                data: JSON.stringify(data),
-                success: function (result) {
-                    console.log(result);
-                }
-            });
+            getPosts(false);
 
             $("#customSwitch1").on("change", function () {
                 if ($(this).is(":checked")) {
@@ -131,14 +118,49 @@
                     $("#postbtn").prop("disabled", true);
                 }
             });
+
+            //disable button auto-refresh
+            $("#postbtn").click(function (event) {
+                event.preventDefault();
+            })
         });
 
-        function getPosts(getRecentPost, PostList) {
-            if (getRecentPost == true) {
-                //...
+
+        function getPosts(getLatest) {
+            var data = {
+                Email: $("#email").text()
+            };
+
+            $.ajax({
+                type: 'POST',
+                url: '../../api/UserEntities/getProfile',
+                contentType: 'application/json',
+                dataType: 'json',
+                data: JSON.stringify(data),
+                success: function (result) {
+                    createPostHTML(getLatest, result[1]);
+                }
+            });
+            return $.ajax(); //forces functions to wait
+        }
+
+        function createPostHTML(getLatest, PostList) {
+            if (getLatest == true) {
+                var arr = PostList[PostList.length - 1]; //latest array object
+
+                var postHTML = '<section class="post-section">' +
+                    '<div class="col-md-3">' +
+                    '<label id="author"><b>' + arr.author + '</b></label>' +
+                    '<p id="content">' + arr.content + '</p>' +
+                    '</div>' +
+                    '<hr />' +
+                    '   ' +
+                    '</section>';
+                $(".posts").after(postHTML);
+
             } else {
                 $.each(PostList, function (index, value) {
-                    var text1 = '<section class="post-section">' +
+                    var postHTML = '<section class="post-section">' +
                         '<div class="col-md-3">' +
                         '<label id="author"><b>' + value.author + '</b></label>' +
                         '<p id="content">' + value.content + '</p>' +
@@ -146,7 +168,7 @@
                         '<hr />' +
                         '   ' +
                         '</section>';
-                    $(".posts").after(text1);
+                    $(".posts").after(postHTML);
                 });
             }
         }
