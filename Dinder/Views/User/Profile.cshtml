@@ -97,9 +97,20 @@
 @section Scripts {
     <script>
         $(document).ready(function () {
-            $.get("../api/UserEntities/getProfile").then((result) => {
-                $("#phone").text(result[0][0].phone);
-                getPosts(false, result[1]);
+            
+            var data = {
+                Email: $("#email").text()
+            };
+
+            $.ajax({
+                type: 'POST',
+                url: '../../api/UserEntities/getProfile',
+                contentType: 'application/json',
+                dataType: 'json',
+                data: JSON.stringify(data),
+                success: function (result) {
+                    console.log(result);
+                }
             });
 
             $("#customSwitch1").on("change", function () {

@@ -43,7 +43,6 @@ namespace Dinder.Controllers
         [Route("insertPhone")]
         public void InsertPhone([FromBody] UserEntity data)
         {
-            Console.WriteLine("hello");
             var user = _uecontext.Users.First(u => u.Email == User.Identity.Name);
             user.Phone = data.Phone;
 
@@ -51,13 +50,13 @@ namespace Dinder.Controllers
         }
 
         [Route("getProfile")]
-        public List<Object> Profile()
+        public List<Object> Profile(UserEntity data)
         {
-            //_uecontext NEEDS TO BE REFRESHED, OR AJAX GETS OLD NAME DATA
+            Console.WriteLine(data);
             List<Object> fullProfile = new List<Object>();
             var userModel = _uecontext.Users.ToList();
 
-            fullProfile.Add(userModel.Where(u => u.Email == User.Identity.Name).ToList());
+            fullProfile.Add(userModel.ToList());
             fullProfile.Add(Posts());
             return fullProfile;
         }

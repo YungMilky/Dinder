@@ -33,10 +33,10 @@ namespace Dinder.Controllers
         }
 
         [HttpGet]
-        public IActionResult Profile()
+        [Route("getProfile/{email}")]
+        public IActionResult Profile(string email)
         {
-            var userModel = _uecontext.Users.ToList();
-            var user = userModel.Where(u => u.Email == User.Identity.Name).ToList();
+            var user = _uecontext.Users.Where(u => u.Email == email).ToList();
             return View(user);
         }
     }
