@@ -51,7 +51,7 @@
                                     <div class="form-group">
                                         <div class="input-group">
                                             <input type="text" class="form-control" id="Posts" placeholder="Post..."></>
-                                            <button id="postbtn" onclick="getPosts(true)" class="btn btn-primary shadow-none float-right" disabled>SEND</button>
+                                            <button id="postbtn" class="btn btn-primary shadow-none float-right" disabled>SEND</button>
                                         </div>
                                     </div>
                                 </div>
@@ -122,6 +122,22 @@
             //disable button auto-refresh
             $("#postbtn").click(function (event) {
                 event.preventDefault();
+                getPosts(true);
+
+                var data = {
+                    Content: $("#Posts").val()
+                };
+
+                $.ajax({
+                    type: 'POST',
+                    url: '../../api/UserEntities/postOnTimeline',
+                    contentType: 'application/json',
+                    dataType: 'json',
+                    data: JSON.stringify(data),
+                    success: function (result) {
+                        console.log(result + "posted");
+                    }
+                });
             })
         });
 
@@ -139,24 +155,31 @@
                 data: JSON.stringify(data),
                 success: function (result) {
                     createPostHTML(getLatest, result[1]);
+                    console.log(result);
                 }
             });
-            return $.ajax(); //forces functions to wait
         }
 
+        var currentPosts = []; //keeps track of postIDs
         function createPostHTML(getLatest, PostList) {
+
             if (getLatest == true) {
                 var arr = PostList[PostList.length - 1]; //latest array object
 
-                var postHTML = '<section class="post-section">' +
-                    '<div class="col-md-3">' +
-                    '<label id="author"><b>' + arr.author + '</b></label>' +
-                    '<p id="content">' + arr.content + '</p>' +
-                    '</div>' +
-                    '<hr />' +
-                    '   ' +
-                    '</section>';
-                $(".posts").after(postHTML);
+                if (!$.inArray(arr.postID, currentPosts)) {
+                    var postHTML = '<section class="post-section">' +
+                        '<div class="col-md-3">' +
+                        '<label id="author"><b>' + arr.author + '</b></label>' +
+                        '<p id="content">' + arr.content + '</p>' +
+                        '</div>' +
+                        '<hr />' +
+                        '   ' +
+                        '</section>';
+
+                    currentPosts.push(arr.postID);
+
+                    $(".posts").after(postHTML);
+                }
 
             } else {
                 $.each(PostList, function (index, value) {
@@ -168,8 +191,12 @@
                         '<hr />' +
                         '   ' +
                         '</section>';
+
+                    currentPosts.push(value.postID);
+
                     $(".posts").after(postHTML);
                 });
+                console.log("current posts:" + currentPosts);
             }
         }
     </script>

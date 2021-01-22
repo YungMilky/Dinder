@@ -49,10 +49,31 @@ namespace Dinder.Controllers
             _uecontext.SaveChanges();
         }
 
+        [Route("postOnTimeline")]
+        public void PostOnTimeline([FromBody] PostsEntity data)
+        {
+            var user = _uecontext.Users.First(id => id.Email == User.Identity.Name);
+            
+            var newPost = new PostsEntity
+            {
+                Author = user.Name,
+                Content = data.Content
+            };
+            _uecontext.Posts.Add(newPost);
+
+            _uecontext.UserPosts.Add(new UserPosts
+            {
+                UserID = user.UserID,
+                PostID = newPost.PostID
+            });
+
+            _uecontext.SaveChanges(); 
+
+        }
+
         [Route("getProfile")]
         public List<Object> Profile(UserEntity data)
         {
-            Console.WriteLine(data);
             List<Object> fullProfile = new List<Object>();
             var userModel = _uecontext.Users.ToList();
 
