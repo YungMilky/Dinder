@@ -119,9 +119,8 @@
                 }
             });
 
-            //disable button auto-refresh
             $("#postbtn").click(function (event) {
-                event.preventDefault();
+                event.preventDefault(); //disable button auto-refresh
                 getPosts(true);
 
                 var data = {
@@ -162,8 +161,8 @@
 
         var currentPosts = []; //keeps track of postIDs
         function createPostHTML(getLatest, PostList) {
-
             if (getLatest == true) {
+            console.log("hello");
                 var arr = PostList[PostList.length - 1]; //latest array object
 
                 if (!$.inArray(arr.postID, currentPosts)) {
@@ -177,7 +176,7 @@
                         '</section>';
 
                     currentPosts.push(arr.postID);
-
+                    console.log(postHTML);
                     $(".posts").after(postHTML);
                 }
 

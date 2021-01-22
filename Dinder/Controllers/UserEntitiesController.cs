@@ -60,14 +60,14 @@ namespace Dinder.Controllers
                 Content = data.Content
             };
             _uecontext.Posts.Add(newPost);
+            _uecontext.SaveChanges(); 
 
             _uecontext.UserPosts.Add(new UserPosts
             {
                 UserID = user.UserID,
                 PostID = newPost.PostID
             });
-
-            _uecontext.SaveChanges(); 
+            _uecontext.SaveChanges(); //has to be called between each change, otherwise newPost.PostID is not created
 
         }
 
