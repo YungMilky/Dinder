@@ -19,7 +19,7 @@
                 <section class="content-bg">
                     <div class="profile-head">
 
-                        <h5>
+                        <h5 id="profile-name">
                             @Model.FirstOrDefault().Name
                         </h5>
 
@@ -100,6 +100,11 @@
             
             getPosts(false);
 
+            $("#postbtn").click(function (event) {
+                event.preventDefault(); //disable button auto-refresh
+                $.when(postPost()).then(createPostHTML(true));
+            })
+
             $("#customSwitch1").on("change", function () {
                 if ($(this).is(":checked")) {
                     $('#friendship').text("Friends ✓")
@@ -119,11 +124,6 @@
                 }
             });
 
-            $("#postbtn").click(function (event) {
-                event.preventDefault(); //disable button auto-refresh
-
-                $.when(postPost()).then(getPosts(true));
-            })
         });
 
         function postPost() {
@@ -140,7 +140,7 @@
             });
         }
 
-        function getPosts(getLatest) {
+        function getPosts() {
             var data = {
                 Email: $("#email").text()
             };
@@ -152,42 +152,23 @@
                 dataType: 'json',
                 data: JSON.stringify(data),
                 success: function (result) {
-                    createPostHTML(getLatest, result[1]);
-                    console.log(result[1]);
+                    createPostHTML(false, result[1]);
                 }
             });
         }
 
-        //keep track of postIDs
-        var currentPosts = []; 
-
         function createPostHTML(getLatest, PostList) {
             if (getLatest == true) {
+                var postHTML = '<section class="post-section">' +
+                    '<div class="col-md-3">' +
+                    '<label id="author"><b>' + $("#profile-name").text() + '</b></label>' +
+                    '<p id="content">' + $("#Posts").val() + '</p>' +
+                    '</div>' +
+                    '<hr />' +
+                    '   ' +
+                    '</section>';
 
-                var arr = PostList;
-
-                //if theres more than one post
-                if (PostList.length != 0) {
-
-                    //get latest array object
-                    arr = PostList[PostList.length - 1]; 
-                }
-
-                if (!currentPosts.includes(arr.postID)) {
-                    console.log("not in currentposts");
-                    var postHTML = '<section class="post-section">' +
-                        '<div class="col-md-3">' +
-                        '<label id="author"><b>' + arr.author + '</b></label>' +
-                        '<p id="content">' + arr.content + '</p>' +
-                        '</div>' +
-                        '<hr />' +
-                        '   ' +
-                        '</section>';
-
-                    currentPosts.push(arr.postID);
-
-                    $(".posts").after(postHTML);
-                }
+                $(".posts").after(postHTML);
 
             } else {
                 $.each(PostList, function (index, value) {
@@ -200,11 +181,8 @@
                         '   ' +
                         '</section>';
 
-                    currentPosts.push(value.postID);
-
                     $(".posts").after(postHTML);
                 });
-                console.log("current posts:" + currentPosts);
             }
         }
     </script>
