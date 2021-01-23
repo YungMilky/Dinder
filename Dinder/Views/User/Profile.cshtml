@@ -121,25 +121,24 @@
 
             $("#postbtn").click(function (event) {
                 event.preventDefault(); //disable button auto-refresh
-                getPosts(true);
 
-                var data = {
-                    Content: $("#Posts").val()
-                };
-
-                $.ajax({
-                    type: 'POST',
-                    url: '../../api/UserEntities/postOnTimeline',
-                    contentType: 'application/json',
-                    dataType: 'json',
-                    data: JSON.stringify(data),
-                    success: function (result) {
-                        console.log(result + "posted");
-                    }
-                });
+                $.when(postPost()).then(getPosts(true));
             })
         });
 
+        function postPost() {
+            var data = {
+                Content: $("#Posts").val()
+            };
+
+            return $.ajax({
+                type: 'POST',
+                url: '../../api/UserEntities/postOnTimeline',
+                contentType: 'application/json',
+                dataType: 'json',
+                data: JSON.stringify(data)
+            });
+        }
 
         function getPosts(getLatest) {
             var data = {
@@ -154,18 +153,28 @@
                 data: JSON.stringify(data),
                 success: function (result) {
                     createPostHTML(getLatest, result[1]);
-                    console.log(result);
+                    console.log(result[1]);
                 }
             });
         }
 
-        var currentPosts = []; //keeps track of postIDs
+        //keep track of postIDs
+        var currentPosts = []; 
+
         function createPostHTML(getLatest, PostList) {
             if (getLatest == true) {
-            console.log("hello");
-                var arr = PostList[PostList.length - 1]; //latest array object
 
-                if (!$.inArray(arr.postID, currentPosts)) {
+                var arr = PostList;
+
+                //if theres more than one post
+                if (PostList.length != 0) {
+
+                    //get latest array object
+                    arr = PostList[PostList.length - 1]; 
+                }
+
+                if (!currentPosts.includes(arr.postID)) {
+                    console.log("not in currentposts");
                     var postHTML = '<section class="post-section">' +
                         '<div class="col-md-3">' +
                         '<label id="author"><b>' + arr.author + '</b></label>' +
@@ -176,7 +185,7 @@
                         '</section>';
 
                     currentPosts.push(arr.postID);
-                    console.log(postHTML);
+
                     $(".posts").after(postHTML);
                 }
 
