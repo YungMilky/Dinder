@@ -52,23 +52,35 @@ namespace Dinder.Controllers
         [Route("postOnTimeline")]
         public void PostOnTimeline([FromBody] PostsEntity data)
         {
-            var user = _uecontext.Users.First(id => id.Email == User.Identity.Name);
+            using (var tran = _uecontext.Database.BeginTransaction())
+            {
+                try
+                {
+                    var user = _uecontext.Users.First(id => id.Email == User.Identity.Name);
             
-            var newPost = new PostsEntity
-            {
-                Author = user.Name,
-                Content = data.Content
-            };
-            _uecontext.Posts.Add(newPost);
-            _uecontext.SaveChanges(); 
+                    var newPost = new PostsEntity
+                    {
+                        Author = user.Name,
+                        Content = data.Content
+                    };
+                    _uecontext.Posts.Add(newPost);
+                    _uecontext.SaveChanges(); 
 
-            _uecontext.UserPosts.Add(new UserPosts
-            {
-                UserID = user.UserID,
-                PostID = newPost.PostID
-            });
-            _uecontext.SaveChanges(); //has to be called between each change, otherwise newPost.PostID is not created
+                    _uecontext.UserPosts.Add(new UserPosts
+                    {
+                        UserID = user.UserID,
+                        PostID = newPost.PostID
+                    });
+                    _uecontext.SaveChanges(); //has to be called between each change, otherwise newPost.PostID is not created
 
+                    tran.Commit();
+                }
+                catch (Exception ex)
+                {
+                    tran.Rollback();
+                    Console.WriteLine("Rolled back. Error during post transaction: " + ex.Message);
+                }
+            }
         }
 
         [Route("getProfile")]
