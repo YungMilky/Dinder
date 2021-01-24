@@ -71,7 +71,7 @@ namespace Dinder.Controllers
                         UserID = user.UserID,
                         PostID = newPost.PostID
                     });
-                    _uecontext.SaveChanges(); //has to be called between each change, otherwise newPost.PostID is not created
+                    _uecontext.SaveChanges(); //has to be called once before, otherwise newPost.PostID is not created
 
                     tran.Commit();
                 }
@@ -84,11 +84,13 @@ namespace Dinder.Controllers
         }
 
         [Route("getProfile")]
-        public List<Object> Profile(UserEntity data)
+        public List<Object> Profile([FromBody] UserEntity data)
         {
             List<Object> fullProfile = new List<Object>();
-            var userModel = _uecontext.Users.ToList();
+            var userModel = new List<UserEntity>();
 
+            userModel = _uecontext.Users.Where(u => u.Email == data.Email).ToList();
+            
             fullProfile.Add(userModel.ToList());
             fullProfile.Add(Posts());
             return fullProfile;
