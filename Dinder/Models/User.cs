@@ -11,6 +11,7 @@ namespace Dinder.Models
         [Display(Name = "User ID")]
         public int UserID { get; set; }
 
+        [RegularExpression(@"^[\\w ]+$")] //any unicode that counts as a letter + spaces
         [Display(Name = "Name")]
         [Required(ErrorMessage = "We need your name!")]
         public String Name { get; set; }
@@ -34,5 +35,10 @@ namespace Dinder.Models
         [Compare("Password", ErrorMessage = "The passwords don't match.")]
         [DataType(DataType.Password)]
         public String ConfirmPassword { get; set; }
+
+        [Phone]
+        [Display(Name = "Phone number")]
+        [RegularExpression(@"^([\+]?(?:00)?[0-9]{1,3}[\s.-]?[0-9]{1,12})([\s.-]?[0-9]{1,4}?)$", ErrorMessage = "That's not your phone number!")] //some phone number regex
+        public String Phone { get; set; }
     }
 }

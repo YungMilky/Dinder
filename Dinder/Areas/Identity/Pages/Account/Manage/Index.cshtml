@@ -15,11 +15,6 @@
                 <label asp-for="Username"></label>
                 <input id="user-email" asp-for="Username" class="form-control" disabled />
             </div>
-            <div class="form-group">
-                <label asp-for="Input.PhoneNumber"></label>
-                <input id="phone" asp-for="Input.PhoneNumber" class="form-control" Placeholder="Phone number"/>
-                <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
-            </div>
             @Html.Partial("~/Views/Shared/_ManagePartial.cshtml", new Dinder.Models.User())
         </form>
     </div>
@@ -33,81 +28,85 @@
     </div>
 </div>
 
-    @section Scripts {
-        <script>
-            var pp; //profile pic
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    <script>
+        var pp; //profile pic
 
-            $("#profilePic").click(() => {
-                $("#fileBrowser").click();
-            });
+        $("#profilePic").click(() => {
+            $("#fileBrowser").click();
+        });
 
-            $("input:file").change(function () {
-                if (this.files && this.files[0] && (this.files[0]["type"]).includes('image')) {
-                    var reader = new FileReader();
-                    reader.onload = function (e) {
-                        $('#profilePic').attr('src', e.target.result);
-                    }
-                    reader.readAsDataURL(this.files[0]);
+        $("input:file").change(function () {
+            if (this.files && this.files[0] && (this.files[0]["type"]).includes('image')) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#profilePic').attr('src', e.target.result);
+                }
+                reader.readAsDataURL(this.files[0]);
 
-                    pp = $('#fileBrowser').prop('files')[0];
+                pp = $('#fileBrowser').prop('files')[0];
+            }
+        });
+
+        $(window).on("unload", function (e) {
+            //save pp to db
+        });
+
+        //Save info on leave
+        $(document).ready(function () {
+            var data = {
+                Email: $("#user-email").val()
+            };
+            $.ajax({
+                type: "POST",
+                url: '../../../../api/UserEntities/getProfile',
+                contentType: 'application/json',
+                data: JSON.stringify(data),
+                success: function (result) {
+                    $("#name").attr("value", result[0][0].name);
+                    $("#phone").attr("value", result[0][0].phone);
                 }
             });
 
-            $(window).on("unload", function (e) {
-                //save pp to db
-            });
-
-            //Save info on leave
-            $(document).ready(function () {
-                var data = {
-                    Email: $("#user-email").val()
-                };
-
-                $.ajax({
-                    type: "POST",
-                    url: '../../../../api/UserEntities/getProfile',
-                    contentType: 'application/json',
-                    data: JSON.stringify(data),
-                    success: function (result) {
-                        $("#name").attr("value", result[0][0].name);
-                        $("#phone").attr("value", result[0][0].phone);
-                    }
-                });
-
-                $("#name").on("focusout", function () {
+            $("#name").on("focusout", function () {
+                $("#profile-form").validate();
+                if ($("#name").valid()) {
                     var data = {
                         Name: $('#name').val()
                     };
-
                     $.ajax({
                         type: "POST",
-                        url: '../../api/UserEntities/insertName',
+                        url: '../../api/UserEntities/updateName',
                         contentType: 'application/json',
                         data: JSON.stringify(data),
                         success: function () {
                             //...
                         }
                     });
-                });
+                }
+            });
 
-                //error 400
-                $("#phone-val").on("focusout", function () {
+            $("#phone").on("focusout", function () {
+                $("#profile-form").validate();
+                if ($("#phone").valid()) {
                     var data = {
                         Phone: $('#phone').val()
                     };
-
                     $.ajax({
                         type: "POST",
-                        url: '../../api/UserEntities/insertPhone',
+                        url: '../../api/UserEntities/updatePhone',
                         contentType: 'application/json',
                         data: JSON.stringify(data),
                         success: function () {
                             //...
                         }
                     });
-                });
-            });
-        </script>
+                };
 
-        <partial name="_ValidationScriptsPartial" />
-    }
+            });
+        });
+    </script>
+
+    <partial name="_ValidationScriptsPartial" />
+}
