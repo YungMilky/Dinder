@@ -7,3 +7,8 @@
 #profilePic {
     width: 100%;
 }
+
+#name-success, #phone-success {
+    color: green;
+    display:none;
+}

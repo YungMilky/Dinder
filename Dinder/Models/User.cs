@@ -11,7 +11,7 @@ namespace Dinder.Models
         [Display(Name = "User ID")]
         public int UserID { get; set; }
 
-        [RegularExpression(@"^[\w'\-,.][^0-9_!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:[\]]{2,}$", ErrorMessage = "Invalid symbols. Feel free to contact us if we're wrong.")] //any unicode that counts as a letter + spaces
+        [RegularExpression(@"^[\w'\-,.][^0-9_!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:[\]]{2,}$", ErrorMessage = "Invalid symbols. Feel free to contact us if we're wrong.")] //no special symbols aside from accents and such
         [Display(Name = "Name")]
         [Required(ErrorMessage = "We need your name!")]
         public String Name { get; set; }

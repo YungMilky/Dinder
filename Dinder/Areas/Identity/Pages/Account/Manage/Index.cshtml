@@ -28,85 +28,92 @@
     </div>
 </div>
 
-@section Scripts {
-    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
-    <script>
-        var pp; //profile pic
+    @section Scripts {
+        @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+        <script>
+            var pp; //profile pic
 
-        $("#profilePic").click(() => {
-            $("#fileBrowser").click();
-        });
+            $("#profilePic").click(() => {
+                $("#fileBrowser").click();
+            });
 
-        $("input:file").change(function () {
-            if (this.files && this.files[0] && (this.files[0]["type"]).includes('image')) {
-                var reader = new FileReader();
-                reader.onload = function (e) {
-                    $('#profilePic').attr('src', e.target.result);
-                }
-                reader.readAsDataURL(this.files[0]);
+            $("input:file").change(function () {
+                if (this.files && this.files[0] && (this.files[0]["type"]).includes('image')) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        $('#profilePic').attr('src', e.target.result);
+                    }
+                    reader.readAsDataURL(this.files[0]);
 
-                pp = $('#fileBrowser').prop('files')[0];
-            }
-        });
-
-        $(window).on("unload", function (e) {
-            //save pp to db
-        });
-
-        //Save info on leave
-        $(document).ready(function () {
-            var data = {
-                Email: $("#user-email").val()
-            };
-            $.ajax({
-                type: "POST",
-                url: '../../../../api/UserEntities/getProfile',
-                contentType: 'application/json',
-                data: JSON.stringify(data),
-                success: function (result) {
-                    $("#name").attr("value", result[0][0].name);
-                    $("#phone").attr("value", result[0][0].phone);
+                    pp = $('#fileBrowser').prop('files')[0];
                 }
             });
 
-            $("#name").on("focusout", function () {
-                $("#profile-form").validate();
-                if ($("#name").valid()) {
-                    var data = {
-                        Name: $('#name').val()
-                    };
-                    $.ajax({
-                        type: "POST",
-                        url: '../../api/UserEntities/updateName',
-                        contentType: 'application/json',
-                        data: JSON.stringify(data),
-                        success: function () {
-                            //...
-                        }
-                    });
-                }
+            $(window).on("unload", function (e) {
+                //save pp to db
             });
 
-            $("#phone").on("focusout", function () {
-                $("#profile-form").validate();
-                if ($("#phone").valid()) {
-                    var data = {
-                        Phone: $('#phone').val()
-                    };
-                    $.ajax({
-                        type: "POST",
-                        url: '../../api/UserEntities/updatePhone',
-                        contentType: 'application/json',
-                        data: JSON.stringify(data),
-                        success: function () {
-                            //...
-                        }
-                    });
+            //Save info on leave
+            $(document).ready(function () {
+                var data = {
+                    Email: $("#user-email").val()
                 };
+                $.ajax({
+                    type: "POST",
+                    url: '../../../../api/UserEntities/getProfile',
+                    contentType: 'application/json',
+                    data: JSON.stringify(data),
+                    success: function (result) {
+                        $("#name").attr("value", result[0][0].name);
+                        $("#phone").attr("value", result[0][0].phone);
+                    }
+                });
+                $(".toast").toast('show');
 
+                $("#name").on("focusout", function () {
+                    $("#profile-form").validate();
+                    if ($("#name").valid()) {
+                        var data = {
+                            Name: $('#name').val()
+                        };
+                        $.ajax({
+                            type: "POST",
+                            url: '../../api/UserEntities/updateName',
+                            contentType: 'application/json',
+                            data: JSON.stringify(data),
+                            success: function () {
+                                //...
+                            }
+                        });
+                        $("#name-success").show();
+                    } else {
+                        $("name-#success").hide();
+                    }
+                });
+
+                $("#phone").on("focusout", function () {
+                    $("#profile-form").validate();
+                    if ($("#phone").valid()) {
+                        var data = {
+                            Phone: $('#phone').val()
+                        };
+                        $.ajax({
+                            type: "POST",
+                            url: '../../api/UserEntities/updatePhone',
+                            contentType: 'application/json',
+                            data: JSON.stringify(data),
+                            success: function () {
+                                //...
+                            }
+                        });
+                        $("phone-#success").show();
+                    } else {
+                        $("#phone-success").hide();
+                    }
+
+                });
             });
-        });
-    </script>
+        </script>
 
-    <partial name="_ValidationScriptsPartial" />
-}
+        <partial name="_ValidationScriptsPartial" />
+    }
