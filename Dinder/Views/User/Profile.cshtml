@@ -2,89 +2,101 @@
 @{
     ViewData["Title"] = "Profile";
 }
+<head>
+    <link rel="stylesheet" href="~/css/friendshiptoggle.css">
+</head>
 <div class="container emp-profile">
-    <form method="post">
+    <form>
         <div class="row">
             <div class="col-md-4">
-                <div class="profile-img">
-                    <img src="~/default-profile-pic.png" alt="Profile picture" />
-                </div>
-                <div id="bio">
-                    <p>@Model.FirstOrDefault().Bio</p>
-                </div>
+                <section class="ppbio-bg">
+                    <div class="profile-img">
+                        <img src="~/default-profile-pic.png" alt="Profile picture" />
+                    </div>
+                    <div id="bio">
+                        <p>@Model.FirstOrDefault().Bio</p>
+                    </div>
+                </section>
             </div>
             <div class="col-md-7">
-                <div class="profile-head">
+                <section class="content-bg">
+                    <div class="profile-head">
 
-                    <h5>
-                        @Model.FirstOrDefault().Name
-                    </h5>
+                        <h5 id="profile-name">
+                            @Model.FirstOrDefault().Name
+                        </h5>
 
-                    <ul class="nav nav-tabs" id="myTab" role="tablist">
-                        <li class="nav-item">
-                            <a class="nav-link active" id="timeline-tab" data-toggle="tab" href="#timeline" role="tab" aria-controls="timeline" aria-selected="true">Timeline</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="about-tab" data-toggle="tab" href="#about" role="tab" aria-controls="about" aria-selected="false">About</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="friends-tab" data-toggle="tab" href="#friends" role="tab" aria-controls="friends" aria-selected="false">Friends</a>
-                        </li>
-                        <li class="nav-item ml-auto">
-                            <div class="custom-control custom-switch">
-                                <input type="checkbox" class="custom-control-input" id="customSwitch1">
-                                <label class="custom-control-label active" for="customSwitch1" id="friendship"></label>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-                <div class="col-auto">
-                    <div class="tab-content profile-tab" id="myTabContent">
-                        <div class="tab-pane fade show active" id="timeline" role="tabpanel" aria-labelledby="timeline-tab">
-                            <div class="posts">
+                        <ul class="nav nav-tabs" id="myTab" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="timeline-tab" data-toggle="tab" href="#timeline" role="tab" aria-controls="timeline" aria-selected="true">Timeline</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="about-tab" data-toggle="tab" href="#about" role="tab" aria-controls="about" aria-selected="false">About</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="friends-tab" data-toggle="tab" href="#friends" role="tab" aria-controls="friends" aria-selected="false">Friends</a>
+                            </li>
+                            <li class="nav-item ml-auto">
+                                <span id="friend-status">Friends!</span>
+                            </li>
+                            <li class="nav-item">
+                                <label class="heart-switch">
+                                    <input type="checkbox">
+                                    <svg viewBox="0 0 33 23" fill="white">
+                                        <path d="M23.5,0.5 C28.4705627,0.5 32.5,4.52943725 32.5,9.5 C32.5,16.9484448 21.46672,22.5 16.5,22.5 C11.53328,22.5 0.5,16.9484448 0.5,9.5 C0.5,4.52952206 4.52943725,0.5 9.5,0.5 C12.3277083,0.5 14.8508336,1.80407476 16.5007741,3.84362242 C18.1491664,1.80407476 20.6722917,0.5 23.5,0.5 Z"></path>
+                                    </svg>
+                                </label>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-auto">
+                        <div class="tab-content profile-tab" id="myTabContent">
+                            <div class="tab-pane fade show active" id="timeline" role="tabpanel" aria-labelledby="timeline-tab">
+                                <div class="posts">
 
-                            </div>
-                            <div class="col-auto col-md-12">
-                                <div class="form-group">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" id="Posts" placeholder="Post..."></>
-                                        <button id="postbtn" type="submit" onclick="getPosts(true)" class="btn btn-primary shadow-none float-right" disabled>SEND</button>
+                                </div>
+                                <div class="col-auto col-md-12">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" id="Posts" placeholder="Post..."></>
+                                            <button id="postbtn" class="btn btn-primary shadow-none float-right" disabled>SEND</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="tab-pane fade" id="about" role="tabpanel" aria-labelledby="about-tab">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <label>Email</label>
+                            <div class="tab-pane fade" id="about" role="tabpanel" aria-labelledby="about-tab">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label>Email</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p id="email">@Model.FirstOrDefault().Email</p>
+                                    </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <p id="email">@Model.FirstOrDefault().Email</p>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label>Phone</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p id="phone">@Model.FirstOrDefault().Phone</p>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <label>Phone</label>
-                                </div>
-                                <div class="col-md-6">
-                                    <p id="phone">@Model.FirstOrDefault().Phone</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="tab-pane fade" id="friends" role="tabpanel" aria-labelledby="friends-tab">
-                            <div class="row">
-                                <div class="card" style="width: 18rem;">
-                                    <img id="cardPicture" class="card-img-top" src="~/default-profile-pic.png" alt="Card profile picture">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Friend</h5>
-                                        <p class="card-text">Description</p>
-                                        <a href="#" class="btn btn-primary">Profile</a>
+                            <div class="tab-pane fade" id="friends" role="tabpanel" aria-labelledby="friends-tab">
+                                <div class="row">
+                                    <div class="card" style="width: 18rem;">
+                                        <img id="cardPicture" class="card-img-top" src="~/default-profile-pic.png" alt="Card profile picture">
+                                        <div class="card-body">
+                                            <h5 class="card-title">Friend</h5>
+                                            <p class="card-text">Description</p>
+                                            <a href="#" class="btn btn-primary">Profile</a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                </section>
             </div>
         </div>
     </form>
@@ -93,20 +105,15 @@
 @section Scripts {
     <script>
         $(document).ready(function () {
-            $.get("../api/UserEntities/getProfile").then((result) => {
-                $("#phone").text(result[0][0].phone);
-                getPosts(false, result[1]);
-            });
+            
+            getPosts(false);
 
-            $("#customSwitch1").on("change", function () {
-                if ($(this).is(":checked")) {
-                    $('#friendship').text("Friends ✓")
-                } else {
-                    $('#friendship').text("Add friend")
-                }
+            $("#postbtn").click(function (event) {
+                event.preventDefault(); //disable button auto-refresh
+                $.when(postPost()).then(createPostHTML(true));
             })
 
-            //undim button when text is entered
+            //enable button when text is entered
             $("#Posts").on("input", function (){
                 if ($("#Posts").val() != "") {
                     $("#postbtn").css("background-color", "#e84a5f");
@@ -116,14 +123,56 @@
                     $("#postbtn").prop("disabled", true);
                 }
             });
+
         });
 
-        function getPosts(getRecentPost, PostList) {
-            if (getRecentPost == true) {
-                //...
+        function postPost() {
+            var data = {
+                Content: $("#Posts").val()
+            };
+
+            return $.ajax({
+                type: 'POST',
+                url: '../../api/UserEntities/postOnTimeline',
+                contentType: 'application/json',
+                dataType: 'json',
+                data: JSON.stringify(data)
+            });
+        }
+
+        function getPosts() {
+            var data = {
+                Email: $("#email").text()
+            };
+
+            $.ajax({
+                type: 'POST',
+                url: '../../api/UserEntities/getProfile',
+                contentType: 'application/json',
+                dataType: 'json',
+                data: JSON.stringify(data),
+                success: function (result) {
+                    createPostHTML(false, result[1]);
+                }
+            });
+        }
+
+        function createPostHTML(getLatest, PostList) {
+            if (getLatest == true) {
+                var postHTML = '<section class="post-section">' +
+                    '<div class="col-md-3">' +
+                    '<label id="author"><b>' + $("#profile-name").text() + '</b></label>' +
+                    '<p id="content">' + $("#Posts").val() + '</p>' +
+                    '</div>' +
+                    '<hr />' +
+                    '   ' +
+                    '</section>';
+
+                $(".posts").after(postHTML);
+
             } else {
                 $.each(PostList, function (index, value) {
-                    var text1 = '<section class="post-section">' +
+                    var postHTML = '<section class="post-section">' +
                         '<div class="col-md-3">' +
                         '<label id="author"><b>' + value.author + '</b></label>' +
                         '<p id="content">' + value.content + '</p>' +
@@ -131,7 +180,8 @@
                         '<hr />' +
                         '   ' +
                         '</section>';
-                    $(".posts").after(text1);
+
+                    $(".posts").after(postHTML);
                 });
             }
         }

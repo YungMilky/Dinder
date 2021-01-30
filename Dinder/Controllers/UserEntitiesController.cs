@@ -31,8 +31,8 @@ namespace Dinder.Controllers
             _uecontext.SaveChanges();
         }
 
-        [Route("insertName")]
-        public void InsertName([FromBody] UserEntity data)
+        [Route("updateName")]
+        public void UpdateName([FromBody] UserEntity data)
         {
             var user = _uecontext.Users.First(u => u.Email == User.Identity.Name);
             user.Name = data.Name;
@@ -40,14 +40,58 @@ namespace Dinder.Controllers
             _uecontext.SaveChanges();
         }
 
-        [Route("getProfile")]
-        public List<Object> Profile()
+        [Route("updatePhone")]
+        public void UpdatePhone([FromBody] UserEntity data)
         {
-            //_uecontext NEEDS TO BE REFRESHED, OR AJAX GETS OLD NAME DATA
-            List<Object> fullProfile = new List<Object>();
-            var userModel = _uecontext.Users.ToList();
+            var user = _uecontext.Users.First(u => u.Email == User.Identity.Name);
+            user.Phone = data.Phone;
 
-            fullProfile.Add(userModel.Where(u => u.Email == User.Identity.Name).ToList());
+            _uecontext.SaveChanges();
+        }
+
+        [Route("postOnTimeline")]
+        public void PostOnTimeline([FromBody] PostsEntity data)
+        {
+            using (var tran = _uecontext.Database.BeginTransaction())
+            {
+                try
+                {
+                    var user = _uecontext.Users.First(id => id.Email == User.Identity.Name);
+            
+                    var newPost = new PostsEntity
+                    {
+                        Author = user.Name,
+                        Content = data.Content
+                    };
+                    _uecontext.Posts.Add(newPost);
+                    _uecontext.SaveChanges(); 
+
+                    _uecontext.UserPosts.Add(new UserPosts
+                    {
+                        UserID = user.UserID,
+                        PostID = newPost.PostID
+                    });
+                    _uecontext.SaveChanges(); //has to be called once before, otherwise newPost.PostID is not created
+
+                    tran.Commit();
+                }
+                catch (Exception ex)
+                {
+                    tran.Rollback();
+                    Console.WriteLine("Rolled back. Error during post transaction: " + ex.Message);
+                }
+            }
+        }
+
+        [Route("getProfile")]
+        public List<Object> Profile([FromBody] UserEntity data)
+        {
+            List<Object> fullProfile = new List<Object>();
+            var userModel = new List<UserEntity>();
+
+            userModel = _uecontext.Users.Where(u => u.Email == data.Email).ToList();
+            
+            fullProfile.Add(userModel.ToList());
             fullProfile.Add(Posts());
             return fullProfile;
         }

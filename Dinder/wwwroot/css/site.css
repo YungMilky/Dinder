@@ -74,21 +74,38 @@ body {
 
 
 
+.content-bg {
+    background-color: rgba(0, 0, 0, 0.16);
+    padding:40px;
+    margin-right:-90px;
+}
+.ppbio-bg {
+    background-color: rgba(0, 0, 0, 0.16);
+    height:100%;
+    margin-right:-18px;
+}
+#bio {
+    color: rgba(255, 255, 255, 0.60);
+    padding:20px;
+}
 
-
-h5{
+h5 {
     margin: 0;
-    display:inline-block;
-    font-size:1.8em;
-    font-weight:100;
+    display: inline-block;
+    font-size: 1.8em;
+    font-weight: 100;
 }
 
 #myTab{
     margin-top:5%;
 }
 
-#bio {
-    padding:20px;
+#about label {
+    color: rgba(255, 255, 255, 0.87);
+}
+
+#about p {
+    color: rgba(255, 255, 255, 0.60);
 }
 
 #author {
@@ -140,7 +157,6 @@ h5{
     .input-group input {
         flex-grow: 2;
         border: none;
-
     }
 
 .post-section {
@@ -253,3 +269,7 @@ body {
             background-color: transparent;
         }
 
+#friend-status {
+    color: rgba(255, 255, 255, 0.84);
+    padding-right:10px;
+}
