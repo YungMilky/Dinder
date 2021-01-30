@@ -269,3 +269,7 @@ body {
             background-color: transparent;
         }
 
+#friend-status {
+    color: rgba(255, 255, 255, 0.84);
+    padding-right:10px;
+}
