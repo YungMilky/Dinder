@@ -21,3 +21,42 @@
         </div>
     </div>
 }
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            var loggedIn = @User.Identity.IsAuthenticated;
+            if (loggedIn) {
+                console.log("logged in");
+                //route navbar welcome message/button with the logged in user ID
+                $.ajax({
+                    type: 'GET',
+                    url: '../api/UserEntities/getUserID',
+                    success: function (result) {
+                        $("#user-button").attr("href", "/getProfile/" + result);
+                    }
+                });
+
+
+
+
+                FALSE IS NOT DEFINED
+
+
+
+
+
+
+
+
+                //set the navbar welcome message/button to the user's name
+                $.ajax({
+                    type: 'GET',
+                    url: '../api/UserEntities/getUsername',
+                    success: function (result) {
+                        $("#user-button").text("Hello, "+ result + "!");
+                    }
+                });
+            }
+        });
+    </script>
+}

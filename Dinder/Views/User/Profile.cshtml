@@ -105,8 +105,8 @@
 @section Scripts {
     <script>
         $(document).ready(function () {
-            
-            getPosts(false);
+
+            getProfile();
 
             $("#postbtn").click(function (event) {
                 event.preventDefault(); //disable button auto-refresh
@@ -126,21 +126,7 @@
 
         });
 
-        function postPost() {
-            var data = {
-                Content: $("#Posts").val()
-            };
-
-            return $.ajax({
-                type: 'POST',
-                url: '../../api/UserEntities/postOnTimeline',
-                contentType: 'application/json',
-                dataType: 'json',
-                data: JSON.stringify(data)
-            });
-        }
-
-        function getPosts() {
+        function getProfile() {
             var data = {
                 Email: $("#email").text()
             };
@@ -153,7 +139,22 @@
                 data: JSON.stringify(data),
                 success: function (result) {
                     createPostHTML(false, result[1]);
+                    createFriendsHTML(result[2]);
                 }
+            });
+        }
+
+        function postPost() {
+            var data = {
+                Content: $("#Posts").val()
+            };
+
+            return $.ajax({
+                type: 'POST',
+                url: '../../api/UserEntities/postOnTimeline',
+                contentType: 'application/json',
+                dataType: 'json',
+                data: JSON.stringify(data)
             });
         }
 
@@ -185,5 +186,35 @@
                 });
             }
         }
+
+        function createFriendsHTML(Friendslists) {
+            if (getLatest == true) {
+                var postHTML = '<section class="post-section">' +
+                    '<div class="col-md-3">' +
+                    '<label id="author"><b>' + $("#profile-name").text() + '</b></label>' +
+                    '<p id="content">' + $("#Posts").val() + '</p>' +
+                    '</div>' +
+                    '<hr />' +
+                    '   ' +
+                    '</section>';
+
+                $(".posts").after(postHTML);
+
+            } else {
+                $.each(PostList, function (index, value) {
+                    var postHTML = '<section class="post-section">' +
+                        '<div class="col-md-3">' +
+                        '<label id="author"><b>' + value.author + '</b></label>' +
+                        '<p id="content">' + value.content + '</p>' +
+                        '</div>' +
+                        '<hr />' +
+                        '   ' +
+                        '</section>';
+
+                    $(".posts").after(postHTML);
+                });
+            }
+        }
+
     </script>
 }
