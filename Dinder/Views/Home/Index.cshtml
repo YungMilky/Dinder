@@ -24,10 +24,10 @@
 @section Scripts {
     <script>
         $(document).ready(function () {
-            var loggedIn = @User.Identity.IsAuthenticated;
+            var loggedIn = @User.Identity.IsAuthenticated.ToString().ToLower();
             if (loggedIn) {
-                console.log("logged in");
-                //route navbar welcome message/button with the logged in user ID
+
+                //route navbar welcome button with the logged in user ID
                 $.ajax({
                     type: 'GET',
                     url: '../api/UserEntities/getUserID',
@@ -35,18 +35,6 @@
                         $("#user-button").attr("href", "/getProfile/" + result);
                     }
                 });
-
-
-
-
-                FALSE IS NOT DEFINED
-
-
-
-
-
-
-
 
                 //set the navbar welcome message/button to the user's name
                 $.ajax({
