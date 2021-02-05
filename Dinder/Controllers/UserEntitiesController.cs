@@ -89,11 +89,11 @@ namespace Dinder.Controllers
             List<Object> fullProfile = new List<Object>();
             var userModel = new List<UserEntity>();
 
-            userModel = _uecontext.Users.Where(u => u.Email == data.Email).ToList();
+            userModel = _uecontext.Users.Where(u => u.UserID == data.UserID).ToList();
             
             fullProfile.Add(userModel.ToList());
             fullProfile.Add(Posts());
-            fullProfile.Add(Friends());
+            
             return fullProfile;
         }
 

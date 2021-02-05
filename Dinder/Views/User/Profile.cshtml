@@ -84,14 +84,7 @@
                             </div>
                             <div class="tab-pane fade" id="friends" role="tabpanel" aria-labelledby="friends-tab">
                                 <div class="row">
-                                    <div class="card" style="width: 18rem;">
-                                        <img id="cardPicture" class="card-img-top" src="~/default-profile-pic.png" alt="Card profile picture">
-                                        <div class="card-body">
-                                            <h5 class="card-title">Friend</h5>
-                                            <p class="card-text">Description</p>
-                                            <a href="#" class="btn btn-primary">Profile</a>
-                                        </div>
-                                    </div>
+                                    <partial name="Friends" />
                                 </div>
                             </div>
                         </div>
@@ -128,7 +121,7 @@
 
         function getProfile() {
             var data = {
-                Email: $("#email").text()
+                UserID: $("#user-button").attr('href').substring(12)
             };
 
             $.ajax({
@@ -189,19 +182,10 @@
 
         function createFriendsHTML(Friendslists) {
             if (getLatest == true) {
-                var postHTML = '<section class="post-section">' +
-                    '<div class="col-md-3">' +
-                    '<label id="author"><b>' + $("#profile-name").text() + '</b></label>' +
-                    '<p id="content">' + $("#Posts").val() + '</p>' +
-                    '</div>' +
-                    '<hr />' +
-                    '   ' +
-                    '</section>';
-
-                $(".posts").after(postHTML);
+                //on add friend switch
 
             } else {
-                $.each(PostList, function (index, value) {
+                $.each(Friendslists, function (index, value) {
                     var postHTML = '<section class="post-section">' +
                         '<div class="col-md-3">' +
                         '<label id="author"><b>' + value.author + '</b></label>' +

@@ -21,7 +21,7 @@ namespace DinderDL.Models
 
         public ICollection<UserPosts> UserPosts { get; set; }
         public FilesEntity File { get; set; }
-        public virtual ICollection<Friendship> Friend1 { get; set; }
+        public virtual ICollection<Friendship> Friend1 { get; set; } = null;
         public virtual ICollection<Friendship> Friend2 { get; set; }
     }
 }
