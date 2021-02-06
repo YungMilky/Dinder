@@ -39,7 +39,9 @@ namespace Dinder.Controllers
             var friendIDs = _uecontext.Friendships.Where(f => f.Friend1ID == userid || f.Friend2ID == userid)
                                                     .ToList();
 
-            var friends = _uecontext.Users.Where(u => friendIDs.Select(f => f.Friend1ID).Contains(u.UserID) || friendIDs.Select(f => f.Friend2ID).Contains(u.UserID)).ToList();
+            var friends = _uecontext.Users.Where(u => friendIDs
+                                            .Select(f => f.Friend1ID).Contains(u.UserID) || friendIDs.Select(f => f.Friend2ID).Contains(u.UserID))
+                                            .ToList();
 
             var profileModel = new ProfileViewModel
             {
