@@ -89,11 +89,14 @@
                                         if (item.Name != Model.User.FirstOrDefault().Name)
                                         {
                                             <div class="card" style="width: 10rem;">
-                                                <img id="cardPicture" class="card-img-top" src="~/default-profile-pic.png" alt="Card profile picture">
+                                                <a href="/getProfile/@item.UserID">
+                                                    <img id="cardPicture" class="card-img-top" src="~/default-profile-pic.png" alt="Card profile picture">
+                                                </a>
                                                 <div class="card-body">
-                                                    <h5 class="card-title">@Html.DisplayFor(modelItem => item.Name)</h5>
+                                                    <h5 class="card-title">
+                                                        <a href="/getProfile/@item.UserID"> @Html.DisplayFor(modelItem => item.Name) </a>
+                                                    </h5>
                                                     <p class="card-text">@Html.DisplayFor(modelItem => item.Bio)</p>
-                                                    <a href="#" class="btn btn-primary">Profile</a>
                                                 </div>
                                             </div>
                                         }
@@ -130,6 +133,16 @@
                 }
             });
 
+            //save active tab
+            $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+                localStorage.setItem('activeTab', $(e.target).attr('href'));
+            });
+
+            //select last active tab
+            var activeTab = localStorage.getItem('activeTab');
+            if (activeTab) {
+                $('.nav-tabs a[href="' + activeTab + '"]').tab('show');
+            }
         });
 
         function getProfile() {
