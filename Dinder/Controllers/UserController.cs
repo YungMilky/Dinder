@@ -4,6 +4,7 @@ using DinderDL;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 
 namespace Dinder.Controllers
 {
@@ -33,29 +34,32 @@ namespace Dinder.Controllers
         [Route("getProfile/{userid}")]
         public IActionResult Profile(int userid)
         {
-            var user = _uecontext.Users.Where(u => u.UserID == userid).ToList();
-            return View(user);
+            var userModel = _uecontext.Users.Where(u => u.UserID == userid).ToList();
+
+            var friendIDs = _uecontext.Friendships.Where(f => f.Friend1ID == userid).Select(s => s.Friend2ID).ToList();
+            var friends = _uecontext.Users.Where(u => friendIDs.Contains(u.UserID)).ToList();
+
+            var profileModel = new ProfileViewModel
+            {
+                User = userModel,
+                Friends = friends
+            };
+
+            return View(profileModel);
         }
 
-        public IActionResult Friends(int userid)
-        {
+        //public IActionResult Friends(int userid)
+        //{
+        //    var userModel = _uecontext.Users.Where(u => u.UserID == userid).ToList();
+        //    var friendshipModel = _uecontext.Friendships.Where(f => f.Friend1ID == userid).ToList();
 
-            var questions = _uecontext.Users.Include("Friend1").Select(q => q);
+        //    var profileModel = new ProfileViewModel
+        //    {
+        //        User = userModel,
+        //        Friends = friendshipModel
+        //    };
 
-            var friends = _uecontext.Users.Include(s => s.Friend1).Select(s => new { s }).ToList();
-            //= (from u in _uecontext.Users
-            //           join friend1 in _uecontext.Friendships on u.UserID equals friend1.User1ID into user1
-            //           join friend2 in _uecontext.Friendships on u.UserID equals friend2.User2ID into user2
-            //           from x in user1.DefaultIfEmpty()
-            //           from y in user2.DefaultIfEmpty()
-            //           select new
-            //           {
-            //               u.UserID,
-            //               u.Name,
-            //               x.User1ID,
-            //               y.User2ID
-            //           }).ToList();
-            return View(questions);
-        }
+        //    return View(profileModel);
+        //}
     }
 }

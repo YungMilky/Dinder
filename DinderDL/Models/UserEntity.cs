@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace DinderDL.Models
@@ -21,7 +22,10 @@ namespace DinderDL.Models
 
         public ICollection<UserPosts> UserPosts { get; set; }
         public FilesEntity File { get; set; }
-        public virtual ICollection<Friendship> Friend1 { get; set; } = null;
-        public virtual ICollection<Friendship> Friend2 { get; set; }
+
+
+        public virtual ICollection<Friendship> Friendship1 { get; set; }
+
+        public virtual ICollection<Friendship> Friendship2 { get; set; }
     }
 }

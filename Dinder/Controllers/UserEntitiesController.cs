@@ -119,9 +119,10 @@ namespace Dinder.Controllers
         {
             var userID = GetUserID();
 
-            var friends = _uecontext.Friendships.Where(f => f.User1ID == userID);
-            
-            return friends.ToList();
+            //var friends = _uecontext.Friendships.Where(f => f.Friend1 == userID);
+
+            //return friends.ToList();
+            return null;
         }
 
         // GET: api/UserEntities
