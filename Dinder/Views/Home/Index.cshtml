@@ -8,7 +8,6 @@
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
-@Model.Last().Email
 
 @foreach (var user in Model)
 {
@@ -20,4 +19,31 @@
             <a href="#" class="btn btn-primary">Profile</a>
         </div>
     </div>
+}
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            var loggedIn = @User.Identity.IsAuthenticated.ToString().ToLower();
+            if (loggedIn) {
+
+                //route navbar welcome button with the logged in user ID
+                $.ajax({
+                    type: 'GET',
+                    url: '../api/UserEntities/getUserID',
+                    success: function (result) {
+                        $("#user-button").attr("href", "/getProfile/" + result);
+                    }
+                });
+
+                //set the navbar welcome message/button to the user's name
+                $.ajax({
+                    type: 'GET',
+                    url: '../api/UserEntities/getUsername',
+                    success: function (result) {
+                        $("#user-button").text("Hello, "+ result + "!");
+                    }
+                });
+            }
+        });
+    </script>
 }

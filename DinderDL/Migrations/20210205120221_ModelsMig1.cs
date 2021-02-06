@@ -2,7 +2,7 @@
 
 namespace DinderDL.Migrations
 {
-    public partial class userMigration : Migration
+    public partial class ModelsMig1 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -28,7 +28,9 @@ namespace DinderDL.Migrations
                     UserID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: true)
+                    Email = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: true),
+                    Phone = table.Column<int>(type: "int", nullable: false),
+                    Bio = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -62,22 +64,22 @@ namespace DinderDL.Migrations
                 {
                     FriendshipID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    User1ID = table.Column<int>(type: "int", nullable: false),
-                    User2ID = table.Column<int>(type: "int", nullable: false),
-                    FriendStatus = table.Column<bool>(type: "bit", nullable: false)
+                    FriendStatus = table.Column<bool>(type: "bit", nullable: false),
+                    Friend1ID = table.Column<int>(type: "int", nullable: false),
+                    Friend2ID = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Friendships", x => x.FriendshipID);
                     table.ForeignKey(
-                        name: "FK_Friendships_Users_User1ID",
-                        column: x => x.User1ID,
+                        name: "FK_Friendships_Users_Friend1ID",
+                        column: x => x.Friend1ID,
                         principalTable: "Users",
                         principalColumn: "UserID",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Friendships_Users_User2ID",
-                        column: x => x.User2ID,
+                        name: "FK_Friendships_Users_Friend2ID",
+                        column: x => x.Friend2ID,
                         principalTable: "Users",
                         principalColumn: "UserID",
                         onDelete: ReferentialAction.Restrict);
@@ -114,14 +116,14 @@ namespace DinderDL.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Friendships_User1ID",
+                name: "IX_Friendships_Friend1ID",
                 table: "Friendships",
-                column: "User1ID");
+                column: "Friend1ID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Friendships_User2ID",
+                name: "IX_Friendships_Friend2ID",
                 table: "Friendships",
-                column: "User2ID");
+                column: "Friend2ID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserPosts_PostID",

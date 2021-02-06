@@ -89,10 +89,11 @@ namespace Dinder.Controllers
             List<Object> fullProfile = new List<Object>();
             var userModel = new List<UserEntity>();
 
-            userModel = _uecontext.Users.Where(u => u.Email == data.Email).ToList();
+            userModel = _uecontext.Users.Where(u => u.UserID == data.UserID).ToList();
             
             fullProfile.Add(userModel.ToList());
             fullProfile.Add(Posts());
+            
             return fullProfile;
         }
 
@@ -112,6 +113,16 @@ namespace Dinder.Controllers
                             Content = p.Content
                         };
             return posts.ToList();
+        }
+
+        public List<Friendship> Friends()
+        {
+            var userID = GetUserID();
+
+            //var friends = _uecontext.Friendships.Where(f => f.Friend1 == userID);
+
+            //return friends.ToList();
+            return null;
         }
 
         // GET: api/UserEntities
@@ -198,9 +209,16 @@ namespace Dinder.Controllers
             return _uecontext.Users.Any(e => e.UserID == id);
         }
 
+        [Route("getUserID")]
         public int GetUserID()
         {
             return _uecontext.Users.First(id => id.Email == User.Identity.Name).UserID;
+        }
+
+        [Route("getUsername")]
+        public string GetUsername()
+        {
+            return _uecontext.Users.First(id => id.Email == User.Identity.Name).Name;
         }
     }
 }

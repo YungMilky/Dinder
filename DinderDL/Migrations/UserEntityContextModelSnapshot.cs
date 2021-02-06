@@ -16,7 +16,7 @@ namespace DinderDL.Migrations
             modelBuilder
                 .UseIdentityColumns()
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.1");
+                .HasAnnotation("ProductVersion", "5.0.2");
 
             modelBuilder.Entity("DinderDL.Models.FilesEntity", b =>
                 {
@@ -49,20 +49,20 @@ namespace DinderDL.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
+                    b.Property<int>("Friend1ID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Friend2ID")
+                        .HasColumnType("int");
+
                     b.Property<bool>("FriendStatus")
                         .HasColumnType("bit");
 
-                    b.Property<int>("User1ID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("User2ID")
-                        .HasColumnType("int");
-
                     b.HasKey("FriendshipID");
 
-                    b.HasIndex("User1ID");
+                    b.HasIndex("Friend1ID");
 
-                    b.HasIndex("User2ID");
+                    b.HasIndex("Friend2ID");
 
                     b.ToTable("Friendships");
                 });
@@ -142,21 +142,21 @@ namespace DinderDL.Migrations
 
             modelBuilder.Entity("DinderDL.Models.Friendship", b =>
                 {
-                    b.HasOne("DinderDL.Models.UserEntity", "UserOne")
-                        .WithMany("Friend1")
-                        .HasForeignKey("User1ID")
+                    b.HasOne("DinderDL.Models.UserEntity", "Friend1")
+                        .WithMany("Friendship1")
+                        .HasForeignKey("Friend1ID")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("DinderDL.Models.UserEntity", "UserTwo")
-                        .WithMany("Friend2")
-                        .HasForeignKey("User2ID")
+                    b.HasOne("DinderDL.Models.UserEntity", "Friend2")
+                        .WithMany("Friendship2")
+                        .HasForeignKey("Friend2ID")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("UserOne");
+                    b.Navigation("Friend1");
 
-                    b.Navigation("UserTwo");
+                    b.Navigation("Friend2");
                 });
 
             modelBuilder.Entity("DinderDL.Models.UserPosts", b =>
@@ -187,9 +187,9 @@ namespace DinderDL.Migrations
                 {
                     b.Navigation("File");
 
-                    b.Navigation("Friend1");
+                    b.Navigation("Friendship1");
 
-                    b.Navigation("Friend2");
+                    b.Navigation("Friendship2");
 
                     b.Navigation("UserPosts");
                 });
