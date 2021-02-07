@@ -83,6 +83,19 @@ namespace Dinder.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("addFriend")]
+        public void AddFriend([FromBody] Friendship data)
+        {
+            _uecontext.Friendships.Add(new Friendship
+            {
+                FriendStatus = true,
+                Friend1ID = data.Friend1ID,
+                Friend2ID = data.Friend2ID
+            });
+            _uecontext.SaveChanges();
+        }
+
         [Route("getProfile")]
         public List<Object> Profile([FromBody] UserEntity data)
         {
