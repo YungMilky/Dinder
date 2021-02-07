@@ -7,6 +7,7 @@ namespace Dinder.Models
 {
     public class ProfileViewModel
     {
+        public int CurrentUserID { get; set; }
         public IEnumerable<DinderDL.Models.UserEntity> User { get; set; }
         public IEnumerable<DinderDL.Models.UserEntity> Friends { get; set; }
     }

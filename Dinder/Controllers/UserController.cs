@@ -10,7 +10,6 @@ namespace Dinder.Controllers
 {
     public class UserController : Controller
     {
-        private ApplicationDbContext _appDbContext;
         private readonly UserEntityContext _uecontext;
 
         public UserController(UserEntityContext uecontext)
@@ -45,6 +44,7 @@ namespace Dinder.Controllers
 
             var profileModel = new ProfileViewModel
             {
+                CurrentUserID = _uecontext.Users.First(id => id.Email == User.Identity.Name).UserID,
                 User = userModel,
                 Friends = friends
             };
