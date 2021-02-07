@@ -117,6 +117,11 @@
 
             getProfile();
 
+            if ($("#email").text() == "@User.Identity.Name") {
+                $(".heart-switch").remove(); 
+                $("#friend-status").remove();
+            }
+
             $("#postbtn").click(function (event) {
                 event.preventDefault(); //disable button auto-refresh
                 $.when(postPost()).then(createPostHTML(true));
