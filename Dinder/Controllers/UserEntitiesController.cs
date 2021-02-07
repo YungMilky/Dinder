@@ -91,6 +91,7 @@ namespace Dinder.Controllers
             {
 #nullable enable
                 Friendship? friend = _uecontext.Friendships.FirstOrDefault(f => (f.Friend1ID == data.Friend1ID && f.Friend2ID == data.Friend2ID) || (f.Friend1ID == data.Friend2ID && f.Friend2ID == data.Friend1ID));
+                
                 if (friend is null)
                 {
                     _uecontext.Friendships.Add(new Friendship
