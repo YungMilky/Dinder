@@ -159,7 +159,7 @@
                     url: '../../api/UserEntities/getUserID',
                     success: function (result) {
                         
-                            addFriend(result);
+                            addOrRemoveFriend(result);
                             
                         
                     }
@@ -167,7 +167,7 @@
             });
         });
 
-        function addFriend(userid) {
+        function addOrRemoveFriend(userid) {
 
             var data = {
                 Friend1ID: userid,
@@ -176,16 +176,24 @@
 
             if ($(":checkbox").is(':checked')) {
                 console.log(data);
-
+                $.ajax({
+                    type: 'POST',
+                    url: '../../api/UserEntities/addFriend',
+                    contentType: 'application/json',
+                    dataType: 'json',
+                    data: JSON.stringify(data),
+                });
+            } else {
+                console.log(data);
+                $.ajax({
+                    type: 'POST',
+                    url: '../../api/UserEntities/removeFriend',
+                    contentType: 'application/json',
+                    dataType: 'json',
+                    data: JSON.stringify(data),
+                });
             }
 
-            $.ajax({
-                type: 'POST',
-                url: '../../api/UserEntities/addFriend',
-                contentType: 'application/json',
-                dataType: 'json',
-                data: JSON.stringify(data),
-            });
         }
 
         function getProfile() {

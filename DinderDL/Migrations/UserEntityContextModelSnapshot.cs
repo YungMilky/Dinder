@@ -60,9 +60,10 @@ namespace DinderDL.Migrations
 
                     b.HasKey("FriendshipID");
 
-                    b.HasIndex("Friend1ID");
-
                     b.HasIndex("Friend2ID");
+
+                    b.HasIndex("Friend1ID", "Friend2ID")
+                        .IsUnique();
 
                     b.ToTable("Friendships");
                 });

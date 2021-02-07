@@ -116,9 +116,10 @@ namespace DinderDL.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Friendships_Friend1ID",
+                name: "IX_Friendships_Friend1ID_Friend2ID",
                 table: "Friendships",
-                column: "Friend1ID");
+                columns: new[] { "Friend1ID", "Friend2ID" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Friendships_Friend2ID",

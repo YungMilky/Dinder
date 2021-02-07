@@ -87,12 +87,40 @@ namespace Dinder.Controllers
         [Route("addFriend")]
         public void AddFriend([FromBody] Friendship data)
         {
-            _uecontext.Friendships.Add(new Friendship
+            try
             {
-                FriendStatus = true,
-                Friend1ID = data.Friend1ID,
-                Friend2ID = data.Friend2ID
-            });
+#nullable enable
+                Friendship? friend = _uecontext.Friendships.FirstOrDefault(f => (f.Friend1ID == data.Friend1ID && f.Friend2ID == data.Friend2ID) || (f.Friend1ID == data.Friend2ID && f.Friend2ID == data.Friend1ID));
+                if (friend is null)
+                {
+                    _uecontext.Friendships.Add(new Friendship
+                    {
+                        FriendStatus = true,
+                        Friend1ID = data.Friend1ID,
+                        Friend2ID = data.Friend2ID
+                    });
+                }
+                else
+                {
+                    friend.FriendStatus = true;
+                }
+                _uecontext.SaveChanges();
+            }
+            catch (Exception x)
+            {
+                Console.WriteLine("Friendship alive and thriving. Error: " + x.Message);
+            }
+#nullable disable
+        }
+
+        [HttpPost]
+        [Route("removeFriend")]
+        public void RemoveFriend([FromBody] Friendship data)
+        {
+
+            var exFriend = _uecontext.Friendships.First(f => (f.Friend1ID == data.Friend1ID && f.Friend2ID == data.Friend2ID) || (f.Friend1ID == data.Friend2ID && f.Friend2ID == data.Friend1ID));
+            exFriend.FriendStatus = false;
+            
             _uecontext.SaveChanges();
         }
 
