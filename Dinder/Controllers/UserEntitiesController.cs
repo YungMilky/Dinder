@@ -49,6 +49,15 @@ namespace Dinder.Controllers
             _uecontext.SaveChanges();
         }
 
+        [Route("updateBio")]
+        public void UpdateBio([FromBody] UserEntity data)
+        {
+            var user = _uecontext.Users.First(u => u.Email == User.Identity.Name);
+            user.Bio = data.Bio;
+
+            _uecontext.SaveChanges();
+        }
+
         [Route("postOnTimeline")]
         public void PostOnTimeline([FromBody] PostsEntity data)
         {

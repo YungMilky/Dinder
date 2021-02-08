@@ -40,5 +40,7 @@ namespace Dinder.Models
         [Display(Name = "Phone number")]
         [RegularExpression(@"^([\+]?(?:00)?[0-9]{1,3}[\s.-]?[0-9]{1,12})([\s.-]?[0-9]{1,4}?)$", ErrorMessage = "That's not your phone number!")] //some phone number regex
         public String Phone { get; set; }
+
+        public String Bio { get; set; }
     }
 }
