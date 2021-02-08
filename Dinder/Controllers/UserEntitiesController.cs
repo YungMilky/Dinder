@@ -131,7 +131,14 @@ namespace Dinder.Controllers
             List<Object> fullProfile = new List<Object>();
             var userModel = new List<UserEntity>();
 
-            userModel = _uecontext.Users.Where(u => u.UserID == data.UserID).ToList();
+            if (data.Email != "")
+            {
+                userModel = _uecontext.Users.Where(u => u.Email == data.Email).ToList();
+            }
+            else
+            {
+                userModel = _uecontext.Users.Where(u => u.UserID == data.UserID).ToList();
+            }
             
             fullProfile.Add(userModel.ToList());
             fullProfile.Add(Posts());
