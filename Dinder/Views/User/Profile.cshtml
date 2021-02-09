@@ -262,9 +262,10 @@
 
             } else {
                 $.each(PostList, function (index, value) {
+                    console.log(value.authorID);
                     var postHTML = '<section class="post-section">' +
                         '<div class="col-md-3">' +
-                        '<label id="author"><b>' + value.author + '</b></label>' +
+                        '<label id="author"><b><a href="/getProfile/' + value.authorID + '">' + value.author + '</a></b></label>' +
                         '<p id="content">' + value.content + '</p>' +
                         '</div>' +
                         '<hr />' +
