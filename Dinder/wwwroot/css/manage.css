@@ -8,7 +8,7 @@
     width: 100%;
 }
 
-#name-success, #phone-success {
+#name-success, #phone-success, #bio-success {
     color: green;
     display:none;
 }

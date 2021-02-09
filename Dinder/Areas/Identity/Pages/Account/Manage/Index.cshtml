@@ -53,8 +53,10 @@
                 //save pp to db
             });
 
-            //Save info on leave
+            
             $(document).ready(function () {
+                $("#bio-success").hide();
+
                 var data = {
                     Email: $("#user-email").val()
                 };
@@ -71,6 +73,7 @@
                 });
                 $(".toast").toast('show');
 
+                //Save info on leave
                 $("#name").on("focusout", function () {
                     $("#profile-form").validate();
                     if ($("#name").valid()) {
@@ -114,7 +117,7 @@
 
                 });
 
-                $("#bio").on("focusout", function () {
+                $("#bio-manage").on("focusout", function () {
                     var data = {
                         Bio: $('#bio-manage').val()
                     };
@@ -124,7 +127,10 @@
                         contentType: 'application/json',
                         data: JSON.stringify(data),
                         success: function () {
-                            //...
+                            $("#bio-success").show();
+                        },
+                        error: function () {
+                            $("#bio-success").hide();
                         }
                     });
                 });
