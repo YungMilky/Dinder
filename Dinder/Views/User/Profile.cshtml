@@ -130,6 +130,8 @@
 
 @section Scripts {
     <script>
+        var currentProfileID = window.location.pathname.split("/").pop(); //last part of url, which is the user id of any given profile
+
         $(document).ready(function () {
 
             getProfile();
@@ -189,7 +191,7 @@
         function addOrRemoveFriend(userid) {
             var data = {
                 Friend1ID: userid,
-                Friend2ID: window.location.pathname.split("/").pop() //last part of url, which is the user id of any given profile
+                Friend2ID: currentProfileID
             };
 
             if ($(":checkbox").is(':checked')) {
@@ -217,7 +219,7 @@
 
         function getProfile() {
             var data = {
-                UserID: $("#user-button").attr('href').substring(12)
+                UserID: currentProfileID
             };
 
             $.ajax({

@@ -70,7 +70,8 @@ namespace Dinder.Controllers
                     var newPost = new PostsEntity
                     {
                         Author = user.Name,
-                        Content = data.Content
+                        Content = data.Content,
+                        //Timeline = data.Timeline
                     };
                     _uecontext.Posts.Add(newPost);
                     _uecontext.SaveChanges(); 
@@ -150,27 +151,8 @@ namespace Dinder.Controllers
             }
             
             fullProfile.Add(userModel.ToList());
-            fullProfile.Add(Posts());
             
             return fullProfile;
-        }
-
-        public Object Posts()
-        {
-            var userID = GetUserID();
-
-            var posts = from up in _uecontext.UserPosts
-                        join p in _uecontext.Posts
-                        on up.PostID equals p.PostID
-                        where up.UserID.Equals(userID)
-                        select new { 
-                            PostID = up.PostID,
-                            AuthorID = up.UserID,
-                            Author = p.Author,
-                            Title = p.Title,
-                            Content = p.Content
-                        };
-            return posts.ToList();
         }
 
         public List<Friendship> Friends()

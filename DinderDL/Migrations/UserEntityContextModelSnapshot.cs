@@ -81,9 +81,6 @@ namespace DinderDL.Migrations
                     b.Property<string>("Content")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Title")
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("PostID");
 
                     b.ToTable("Posts");

@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DinderDL.Migrations
 {
     [DbContext(typeof(UserEntityContext))]
-    [Migration("20210207101533_ModelsMig1")]
+    [Migration("20210211184056_ModelsMig1")]
     partial class ModelsMig1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -81,9 +81,6 @@ namespace DinderDL.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Content")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("PostID");
