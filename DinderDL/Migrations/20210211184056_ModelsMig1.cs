@@ -13,7 +13,6 @@ namespace DinderDL.Migrations
                     PostID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Author = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Content = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
@@ -116,9 +115,10 @@ namespace DinderDL.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Friendships_Friend1ID",
+                name: "IX_Friendships_Friend1ID_Friend2ID",
                 table: "Friendships",
-                column: "Friend1ID");
+                columns: new[] { "Friend1ID", "Friend2ID" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Friendships_Friend2ID",

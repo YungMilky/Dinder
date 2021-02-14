@@ -34,7 +34,15 @@ namespace Dinder.Controllers
         [Route("updateName")]
         public void UpdateName([FromBody] UserEntity data)
         {
-            var user = _uecontext.Users.First(u => u.Email == User.Identity.Name);
+            var user = new UserEntity();
+            if(data.Name != null)
+            {
+                user = _uecontext.Users.First(u => u.Email == data.Email);
+            }
+            else
+            {
+                user = _uecontext.Users.First(u => u.Email == User.Identity.Name);
+            }
             user.Name = data.Name;
 
             _uecontext.SaveChanges();
@@ -45,6 +53,15 @@ namespace Dinder.Controllers
         {
             var user = _uecontext.Users.First(u => u.Email == User.Identity.Name);
             user.Phone = data.Phone;
+
+            _uecontext.SaveChanges();
+        }
+
+        [Route("updateBio")]
+        public void UpdateBio([FromBody] UserEntity data)
+        {
+            var user = _uecontext.Users.First(u => u.Email == User.Identity.Name);
+            user.Bio = data.Bio;
 
             _uecontext.SaveChanges();
         }
@@ -61,7 +78,8 @@ namespace Dinder.Controllers
                     var newPost = new PostsEntity
                     {
                         Author = user.Name,
-                        Content = data.Content
+                        Content = data.Content,
+                        //Timeline = data.Timeline
                     };
                     _uecontext.Posts.Add(newPost);
                     _uecontext.SaveChanges(); 
@@ -83,36 +101,66 @@ namespace Dinder.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("addFriend")]
+        public void AddFriend([FromBody] Friendship data)
+        {
+            try
+            {
+#nullable enable
+                Friendship? friend = _uecontext.Friendships.FirstOrDefault(f => (f.Friend1ID == data.Friend1ID && f.Friend2ID == data.Friend2ID) || (f.Friend1ID == data.Friend2ID && f.Friend2ID == data.Friend1ID));
+                
+                if (friend is null)
+                {
+                    _uecontext.Friendships.Add(new Friendship
+                    {
+                        FriendStatus = true,
+                        Friend1ID = data.Friend1ID,
+                        Friend2ID = data.Friend2ID
+                    });
+                }
+                else
+                {
+                    friend.FriendStatus = true;
+                }
+                _uecontext.SaveChanges();
+            }
+            catch (Exception x)
+            {
+                Console.WriteLine("Friendship alive and thriving. Error: " + x.Message);
+            }
+#nullable disable
+        }
+
+        [HttpPost]
+        [Route("removeFriend")]
+        public void RemoveFriend([FromBody] Friendship data)
+        {
+
+            var exFriend = _uecontext.Friendships.First(f => (f.Friend1ID == data.Friend1ID && f.Friend2ID == data.Friend2ID) || (f.Friend1ID == data.Friend2ID && f.Friend2ID == data.Friend1ID));
+            exFriend.FriendStatus = false;
+            
+            _uecontext.SaveChanges();
+        }
+
         [Route("getProfile")]
         public List<Object> Profile([FromBody] UserEntity data)
         {
             List<Object> fullProfile = new List<Object>();
             var userModel = new List<UserEntity>();
 
-            userModel = _uecontext.Users.Where(u => u.UserID == data.UserID).ToList();
+            if (data.Email != "")
+            {
+                userModel = _uecontext.Users.Where(u => u.Email == data.Email).ToList();
+            }
+            else
+            {
+                userModel = _uecontext.Users.Where(u => u.UserID == data.UserID).ToList();
+            }
             
             fullProfile.Add(userModel.ToList());
-            fullProfile.Add(Posts());
             
             return fullProfile;
-        }
-
-        public Object Posts()
-        {
-            var userID = GetUserID();
-
-            var posts = from up in _uecontext.UserPosts
-                        join p in _uecontext.Posts
-                        on up.PostID equals p.PostID
-                        where up.UserID.Equals(userID)
-                        select new { 
-                            PostID = up.PostID,
-                            AuthorID = up.UserID,
-                            Author = p.Author,
-                            Title = p.Title,
-                            Content = p.Content
-                        };
-            return posts.ToList();
         }
 
         public List<Friendship> Friends()

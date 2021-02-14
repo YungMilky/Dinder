@@ -26,9 +26,6 @@ namespace DinderDL
             //define userID - PostID relationship
             modelBuilder.Entity<UserPosts>().HasKey(up => new { up.UserID, up.PostID });
 
-            //modelBuilder.Entity<UserEntity>().Property(ol => ol.Friend1ID).IsRequired(true);
-            //modelBuilder.Entity<UserEntity>().Property(ol => ol.Friend2ID).IsRequired(true);
-
             modelBuilder.Entity<Friendship>()
             .HasOne(f => f.Friend1)
             .WithMany(t => t.Friendship1)
@@ -40,19 +37,12 @@ namespace DinderDL
             .WithMany(t => t.Friendship2)
             .HasForeignKey(t => t.Friend2ID)
             .OnDelete(DeleteBehavior.Restrict);
-
-            //modelBuilder.Entity<UserEntity>()
-            //    .HasOne(p => p.Friend1ID)
-            //    .WithMany(t => t.Friend1)
-            //    .HasForeignKey(m => m.UserID)
-            //    .OnDelete(DeleteBehavior.Restrict);
-
-            //modelBuilder.Entity<UserEntity>()
-            //    .HasOne(p => p.Friend2ID)
-            //    .WithMany(t => t.Friend2)
-            //    .HasForeignKey(m => m.UserID)
-            //    .OnDelete(DeleteBehavior.Restrict);
-
+            
+            //constrain to unique Friend1ID+Friend2ID combination
+            modelBuilder.Entity<Friendship>(u =>
+            {
+                u.HasIndex(f => new { f.Friend1ID, f.Friend2ID }).IsUnique();
+            });
         }
 
 

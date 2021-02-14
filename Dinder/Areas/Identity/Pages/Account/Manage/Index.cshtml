@@ -53,8 +53,10 @@
                 //save pp to db
             });
 
-            //Save info on leave
+            
             $(document).ready(function () {
+                $("#bio-success").hide();
+
                 var data = {
                     Email: $("#user-email").val()
                 };
@@ -66,10 +68,12 @@
                     success: function (result) {
                         $("#name").attr("value", result[0][0].name);
                         $("#phone").attr("value", result[0][0].phone);
+                        $("#bio-manage").text( result[0][0].bio);
                     }
                 });
                 $(".toast").toast('show');
 
+                //Save info on leave
                 $("#name").on("focusout", function () {
                     $("#profile-form").validate();
                     if ($("#name").valid()) {
@@ -111,6 +115,24 @@
                         $("#phone-success").hide();
                     }
 
+                });
+
+                $("#bio-manage").on("focusout", function () {
+                    var data = {
+                        Bio: $('#bio-manage').val()
+                    };
+                    $.ajax({
+                        type: "POST",
+                        url: '../../api/UserEntities/updateBio',
+                        contentType: 'application/json',
+                        data: JSON.stringify(data),
+                        success: function () {
+                            $("#bio-success").show();
+                        },
+                        error: function () {
+                            $("#bio-success").hide();
+                        }
+                    });
                 });
             });
         </script>

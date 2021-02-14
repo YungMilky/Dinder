@@ -21,25 +21,3 @@
 </p>
     }
 }
-
-@section Scripts {
-    <script>
-        $(document).ready(function () {
-            $("a.confirm").on("click", () => {
-                var data = {
-                    email: $('#email').val() //User.Identity.Name does not exist in this context, so you have to use the registration model
-                };
-                $.ajax({
-                    type: "POST",
-                    url: '../../api/UserEntities/insertEmail',
-                    contentType: 'application/json',
-                    data: JSON.stringify(data),
-                    success: function () {
-                        //...
-                    }
-                });
-            });
-        });
-
-    </script>
-}

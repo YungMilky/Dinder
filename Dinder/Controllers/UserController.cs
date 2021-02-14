@@ -10,7 +10,6 @@ namespace Dinder.Controllers
 {
     public class UserController : Controller
     {
-        private ApplicationDbContext _appDbContext;
         private readonly UserEntityContext _uecontext;
 
         public UserController(UserEntityContext uecontext)
@@ -36,7 +35,7 @@ namespace Dinder.Controllers
         {
             var userModel = _uecontext.Users.Where(u => u.UserID == userid).ToList();
 
-            var friendIDs = _uecontext.Friendships.Where(f => f.Friend1ID == userid || f.Friend2ID == userid)
+            var friendIDs = _uecontext.Friendships.Where(f => f.FriendStatus == true && (f.Friend1ID == userid || f.Friend2ID == userid))
                                                     .ToList();
 
             var friends = _uecontext.Users.Where(u => friendIDs
@@ -45,6 +44,7 @@ namespace Dinder.Controllers
 
             var profileModel = new ProfileViewModel
             {
+                CurrentUserID = _uecontext.Users.First(id => id.Email == User.Identity.Name).UserID,
                 User = userModel,
                 Friends = friends
             };
