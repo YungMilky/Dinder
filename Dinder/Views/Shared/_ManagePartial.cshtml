@@ -9,12 +9,12 @@
 </div>
 <div class="form-group">
     <label asp-for="@Model.Phone"></label>
-    <input id="phone" asp-for="@Model.Phone" class="form-control" Placeholder="Phone number" />
+    <input id="phone" asp-for="@Model.Phone" class="form-control" Placeholder="Phone number" onClientBlur="return ValidateForm()" runat="server" />
     <span id="phone-success">saved</span>
     <span asp-validation-for="@Model.Phone" class="text-danger"></span>
 </div>
 <div class="form-group">
     <label asp-for="@Model.Bio"></label>
-    <textarea id="bio-manage" asp-for="@Model.Bio" class="form-control" Placeholder="Description"></textarea>
+    <textarea id="bio-manage" asp-for="@Model.Bio" class="form-control" Placeholder="Description" onClientBlur="return ValidateForm()" runat="server"></textarea>
     <span id="bio-success">saved</span>
 </div>

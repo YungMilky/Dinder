@@ -34,7 +34,15 @@ namespace Dinder.Controllers
         [Route("updateName")]
         public void UpdateName([FromBody] UserEntity data)
         {
-            var user = _uecontext.Users.First(u => u.Email == User.Identity.Name);
+            var user = new UserEntity();
+            if(data.Name != null)
+            {
+                user = _uecontext.Users.First(u => u.Email == data.Email);
+            }
+            else
+            {
+                user = _uecontext.Users.First(u => u.Email == User.Identity.Name);
+            }
             user.Name = data.Name;
 
             _uecontext.SaveChanges();
