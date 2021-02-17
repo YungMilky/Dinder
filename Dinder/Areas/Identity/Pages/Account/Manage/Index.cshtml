@@ -78,7 +78,8 @@
                     $("#profile-form").validate();
                     if ($("#name").valid()) {
                         var data = {
-                            Name: $('#name').val()
+                            Name: $('#name').val(),
+                            Email: $('#user-email').val()
                         };
                         $.ajax({
                             type: "POST",
@@ -99,7 +100,8 @@
                     $("#profile-form").validate();
                     if ($("#phone").valid()) {
                         var data = {
-                            Phone: $('#phone').val()
+                            Phone: $('#phone').val(),
+                            Email: $('#user-email').val()
                         };
                         $.ajax({
                             type: "POST",
@@ -119,7 +121,8 @@
 
                 $("#bio-manage").on("focusout", function () {
                     var data = {
-                        Bio: $('#bio-manage').val()
+                        Bio: $('#bio-manage').val(),
+                        Email: $('#user-email').val()
                     };
                     $.ajax({
                         type: "POST",
