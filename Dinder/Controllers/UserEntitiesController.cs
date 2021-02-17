@@ -39,10 +39,6 @@ namespace Dinder.Controllers
             {
                 user = _uecontext.Users.First(u => u.Email == data.Email);
             }
-            else
-            {
-                user = _uecontext.Users.First(u => u.Email == User.Identity.Name);
-            }
             user.Name = data.Name;
 
             _uecontext.SaveChanges();
@@ -51,7 +47,11 @@ namespace Dinder.Controllers
         [Route("updatePhone")]
         public void UpdatePhone([FromBody] UserEntity data)
         {
-            var user = _uecontext.Users.First(u => u.Email == User.Identity.Name);
+            var user = new UserEntity();
+            if (data.Name != null)
+            {
+                user = _uecontext.Users.First(u => u.Email == data.Email);
+            }
             user.Phone = data.Phone;
 
             _uecontext.SaveChanges();
@@ -60,7 +60,11 @@ namespace Dinder.Controllers
         [Route("updateBio")]
         public void UpdateBio([FromBody] UserEntity data)
         {
-            var user = _uecontext.Users.First(u => u.Email == User.Identity.Name);
+            var user = new UserEntity();
+            if (data.Name != null)
+            {
+                user = _uecontext.Users.First(u => u.Email == data.Email);
+            }
             user.Bio = data.Bio;
 
             _uecontext.SaveChanges();
