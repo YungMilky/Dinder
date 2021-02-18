@@ -68,12 +68,15 @@
                     success: function (result) {
                         $("#name").attr("value", result[0][0].name);
                         $("#phone").attr("value", result[0][0].phone);
-                        $("#bio-manage").text( result[0][0].bio);
+                        $("#bio-manage").text(result[0][0].bio);
+                        console.log(result[0]);
                     }
                 });
                 $(".toast").toast('show');
 
-                //Save info on leave
+                $("#name").on("input", function () {
+                    $("#name-success").hide();
+                });
                 $("#name").on("focusout", function () {
                     $("#profile-form").validate();
                     if ($("#name").valid()) {
@@ -92,10 +95,13 @@
                         });
                         $("#name-success").show();
                     } else {
-                        $("name-#success").hide();
+                        $("#name-success").hide();
                     }
                 });
 
+                $("#phone").on("input", function () {
+                    $("#phone-success").hide();
+                });
                 $("#phone").on("focusout", function () {
                     $("#profile-form").validate();
                     if ($("#phone").valid()) {
@@ -112,18 +118,22 @@
                                 //...
                             }
                         });
-                        $("phone-#success").show();
+                        $("#phone-success").show();
                     } else {
                         $("#phone-success").hide();
                     }
 
                 });
 
+                $("#bio-manage").on("input", function () {
+                    $("#bio-success").hide();
+                });
                 $("#bio-manage").on("focusout", function () {
                     var data = {
                         Bio: $('#bio-manage').val(),
                         Email: $('#user-email').val()
                     };
+                    console.log(data);
                     $.ajax({
                         type: "POST",
                         url: '../../api/UserEntities/updateBio',

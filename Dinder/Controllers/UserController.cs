@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Dinder.Controllers
 {
@@ -29,6 +30,7 @@ namespace Dinder.Controllers
             return View();
         }
 
+        [Authorize]
         [HttpGet]
         [Route("getProfile/{userid}")]
         public IActionResult Profile(int userid)

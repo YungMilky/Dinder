@@ -48,7 +48,7 @@ namespace Dinder.Controllers
         public void UpdatePhone([FromBody] UserEntity data)
         {
             var user = new UserEntity();
-            if (data.Name != null)
+            if (data.Phone != null)
             {
                 user = _uecontext.Users.First(u => u.Email == data.Email);
             }
@@ -61,7 +61,7 @@ namespace Dinder.Controllers
         public void UpdateBio([FromBody] UserEntity data)
         {
             var user = new UserEntity();
-            if (data.Name != null)
+            if (data.Bio != null)
             {
                 user = _uecontext.Users.First(u => u.Email == data.Email);
             }

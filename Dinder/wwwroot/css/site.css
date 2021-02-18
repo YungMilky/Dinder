@@ -178,8 +178,13 @@ h5 {
 }
 
 
-
-
+a {
+    color: rgba(255, 255, 255, 0.87);
+}
+    a:hover {
+        color: rgba(255, 255, 255, 0.70);
+        text-decoration: none;
+    }
 
 body {
     background: #121212;
@@ -270,7 +275,27 @@ body {
         }
 
 #friend-status {
-    color: rgba(255, 255, 255, 0.84);
+    color: rgba(255, 255, 255, 0.87);
     padding-right:10px;
 }
 
+.profiles-container {
+    background-color:#1d1d1d;
+    padding:6px 20px 20px;
+}
+
+.card-deck .card {
+    margin-left: 14px;
+    margin-right: 14px;
+}
+.card {
+    border: none;
+    margin: 22px;
+    background-color: rgba(0, 0, 0, 0.16);
+}
+    .card .card-body {
+        background-color:rgba(0, 0, 0, 0.16);
+    }
+    .card .card-text{
+        color:rgba(255, 255, 255, 0.60);
+    }
