@@ -24,7 +24,10 @@ namespace Dinder.Controllers
 
         public IActionResult Index()
         {
-            var user = _uecontext.Users.ToList();
+            //show 24 latest profiles
+            int latestID = _uecontext.Users.Max(u => u.UserID);
+            int latest24 = latestID - 10;
+            var user = _uecontext.Users.Where(u => u.UserID >= latest24).ToList();
             return View(user);
         }
 

@@ -137,7 +137,7 @@
             getProfile();
 
             if ($("#email").text() == "@User.Identity.Name") {
-                $(".heart-switch").remove(); 
+                $(".heart-switch").remove();
                 $("#friend-status").remove();
             }
 
@@ -196,7 +196,7 @@
 
             if ($(":checkbox").is(':checked')) {
                 $("#friend-status").text("We're friends!");
-                
+
                 $.ajax({
                     type: 'POST',
                     url: '../../api/UserEntities/addFriend',

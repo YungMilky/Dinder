@@ -274,3 +274,7 @@ body {
     padding-right:10px;
 }
 
+.card{
+    float:left;
+    margin:4px;
+}
