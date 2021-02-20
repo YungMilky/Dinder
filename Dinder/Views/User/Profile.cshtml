@@ -174,13 +174,6 @@
             });
         });
 
-        /*  db isn't updated quick enough, which creates inconsistency between the checkbox
-        *   showing friendship status and the friends list including / excluding you
-        */
-        function delaySubmit() {
-            $('form').delay(2000).submit();
-        }
-
         function addOrRemoveFriend(userid) {
             var data = {
                 Friend1ID: userid,
@@ -227,7 +220,6 @@
                 data: JSON.stringify(data),
                 success: function (result) {
                     createPostHTML(false, result[1]);
-                    createFriendsHTML(result[2]);
                 }
             });
         }
@@ -274,26 +266,5 @@
                 });
             }
         }
-
-        function createFriendsHTML(Friendslists) {
-            if (getLatest == true) {
-                //on add friend switch
-
-            } else {
-                $.each(Friendslists, function (index, value) {
-                    var postHTML = '<section class="post-section">' +
-                                        '<div class="col-md-3">' +
-                                            '<label id="author"><b>' + value.author + '</b></label>' +
-                                            '<p id="content">' + value.content + '</p>' +
-                                        '</div>' +
-                                        '<hr />' +
-                                        '   ' +
-                                    '</section>';
-
-                    $(".posts").after(postHTML);
-                });
-            }
-        }
-
     </script>
 }
