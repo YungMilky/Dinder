@@ -4,16 +4,21 @@
 {
     if (item.Name != Model.User.FirstOrDefault().Name)
     {
-        <div id="user-@item.UserID" class="card" style="width:10rem;">
-            <a href="/getProfile/@item.UserID">
-                <img id="cardPicture" class="card-img-top" src="~/default-profile-pic.png" alt="Card profile picture">
-            </a>
-            <div class="card-body">
-                <h5 class="card-title">
-                    <a href="/getProfile/@item.UserID"> @Html.DisplayFor(modelItem => item.Name) </a>
-                </h5>
-                <p class="card-text">@Html.DisplayFor(modelItem => item.Bio)</p>
+        <div class="card mb-3" style=" max-width: 40rem;">
+            <div class="row no-gutters">
+                <div class="col-md-4">
+                    <a href="/getProfile/@item.UserID">
+                        <img id="cardPicture" class="card-img-top" src="~/default-profile-pic.png" alt="Card profile picture">
+                    </a>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <a href="/getProfile/@item.UserID"> @Html.DisplayFor(modelItem => item.Name) </a>
+                    </h5>
+                    <p class="card-text">@Html.DisplayFor(modelItem => item.Bio)</p>
+                </div>
             </div>
         </div>
     }
+
 }
