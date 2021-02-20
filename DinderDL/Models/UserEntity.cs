@@ -12,13 +12,13 @@ namespace DinderDL.Models
         public int UserID { get; set; }
 
         [StringLength(60)]
-        public String Name { get; set; }
+        public String Name { get; set; } = "";
 
         [StringLength(60)]
         public String Email { get; set; }
         public int Phone { get; set; }
 
-        public String Bio { get; set; }
+        public String Bio { get; set; } = "";
 
         public ICollection<UserPosts> UserPosts { get; set; }
         public FilesEntity File { get; set; }
