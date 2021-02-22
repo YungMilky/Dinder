@@ -10,7 +10,6 @@ namespace DinderDL
     {
         public DbSet<UserEntity> Users { get; set; }
         public DbSet<PostsEntity> Posts { get; set; }
-        public DbSet<UserPosts> UserPosts { get; set; }
         public DbSet<Friendship> Friendships { get; set; }
 
         public UserEntityContext(DbContextOptions<UserEntityContext> options) : base(options)
@@ -23,9 +22,6 @@ namespace DinderDL
          */
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            //define userID - PostID relationship
-            modelBuilder.Entity<UserPosts>().HasKey(up => new { up.UserID, up.PostID });
-
             modelBuilder.Entity<Friendship>()
             .HasOne(f => f.Friend1)
             .WithMany(t => t.Friendship1)
@@ -43,8 +39,17 @@ namespace DinderDL
             {
                 u.HasIndex(f => new { f.Friend1ID, f.Friend2ID }).IsUnique();
             });
+
+            modelBuilder.Entity<PostsEntity>()
+                .HasOne(u => u.Poster)
+                .WithMany(u => u.SentPosts)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<PostsEntity>()
+                .HasOne(u => u.Receiver)
+                .WithMany(u => u.ReceivedPosts)
+                .OnDelete(DeleteBehavior.Restrict);
+
         }
-
-
     }
 }

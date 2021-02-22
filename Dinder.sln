@@ -7,6 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dinder", "Dinder\Dinder.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DinderDL", "DinderDL\DinderDL.csproj", "{D50E21CA-2513-47E4-9A0A-E7B18A44DD97}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NewFolder1", "NewFolder1", "{062CF731-800C-4F4E-A840-4CF4F74B7953}"
+	ProjectSection(SolutionItems) = preProject
+		DinderDL\Models\UserPosts.cs = DinderDL\Models\UserPosts.cs
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

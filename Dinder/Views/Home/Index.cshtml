@@ -7,62 +7,71 @@
 
 
     <div class="card-deck">
-        @foreach (var user in Model.UsersOne)
+        @if (Model.UsersOne is not null)
         {
-            <div class="card">
-                <a href="/getProfile/@user.UserID">
-                    <img id="cardPicture" class="card-img-top" src="~/profilepic.jpg" alt="Card profile picture">
-                </a>
-                <div class="card-body">
-                    <h5 class="card-title">
-                        <a href="/getProfile/@user.UserID"> @Html.DisplayFor(modelItem => user.Name) </a>
-                    </h5>
-                    <p class="card-text">@Html.DisplayFor(modelItem => user.Bio)</p>
+            @foreach (var user in Model.UsersOne)
+            {
+                <div class="card">
+                    <a href="/getProfile/@user.UserID">
+                        <img id="cardPicture" class="card-img-top" src="~/profilepic.jpg" alt="Card profile picture">
+                    </a>
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <a href="/getProfile/@user.UserID"> @Html.DisplayFor(modelItem => user.Name) </a>
+                        </h5>
+                        <p class="card-text">@Html.DisplayFor(modelItem => user.Bio)</p>
+                    </div>
+                    <div class="card-footer">
+                        <small class="text-muted">Last updated 3 mins ago</small>
+                    </div>
                 </div>
-                <div class="card-footer">
-                    <small class="text-muted">Last updated 3 mins ago</small>
-                </div>
-            </div>
+            }
         }
     </div>
     <div class="card-deck">
-        @foreach (var user in Model.UsersTwo)
+        @if (Model.UsersTwo is not null)
         {
-            <div class="card">
-                <a href="/getProfile/@user.UserID">
-                    <img id="cardPicture" class="card-img-top" src="~/default-profile-pic.png" alt="Card profile picture">
-                </a>
-                <div class="card-body">
-                    <h5 class="card-title">
-                        <a href="/getProfile/@user.UserID"> @Html.DisplayFor(modelItem => user.Name) </a>
-                    </h5>
-                    <p class="card-text">@Html.DisplayFor(modelItem => user.Bio)</p>
+            @foreach (var user in Model.UsersTwo)
+            {
+                <div class="card">
+                    <a href="/getProfile/@user.UserID">
+                        <img id="cardPicture" class="card-img-top" src="~/default-profile-pic.png" alt="Card profile picture">
+                    </a>
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <a href="/getProfile/@user.UserID"> @Html.DisplayFor(modelItem => user.Name) </a>
+                        </h5>
+                        <p class="card-text">@Html.DisplayFor(modelItem => user.Bio)</p>
+                    </div>
+                    <div class="card-footer">
+                        <small class="text-muted">Last updated 3 mins ago</small>
+                    </div>
                 </div>
-                <div class="card-footer">
-                    <small class="text-muted">Last updated 3 mins ago</small>
-                </div>
-            </div>
+            }
         }
-    </div>
+        </div>
     <div class="card-deck">
-        @foreach (var user in Model.UsersThree)
+        @if (Model.UsersThree is not null)
         {
-            <div class="card">
-                <a href="/getProfile/@user.UserID">
-                    <img id="cardPicture" class="card-img-top" src="~/default-profile-pic.png" alt="Card profile picture">
-                </a>
-                <div class="card-body">
-                    <h5 class="card-title">
-                        <a href="/getProfile/@user.UserID"> @Html.DisplayFor(modelItem => user.Name) </a>
-                    </h5>
-                    <p class="card-text">@Html.DisplayFor(modelItem => user.Bio)</p>
+            @foreach (var user in Model.UsersThree)
+            {
+                <div class="card">
+                    <a href="/getProfile/@user.UserID">
+                        <img id="cardPicture" class="card-img-top" src="~/default-profile-pic.png" alt="Card profile picture">
+                    </a>
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <a href="/getProfile/@user.UserID"> @Html.DisplayFor(modelItem => user.Name) </a>
+                        </h5>
+                        <p class="card-text">@Html.DisplayFor(modelItem => user.Bio)</p>
+                    </div>
+                    <div class="card-footer">
+                        <small class="text-muted">Last updated 3 mins ago</small>
+                    </div>
                 </div>
-                <div class="card-footer">
-                    <small class="text-muted">Last updated 3 mins ago</small>
-                </div>
-            </div>
+            }
         }
-    </div>
+        </div>
 </div>
     @section Scripts {
         <script>

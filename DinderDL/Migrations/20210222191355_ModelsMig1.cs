@@ -7,20 +7,6 @@ namespace DinderDL.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Posts",
-                columns: table => new
-                {
-                    PostID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Author = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Content = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Posts", x => x.PostID);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
@@ -85,27 +71,30 @@ namespace DinderDL.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "UserPosts",
+                name: "Posts",
                 columns: table => new
                 {
-                    UserID = table.Column<int>(type: "int", nullable: false),
                     PostID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Content = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PosterID = table.Column<int>(type: "int", nullable: false),
+                    ReceiverID = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserPosts", x => new { x.UserID, x.PostID });
+                    table.PrimaryKey("PK_Posts", x => x.PostID);
                     table.ForeignKey(
-                        name: "FK_UserPosts_Posts_PostID",
-                        column: x => x.PostID,
-                        principalTable: "Posts",
-                        principalColumn: "PostID",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_UserPosts_Users_UserID",
-                        column: x => x.UserID,
+                        name: "FK_Posts_Users_PosterID",
+                        column: x => x.PosterID,
                         principalTable: "Users",
                         principalColumn: "UserID",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Posts_Users_ReceiverID",
+                        column: x => x.ReceiverID,
+                        principalTable: "Users",
+                        principalColumn: "UserID",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
@@ -126,9 +115,14 @@ namespace DinderDL.Migrations
                 column: "Friend2ID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserPosts_PostID",
-                table: "UserPosts",
-                column: "PostID");
+                name: "IX_Posts_PosterID",
+                table: "Posts",
+                column: "PosterID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Posts_ReceiverID",
+                table: "Posts",
+                column: "ReceiverID");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -138,9 +132,6 @@ namespace DinderDL.Migrations
 
             migrationBuilder.DropTable(
                 name: "Friendships");
-
-            migrationBuilder.DropTable(
-                name: "UserPosts");
 
             migrationBuilder.DropTable(
                 name: "Posts");

@@ -1,5 +1,6 @@
 ﻿using Dinder.Models;
 using DinderDL;
+using DinderDL.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -27,20 +28,37 @@ namespace Dinder.Controllers
             /*  This function + HomeModel become overhead to do this, but this is my solution
             *   for three rows of bootstrap user cards in the front page
             */
-            int latestID = _uecontext.Users.Max(u => u.UserID);
+            List<UserEntity> one = new List<UserEntity>();
+            List<UserEntity> two = one;
+            List<UserEntity> three = one;
 
-            int latestOne = latestID - 3;
-            int latestTwo = latestID - 6;
-            int latestThree = latestID - 9;
+            try
+            {
+                int latestID = _uecontext.Users.Max(u => u.UserID);
 
-            var usersOne = _uecontext.Users.Where(u => u.UserID > latestOne).ToList();
-            var usersTwo = _uecontext.Users.Where(u => u.UserID >= latestTwo && u.UserID < latestOne).ToList();
-            var usersThree = _uecontext.Users.Where(u => u.UserID >= latestThree && u.UserID < latestTwo).ToList();
+                int latestOne = latestID - 3;
+                int latestTwo = latestID - 6;
+                int latestThree = latestID - 9;
 
-            return View(new HomeModel { 
-                UsersOne = usersOne,
-                UsersTwo = usersTwo,
-                UsersThree = usersThree
+                var usersOne = _uecontext.Users.Where(u => u.UserID > latestOne).ToList();
+                one = usersOne;
+                
+                var usersTwo = _uecontext.Users.Where(u => u.UserID >= latestTwo && u.UserID < latestOne).ToList();
+                two = usersTwo;
+                
+                var usersThree = _uecontext.Users.Where(u => u.UserID >= latestThree && u.UserID < latestTwo).ToList();
+                three = usersThree;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("HomeModel error: " + ex.Message);
+            }
+
+            return View(new HomeModel
+            {
+                UsersOne = one,
+                UsersTwo = two,
+                UsersThree = three
             });
         }
 
