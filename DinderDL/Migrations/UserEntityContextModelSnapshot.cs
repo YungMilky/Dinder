@@ -75,13 +75,20 @@ namespace DinderDL.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
-                    b.Property<string>("Author")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Content")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("PosterID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ReceiverID")
+                        .HasColumnType("int");
+
                     b.HasKey("PostID");
+
+                    b.HasIndex("PosterID");
+
+                    b.HasIndex("ReceiverID");
 
                     b.ToTable("Posts");
                 });
@@ -110,21 +117,6 @@ namespace DinderDL.Migrations
                     b.HasKey("UserID");
 
                     b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("DinderDL.Models.UserPosts", b =>
-                {
-                    b.Property<int>("UserID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PostID")
-                        .HasColumnType("int");
-
-                    b.HasKey("UserID", "PostID");
-
-                    b.HasIndex("PostID");
-
-                    b.ToTable("UserPosts");
                 });
 
             modelBuilder.Entity("DinderDL.Models.FilesEntity", b =>
@@ -157,28 +149,23 @@ namespace DinderDL.Migrations
                     b.Navigation("Friend2");
                 });
 
-            modelBuilder.Entity("DinderDL.Models.UserPosts", b =>
-                {
-                    b.HasOne("DinderDL.Models.PostsEntity", "Post")
-                        .WithMany("UserPosts")
-                        .HasForeignKey("PostID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("DinderDL.Models.UserEntity", "User")
-                        .WithMany("UserPosts")
-                        .HasForeignKey("UserID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Post");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("DinderDL.Models.PostsEntity", b =>
                 {
-                    b.Navigation("UserPosts");
+                    b.HasOne("DinderDL.Models.UserEntity", "Poster")
+                        .WithMany("SentPosts")
+                        .HasForeignKey("PosterID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("DinderDL.Models.UserEntity", "Receiver")
+                        .WithMany("ReceivedPosts")
+                        .HasForeignKey("ReceiverID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Poster");
+
+                    b.Navigation("Receiver");
                 });
 
             modelBuilder.Entity("DinderDL.Models.UserEntity", b =>
@@ -189,7 +176,9 @@ namespace DinderDL.Migrations
 
                     b.Navigation("Friendship2");
 
-                    b.Navigation("UserPosts");
+                    b.Navigation("ReceivedPosts");
+
+                    b.Navigation("SentPosts");
                 });
 #pragma warning restore 612, 618
         }

@@ -12,20 +12,23 @@ namespace DinderDL.Models
         public int UserID { get; set; }
 
         [StringLength(60)]
-        public String Name { get; set; } = "";
+        public String Name { get; set; } = "No value";
 
         [StringLength(60)]
-        public String Email { get; set; }
-        public int Phone { get; set; }
+        public String Email { get; set; } = "No value";
+        public int Phone { get; set; } = 0000000000;
 
         public String Bio { get; set; } = "";
 
-        public ICollection<UserPosts> UserPosts { get; set; }
-        public FilesEntity File { get; set; }
-
+#nullable enable
+        //public ICollection<UserPosts> UserPosts { get; set; }
+        public FilesEntity? File { get; set; } = null;
+#nullable disable
 
         public virtual ICollection<Friendship> Friendship1 { get; set; }
 
         public virtual ICollection<Friendship> Friendship2 { get; set; }
+        public List<PostsEntity> SentPosts { get; set; }
+        public List<PostsEntity> ReceivedPosts { get; set; }
     }
 }

@@ -35,7 +35,7 @@ namespace Dinder.Controllers
         [Route("getProfile/{userid}")]
         public IActionResult Profile(int userid)
         {
-            var userModel = _uecontext.Users.Where(u => u.UserID == userid).ToList();
+            var userModel = _uecontext.Users.Where(u => u.UserID == userid).Include(u => u.ReceivedPosts).ToList();
 
             var friendIDs = _uecontext.Friendships.Where(f => f.FriendStatus == true && (f.Friend1ID == userid || f.Friend2ID == userid))
                                                     .ToList();

@@ -70,8 +70,20 @@
                         <div class="tab-content profile-tab" id="myTabContent">
                             <div class="tab-pane fade show active" id="timeline" role="tabpanel" aria-labelledby="timeline-tab">
                                 <div class="posts">
-
-                                </div>
+                                    @foreach (var item in Model.User)
+                                    {
+                                        @foreach (var post in item.ReceivedPosts)
+                                        {
+                                            <section class="post-section">
+                                                <div class="col-md-3">
+                                                    <label id="author"><b>Name</b></label>
+                                                    <p id="content">@post.Content</p>
+                                                </div>
+                                                <hr />
+                                            </section>
+                                        }
+                                    }
+                                        </div>
                                 <div class="col-auto col-md-12">
                                     <div class="form-group">
                                         <div class="input-group">
@@ -115,9 +127,18 @@
 @section Scripts {
     <script>
         var currentProfileID = window.location.pathname.split("/").pop(); //last part of url, which is the user id of any given profile
+        var loggedInUserID;
 
         $(document).ready(function () {
             getProfile();
+
+            $.ajax({
+                type: 'GET',
+                url: '../../api/UserEntities/getUserID',
+                success: function (result) {
+                    loggedInUserID = result;
+                }
+            });
 
             //pass current profile ID to asp-route-userid for model refreshing
             $("form").attr("href", currentProfileID);
@@ -164,13 +185,7 @@
 
             //add/remove friend
             $("form").on("change", ":checkbox", function () {
-                $.ajax({
-                    type: 'GET',
-                    url: '../../api/UserEntities/getUserID',
-                    success: function (result) {
-                        addOrRemoveFriend(result);
-                    }
-                });
+                addOrRemoveFriend(loggedInUserID);
             });
         });
 
@@ -226,6 +241,8 @@
 
         function postPost() {
             var data = {
+                PosterID: loggedInUserID,
+                ReceiverID: currentProfileID,
                 Content: $("#Posts").val()
             };
 

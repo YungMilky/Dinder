@@ -81,19 +81,19 @@ namespace Dinder.Controllers
             
                     var newPost = new PostsEntity
                     {
-                        Author = user.Name,
-                        Content = data.Content,
-                        //Timeline = data.Timeline
+                        PosterID = user.UserID,
+                        ReceiverID = data.ReceiverID,
+                        Content = data.Content
                     };
                     _uecontext.Posts.Add(newPost);
                     _uecontext.SaveChanges(); 
 
-                    _uecontext.UserPosts.Add(new UserPosts
-                    {
-                        UserID = user.UserID,
-                        PostID = newPost.PostID
-                    });
-                    _uecontext.SaveChanges(); //has to be called once before, otherwise newPost.PostID is not created
+                    //_uecontext.UserPosts.Add(new UserPosts
+                    //{
+                    //    UserID = user.UserID,
+                    //    PostID = newPost.PostID
+                    //});
+                    //_uecontext.SaveChanges(); //has to be called once before, otherwise newPost.PostID is not created
 
                     tran.Commit();
                 }
