@@ -9,6 +9,7 @@ namespace Dinder.Models
     {
         public int CurrentUserID { get; set; }
         public IEnumerable<DinderDL.Models.UserEntity> User { get; set; }
+        public Dictionary<int, string> Posters { get; set; }
         public IEnumerable<DinderDL.Models.UserEntity> Friends { get; set; }
     }
 }

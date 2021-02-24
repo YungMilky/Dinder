@@ -1,0 +1,20 @@
+﻿
+@foreach (var item in Model.User)
+
+{
+    if (item.ReceivedPosts is not null)
+    {
+        @foreach (var post in item.ReceivedPosts)
+        {
+            <section class="post-section">
+                <div class="col-md-3">
+                    <a href="/getProfile/@post.PosterID">
+                        <label id="author"><b>@Model.Posters[post.PosterID]</b></label>
+                    </a>
+                    <p id="content">@post.Content</p>
+                </div>
+                <hr />
+            </section>
+        }
+    }
+}
