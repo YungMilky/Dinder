@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="~/css/friendshiptoggle.css">
 </head>
 <div class="container emp-profile">
-    <form method="GET" asp-action="Profile" asp-controller="User" data-ajax-update="Friends">
+    <form method="GET" asp-action="Profile" asp-controller="User" >
         <div class="row">
             <div class="col-md-4">
                 <section class="ppbio-bg">
@@ -76,7 +76,7 @@
                                     <div class="form-group">
                                         <div class="input-group">
                                             <input type="text" class="form-control" id="Posts" placeholder="Post..."></>
-                                            <button id="postbtn" class="btn btn-primary shadow-none float-right" disabled>SEND</button>
+                                            <button id="postbtn" class="btn btn-primary shadow-none float-right" disabled onClick="this.form.submit()">SEND</button>
                                         </div>
                                     </div>
                                 </div>
@@ -137,7 +137,7 @@
 
             $("#postbtn").click(function (event) {
                 event.preventDefault(); //disable button auto-refresh
-                $.when(postPost()).then(createPostHTML(loggedInUserID));
+                postPost();
             })
 
             //enable post button when text is entered
@@ -150,6 +150,19 @@
                     $("#postbtn").prop("disabled", true);
                 }
             });
+
+            //save scroll position on scroll event
+            $(window).scroll(function () {
+                sessionStorage.scrollTop = $(this).scrollTop();
+            });
+
+            /*if scroll position has a value, set to value
+            *note that this isn't best practice because the jump in scrolling is jarring for the user experience. 
+            *I chose this to maintain consistency between how the website updates friends and use more mvc above jquery
+            */
+            if (sessionStorage.scrollTop != "undefined") {
+                $(window).scrollTop(sessionStorage.scrollTop);
+            }
 
             //save active tab
             $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
@@ -223,19 +236,6 @@
                 dataType: 'json',
                 data: JSON.stringify(data)
             });
-        }
-
-        function createPostHTML(loggedInUserID) {
-            var postHTML = '<section class="post-section">' +
-                                '<div class="col-md-3">' +
-                                    '<a href="'+ loggedInUserID + '" id="author"><b>' + $("#profile-name").text() + '</b></label>' +
-                                    '<p id="content">' + $("#Posts").val() + '</p>' +
-                                '</div>' +
-                                '<hr />' +
-                                '   ' +
-                            '</section>';
-
-            $(".posts").after(postHTML);
         }
     </script>
 }
