@@ -11,6 +11,7 @@ namespace DinderDL
         public DbSet<UserEntity> Users { get; set; }
         public DbSet<PostsEntity> Posts { get; set; }
         public DbSet<Friendship> Friendships { get; set; }
+        public DbSet<FilesEntity> Files { get; set; }
 
         public UserEntityContext(DbContextOptions<UserEntityContext> options) : base(options)
         {
@@ -22,17 +23,24 @@ namespace DinderDL
          */
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Friendship>()
-            .HasOne(f => f.Friend1)
-            .WithMany(t => t.Friendship1)
-            .HasForeignKey(t => t.Friend1ID)
-            .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<FilesEntity>()
+                .HasKey(f => f.FileID);
+
+            modelBuilder.Entity<UserEntity>()
+                .HasOne<FilesEntity>(f => f.File)
+                .WithOne(f => f.User);
 
             modelBuilder.Entity<Friendship>()
-            .HasOne(f => f.Friend2)
-            .WithMany(t => t.Friendship2)
-            .HasForeignKey(t => t.Friend2ID)
-            .OnDelete(DeleteBehavior.Restrict);
+                .HasOne(f => f.Friend1)
+                .WithMany(t => t.Friendship1)
+                .HasForeignKey(t => t.Friend1ID)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Friendship>()
+                .HasOne(f => f.Friend2)
+                .WithMany(t => t.Friendship2)
+                .HasForeignKey(t => t.Friend2ID)
+                .OnDelete(DeleteBehavior.Restrict);
             
             //constrain to unique Friend1ID+Friend2ID combination
             modelBuilder.Entity<Friendship>(u =>

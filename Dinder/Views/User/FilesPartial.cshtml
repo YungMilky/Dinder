@@ -1,0 +1,17 @@
+﻿@model FileViewModel
+<form id="form" name="form" enctype="multipart/form-data" method="post">
+    <div>
+        <picture>
+            <img src="~/default-profile-pic.png" id="profilePic" alt="Profile picture">
+            <input type="file" id="fileBrowser" onchange="uploadImage()">
+        </picture>
+    </div>
+</form>
+    @section Scripts {
+        <script>
+            $(document).ready(function () {
+
+
+            });
+        </script>
+    }

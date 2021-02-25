@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using DinderDL;
 using DinderDL.Models;
+using Microsoft.AspNetCore.Hosting;
+using System.IO;
+using System.Net.Http.Headers;
 
 namespace Dinder.Controllers
 {
@@ -15,10 +18,12 @@ namespace Dinder.Controllers
     public class UserEntitiesController : ControllerBase
     {
         private readonly UserEntityContext _uecontext;
+        private readonly IWebHostEnvironment _hostEnvironment;
 
-        public UserEntitiesController(UserEntityContext context)
+        public UserEntitiesController(UserEntityContext context, IWebHostEnvironment hostEnvironment)
         {
             _uecontext = context;
+            _hostEnvironment = hostEnvironment;
         }
 
         [Route("insertEmail")]
@@ -29,6 +34,36 @@ namespace Dinder.Controllers
                 Email = data.Email
             });
             _uecontext.SaveChanges();
+        }
+
+        [Route("UpsertProfilePic")]
+        [HttpPost]
+        public async Task UpsertProfilePicAsync(IFormFile file)
+        {
+                string filename = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
+
+                filename = correctFilename(filename);
+                var fullPath = Path.Combine(_hostEnvironment + "/assets/", filename);
+                
+                using (FileStream newFile = new FileStream(fullPath, FileMode.Create))
+                {
+                    await file.CopyToAsync(newFile);
+                }
+            
+
+                //if (_uecontext.Files.Any(u=>u.UserID == data.ProfileID))
+                //{
+                //    file = _uecontext.Files.FirstOrDefault(u => u.UserID == data.ProfileID);
+                //    file.FilePath = fullPath;
+                //    file.Filename = data.Image.FileName;
+                //}
+                //else
+                //{
+                //    file.FilePath = fullPath;
+                //    file.Filename = data.Image.FileName;
+                //    _uecontext.Add(file);
+                //}
+                //_uecontext.SaveChanges();
         }
 
         [Route("updateName")]
@@ -271,6 +306,14 @@ namespace Dinder.Controllers
         public string GetUsername()
         {
             return _uecontext.Users.First(id => id.Email == User.Identity.Name).Name;
+        }
+
+        private string correctFilename(string filename)
+        {
+            if (filename.Contains("\\")) {
+                filename = filename.Substring(filename.LastIndexOf("\\") + 1); 
+            }
+            return filename;
         }
     }
 }

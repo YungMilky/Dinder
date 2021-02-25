@@ -19,42 +19,26 @@
         </form>
     </div>
     <div class="col-md-6">
-        <div>
-            <picture>
-                <img src="~/default-profile-pic.png" id="profilePic" alt="Profile picture">
-                <input type="file" id="fileBrowser">
-            </picture>
-        </div>
+        @Html.Partial("~/Views/User/FilesPartial.cshtml", new Dinder.Models.FileViewModel())
     </div>
 </div>
 
     @section Scripts {
         @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
         <script>
-            var pp; //profile pic
+            $(document).ready(function () {
+                $("#profilePic").click(() => {
+                    $("#fileBrowser").click();
+                });
 
-            $("#profilePic").click(() => {
-                $("#fileBrowser").click();
-            });
-
-            $("input:file").change(function () {
-                if (this.files && this.files[0] && (this.files[0]["type"]).includes('image')) {
+                $("#fileBrowser").on("change", function () {
                     var reader = new FileReader();
                     reader.onload = function (e) {
                         $('#profilePic').attr('src', e.target.result);
                     }
                     reader.readAsDataURL(this.files[0]);
+                });
 
-                    pp = $('#fileBrowser').prop('files')[0];
-                }
-            });
-
-            $(window).on("unload", function (e) {
-                //save pp to db
-            });
-
-            
-            $(document).ready(function () {
                 $("#bio-success").hide();
 
                 var data = {
@@ -148,6 +132,46 @@
                     });
                 });
             });
+
+            function uploadImage() {
+                if (this.files && this.files[0] && (this.files[0]["type"]).includes('image')) {
+                    var files = input.files;
+                    var data = new FormData();
+                    data.append("files", files[0]);
+
+                    $.ajax({
+                        url: "/../../../../api/UserEntities/UpsertProfilePic",
+                        data: data,
+                        processData: false,
+                        contentType: false,
+                        type: "POST",
+                        success: function (data) {
+                            alert("Files Uploaded!");
+                        }
+                    });
+
+                    //var pp; //profile pic
+
+
+                    //pp = $('#fileBrowser').prop('files')[0];
+                    //var filename = $(this).val().replace(/C:\\fakepath\\/i, '');
+
+                    //var data = new FormData();
+                    //data.append("Image", pp);
+
+                    //$.ajax({
+                    //    url: "/../../../../api/UserEntities/UpsertProfilePic",
+                    //    data: data,
+                    //    processData: false,
+                    //    contentType: false,
+                    //    type: "POST",
+                    //    success: function (data) {
+                    //        alert("Files Uploaded!");
+                    //    }
+                    //}
+                    //);
+                }
+            }
         </script>
 
         <partial name="_ValidationScriptsPartial" />
