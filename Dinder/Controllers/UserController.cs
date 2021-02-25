@@ -61,18 +61,13 @@ namespace Dinder.Controllers
             });
         }
 
-        //public IActionResult Friends(int userid)
-        //{
-        //    var userModel = _uecontext.Users.Where(u => u.UserID == userid).ToList();
-        //    var friendshipModel = _uecontext.Friendships.Where(f => f.Friend1ID == userid).ToList();
-
-        //    var profileModel = new ProfileViewModel
-        //    {
-        //        User = userModel,
-        //        Friends = friendshipModel
-        //    };
-
-        //    return View(profileModel);
-        //}
+        public IActionResult FilesPartial()
+        {
+            return View(new FileViewModel());
+        }
+        public IActionResult CreateFile()
+        {
+            return View(new FileViewModel());
+        }
     }
 }

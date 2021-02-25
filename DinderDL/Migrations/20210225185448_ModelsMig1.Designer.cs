@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DinderDL.Migrations
 {
     [DbContext(typeof(UserEntityContext))]
-    [Migration("20210222191355_ModelsMig1")]
+    [Migration("20210225185448_ModelsMig1")]
     partial class ModelsMig1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,8 +27,8 @@ namespace DinderDL.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
-                    b.Property<byte>("Filedata")
-                        .HasColumnType("tinyint");
+                    b.Property<string>("FilePath")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Filename")
                         .HasColumnType("nvarchar(max)");
@@ -41,7 +41,7 @@ namespace DinderDL.Migrations
                     b.HasIndex("UserID")
                         .IsUnique();
 
-                    b.ToTable("FilesEntity");
+                    b.ToTable("Files");
                 });
 
             modelBuilder.Entity("DinderDL.Models.Friendship", b =>

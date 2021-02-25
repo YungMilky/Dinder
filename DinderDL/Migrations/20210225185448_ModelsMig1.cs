@@ -23,20 +23,20 @@ namespace DinderDL.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "FilesEntity",
+                name: "Files",
                 columns: table => new
                 {
                     FileID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Filename = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Filedata = table.Column<byte>(type: "tinyint", nullable: false),
+                    FilePath = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserID = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_FilesEntity", x => x.FileID);
+                    table.PrimaryKey("PK_Files", x => x.FileID);
                     table.ForeignKey(
-                        name: "FK_FilesEntity_Users_UserID",
+                        name: "FK_Files_Users_UserID",
                         column: x => x.UserID,
                         principalTable: "Users",
                         principalColumn: "UserID",
@@ -98,8 +98,8 @@ namespace DinderDL.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_FilesEntity_UserID",
-                table: "FilesEntity",
+                name: "IX_Files_UserID",
+                table: "Files",
                 column: "UserID",
                 unique: true);
 
@@ -128,7 +128,7 @@ namespace DinderDL.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "FilesEntity");
+                name: "Files");
 
             migrationBuilder.DropTable(
                 name: "Friendships");
