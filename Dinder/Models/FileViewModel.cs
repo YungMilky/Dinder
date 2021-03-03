@@ -11,8 +11,6 @@ namespace Dinder.Models
     {
         [Key]
         public int ProfileID { get; set; }
-        public string Filename { get; set; }
-        public string FilePath { get; set; }
         public IFormFile Image { get; set; }
 
     }
