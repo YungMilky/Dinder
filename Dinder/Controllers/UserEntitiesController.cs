@@ -29,7 +29,7 @@ namespace Dinder.Controllers
         [Route("insertEmail")]
         public void InsertEmail([FromBody] UserEntity data)
         {
-            _uecontext.Users.Add(new DinderDL.Models.UserEntity
+            _uecontext.Users.Add(new UserEntity
             {
                 Email = data.Email
             });
@@ -38,32 +38,35 @@ namespace Dinder.Controllers
 
         [Route("UpsertProfilePic")]
         [HttpPost]
-        public async Task UpsertProfilePicAsync(IFormFile file)
+        [Consumes("multipart/form-data")]
+        public async Task UpsertProfilePicAsync([FromForm] Dinder.Models.FileViewModel file)
         {
-                string filename = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
+                string filename = ContentDispositionHeaderValue.Parse(file.Image.ContentDisposition).FileName.Trim('"');
 
                 filename = correctFilename(filename);
                 var fullPath = Path.Combine(_hostEnvironment + "/assets/", filename);
                 
                 using (FileStream newFile = new FileStream(fullPath, FileMode.Create))
                 {
-                    await file.CopyToAsync(newFile);
+                    await file.Image.CopyToAsync(newFile);
                 }
-            
 
-                //if (_uecontext.Files.Any(u=>u.UserID == data.ProfileID))
-                //{
-                //    file = _uecontext.Files.FirstOrDefault(u => u.UserID == data.ProfileID);
-                //    file.FilePath = fullPath;
-                //    file.Filename = data.Image.FileName;
-                //}
-                //else
-                //{
-                //    file.FilePath = fullPath;
-                //    file.Filename = data.Image.FileName;
-                //    _uecontext.Add(file);
-                //}
-                //_uecontext.SaveChanges();
+                if (_uecontext.Files.Any(u => u.UserID == file.ProfileID))
+                {
+                    var dbfile = _uecontext.Files.FirstOrDefault(u => u.UserID == file.ProfileID);
+                    dbfile.FilePath = fullPath;
+                    dbfile.Filename = filename;
+                }
+                else
+                {
+                    _uecontext.Add(new FilesEntity
+                    {
+                        FilePath = fullPath,
+                        Filename = filename,
+                        UserID = file.ProfileID
+                    });
+                }
+                _uecontext.SaveChanges();
         }
 
         [Route("updateName")]

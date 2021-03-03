@@ -3,15 +3,7 @@
     <div>
         <picture>
             <img src="~/default-profile-pic.png" id="profilePic" alt="Profile picture">
-            <input type="file" id="fileBrowser" onchange="uploadImage()">
+            <input type="file" name="files" id="fileBrowser" profile-id="@Model.ProfileID">
         </picture>
     </div>
 </form>
-    @section Scripts {
-        <script>
-            $(document).ready(function () {
-
-
-            });
-        </script>
-    }

@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DinderDL.Migrations
 {
     [DbContext(typeof(UserEntityContext))]
-    [Migration("20210225185448_ModelsMig1")]
+    [Migration("20210225223226_ModelsMig1")]
     partial class ModelsMig1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
