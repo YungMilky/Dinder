@@ -11,7 +11,13 @@
             <div class="col-md-4">
                 <section class="ppbio-bg">
                     <div class="profile-img">
-                        <img src="~/default-profile-pic.png" alt="Profile picture" />
+                        @if (Model.User.First().ProfilePic is not null){
+                            <img src="data:image/*;base64,@(Convert.ToBase64String(Model.User.First().ProfilePic))" alt="Profile picture" />
+                        }
+                        else
+                        {
+                            <img src="~/default-profile-pic.png" alt="Profile picture" />
+                        }
                     </div>
                     <div id="bio">
                         <p>@Model.User.FirstOrDefault().Bio</p>
