@@ -42,5 +42,7 @@ namespace Dinder.Models
         public String Phone { get; set; }
 
         public String Bio { get; set; }
+
+        public byte[] ProfilePic { get; set; }
     }
 }

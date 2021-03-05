@@ -19,9 +19,9 @@ namespace DinderDL.Models
         public int Phone { get; set; } = 0000000000;
 
         public String Bio { get; set; } = "";
+        public byte[] ProfilePic { get; set; }
 
 #nullable enable
-        //public ICollection<UserPosts> UserPosts { get; set; }
         public FilesEntity? File { get; set; } = null;
 #nullable disable
 

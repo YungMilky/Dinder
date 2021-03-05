@@ -1,9 +1,11 @@
-﻿@model FileViewModel
-<form id="form" name="form" enctype="multipart/form-data" method="post">
+﻿@model User
+<form asp-controller="User" asp-action="upsertProfilePic" id="file-form" name="form" enctype="multipart/form-data" method="post">
     <div>
         <picture>
-            <img src="~/default-profile-pic.png" id="profilePic" alt="Profile picture">
-            <input type="file" name="files" id="fileBrowser" profile-id="@Model.ProfileID">
+            <img src="@Model.ProfilePic.FirstOrDefault()" id="profilePic" alt="Profile picture">
+            <input type="file" name="files" accept="image/*" asp-for="ProfilePic" id="fileBrowser"
+                   class="form-control">
         </picture>
+        <span asp-validation-for="ProfilePic" class="text-danger"></span>
     </div>
 </form>

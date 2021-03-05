@@ -19,164 +19,165 @@
         </form>
     </div>
     <div class="col-md-6">
-        @Html.Partial("~/Views/User/FilesPartial.cshtml", new Dinder.Models.FileViewModel())
+        @Html.Partial("~/Views/User/FilesPartial.cshtml", new Dinder.Models.User())
     </div>
 </div>
 
-    @section Scripts {
-        @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
 <script>
-            $(document).ready(function () {
-                $("#profilePic").click(() => {
-                    $("#fileBrowser").click();
-                });
+    $(document).ready(function () {
+        $("#profilePic").click(() => {
+            $("#fileBrowser").click();
+        });
 
-                $("#fileBrowser").on("change", function () {
-                    var reader = new FileReader();
-                    reader.onload = function (e) {
-                        $('#profilePic').attr('src', e.target.result);
-                    }
-                    reader.readAsDataURL(this.files[0]);
-                    uploadImage(this);
-                });
+        $("#fileBrowser").on("change", function () {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $('#profilePic').attr('src', e.target.result);
+            }
+            reader.readAsDataURL(this.files[0]);
+            uploadImage(this);
+        });
 
-                $("#bio-success").hide();
+        $("#bio-success").hide();
 
+        var data = {
+            Email: $("#user-email").val()
+        };
+        $.ajax({
+            type: "POST",
+            url: '../../../../api/UserEntities/getProfile',
+            contentType: 'application/json',
+            data: JSON.stringify(data),
+            success: function (result) {
+                $("#name").attr("value", result[0][0].name);
+                $("#phone").attr("value", result[0][0].phone);
+                $("#bio-manage").text(result[0][0].bio);
+                console.log(result[0]);
+            }
+        });
+        $(".toast").toast('show');
+
+        $("#name").on("input", function () {
+            $("#name-success").hide();
+        });
+        $("#name").on("focusout", function () {
+            $("#profile-form").validate();
+            if ($("#name").valid()) {
                 var data = {
-                    Email: $("#user-email").val()
+                    Name: $('#name').val(),
+                    Email: $('#user-email').val()
                 };
                 $.ajax({
                     type: "POST",
-                    url: '../../../../api/UserEntities/getProfile',
+                    url: '../../api/UserEntities/updateName',
                     contentType: 'application/json',
                     data: JSON.stringify(data),
-                    success: function (result) {
-                        $("#name").attr("value", result[0][0].name);
-                        $("#phone").attr("value", result[0][0].phone);
-                        $("#bio-manage").text(result[0][0].bio);
-                        console.log(result[0]);
+                    success: function () {
+                        //...
                     }
                 });
-                $(".toast").toast('show');
-
-                $("#name").on("input", function () {
-                    $("#name-success").hide();
-                });
-                $("#name").on("focusout", function () {
-                    $("#profile-form").validate();
-                    if ($("#name").valid()) {
-                        var data = {
-                            Name: $('#name').val(),
-                            Email: $('#user-email').val()
-                        };
-                        $.ajax({
-                            type: "POST",
-                            url: '../../api/UserEntities/updateName',
-                            contentType: 'application/json',
-                            data: JSON.stringify(data),
-                            success: function () {
-                                //...
-                            }
-                        });
-                        $("#name-success").show();
-                    } else {
-                        $("#name-success").hide();
-                    }
-                });
-
-                $("#phone").on("input", function () {
-                    $("#phone-success").hide();
-                });
-                $("#phone").on("focusout", function () {
-                    $("#profile-form").validate();
-                    if ($("#phone").valid()) {
-                        var data = {
-                            Phone: $('#phone').val(),
-                            Email: $('#user-email').val()
-                        };
-                        $.ajax({
-                            type: "POST",
-                            url: '../../api/UserEntities/updatePhone',
-                            contentType: 'application/json',
-                            data: JSON.stringify(data),
-                            success: function () {
-                                //...
-                            }
-                        });
-                        $("#phone-success").show();
-                    } else {
-                        $("#phone-success").hide();
-                    }
-
-                });
-
-                $("#bio-manage").on("input", function () {
-                    $("#bio-success").hide();
-                });
-                $("#bio-manage").on("focusout", function () {
-                    var data = {
-                        Bio: $('#bio-manage').val(),
-                        Email: $('#user-email').val()
-                    };
-                    $.ajax({
-                        type: "POST",
-                        url: '../../api/UserEntities/updateBio',
-                        contentType: 'application/json',
-                        data: JSON.stringify(data),
-                        success: function () {
-                            $("#bio-success").show();
-                        },
-                        error: function () {
-                            $("#bio-success").hide();
-                        }
-                    });
-                });
-            });
-
-            function uploadImage(input) {
-                if (input.files && input.files[0] && (input.files[0]["type"]).includes('image')) {
-
-                    var profileID = $("#fileBrowser").attr("profileID");
-
-                    var files = input.files;
-                    var data = new FormData();
-                    data.append("files", files[0]);
-                    data.append("FileName", files[0].name);
-                    data.append("ProfileID", profileID);
-
-                    $.ajax({
-                        url: "/../../../../api/UserEntities/UpsertProfilePic",
-                        data: data,
-                        processData: false,
-                        contentType: false,
-                        type: "POST",
-                        success: function (data) {
-                            alert("Files Uploaded!");
-                        }
-                    });
-
-                    //var pp; //profile pic
-
-
-                    //pp = $('#fileBrowser').prop('files')[0];
-                    //var filename = $(this).val().replace(/C:\\fakepath\\/i, '');
-
-                    //var data = new FormData();
-                    //data.append("Image", pp);
-
-                    //$.ajax({
-                    //    url: "/../../../../api/UserEntities/UpsertProfilePic",
-                    //    data: data,
-                    //    processData: false,
-                    //    contentType: false,
-                    //    type: "POST",
-                    //    success: function (data) {
-                    //        alert("Files Uploaded!");
-                    //    }
-                    //}
-                    //);
-                }
+                $("#name-success").show();
+            } else {
+                $("#name-success").hide();
             }
+        });
+
+        $("#phone").on("input", function () {
+            $("#phone-success").hide();
+        });
+        $("#phone").on("focusout", function () {
+            $("#profile-form").validate();
+            if ($("#phone").valid()) {
+                var data = {
+                    Phone: $('#phone').val(),
+                    Email: $('#user-email').val()
+                };
+                $.ajax({
+                    type: "POST",
+                    url: '../../api/UserEntities/updatePhone',
+                    contentType: 'application/json',
+                    data: JSON.stringify(data),
+                    success: function () {
+                        //...
+                    }
+                });
+                $("#phone-success").show();
+            } else {
+                $("#phone-success").hide();
+            }
+        });
+
+        $("#bio-manage").on("input", function () {
+            $("#bio-success").hide();
+        });
+        $("#bio-manage").on("focusout", function () {
+            var data = {
+                Bio: $('#bio-manage').val(),
+                Email: $('#user-email').val()
+            };
+            $.ajax({
+                type: "POST",
+                url: '../../api/UserEntities/updateBio',
+                contentType: 'application/json',
+                data: JSON.stringify(data),
+                success: function () {
+                    $("#bio-success").show();
+                },
+                error: function () {
+                    $("#bio-success").hide();
+                }
+            });
+        });
+    });
+
+    function uploadImage(input) {
+        $(input).attr("src", window.URL.createObjectURL(input.files[0]));
+
+        $("#file-form").submit();
+            
+            //var profileID = $("#fileBrowser").attr("profileID");
+
+            //var files = input.files;
+            //var data = new FormData();
+            //data.append("files", files[0]);
+            //data.append("FileName", files[0].name);
+            //data.append("ProfileID", profileID);
+
+            //$.ajax({
+            //    url: "/../../../../api/UserEntities/UpsertProfilePic",
+            //    data: data,
+            //    processData: false,
+            //    contentType: false,
+            //    type: "POST",
+            //    success: function (data) {
+            //        alert("Files Uploaded!");
+            //    }
+            //});
+
+            //var pp; //profile pic
+
+
+            //pp = $('#fileBrowser').prop('files')[0];
+            //var filename = $(this).val().replace(/C:\\fakepath\\/i, '');
+
+            //var data = new FormData();
+            //data.append("Image", pp);
+
+            //$.ajax({
+            //    url: "/../../../../api/UserEntities/UpsertProfilePic",
+            //    data: data,
+            //    processData: false,
+            //    contentType: false,
+            //    type: "POST",
+            //    success: function (data) {
+            //        alert("Files Uploaded!");
+            //    }
+            //}
+            //);
+        
+    }
 </script>
 
         <partial name="_ValidationScriptsPartial" />

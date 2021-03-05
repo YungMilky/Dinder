@@ -6,6 +6,9 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using System.IO;
 
 namespace Dinder.Controllers
 {
@@ -61,13 +64,24 @@ namespace Dinder.Controllers
             });
         }
 
-        public IActionResult FilesPartial()
+        [Route("upsertProfilePic")]
+        [HttpPost]
+        public IActionResult UpsertProfilePic(User user)
         {
-            return View(new FileViewModel());
-        }
-        public IActionResult CreateFile()
-        {
-            return View(new FileViewModel());
+            if (Request.Form.Files.Count > 0)
+            {
+                IFormFile file = Request.Form.Files.FirstOrDefault();
+                using (var dataStream = new MemoryStream())
+                {
+                    file.CopyTo(dataStream);
+                    user.ProfilePic = dataStream.ToArray();
+                }
+            }
+            var dbUser = _uecontext.Users.First(u => u.Email == User.Identity.Name);
+            dbUser.ProfilePic = user.ProfilePic;
+
+            _uecontext.SaveChanges();
+            return Ok();
         }
     }
 }
