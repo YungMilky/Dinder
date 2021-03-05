@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using DinderDL;
+using DinderDL.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -13,13 +15,16 @@ namespace Dinder.Areas.Identity.Pages.Account.Manage
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserEntityContext _uecontext;
 
         public IndexModel(
             UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager)
+            SignInManager<IdentityUser> signInManager,
+            UserEntityContext uecontext)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _uecontext = uecontext;
         }
 
         public string Username { get; set; }
@@ -29,6 +34,8 @@ namespace Dinder.Areas.Identity.Pages.Account.Manage
 
         [BindProperty]
         public InputModel Input { get; set; }
+
+        public UserEntity DinderUser { get; set; }
 
         public class InputModel
         {
@@ -47,6 +54,8 @@ namespace Dinder.Areas.Identity.Pages.Account.Manage
             {
                 PhoneNumber = phoneNumber
             };
+
+            DinderUser = _uecontext.Users.First(u => u.Email == User.Identity.Name);
         }
 
         public async Task<IActionResult> OnGetAsync()

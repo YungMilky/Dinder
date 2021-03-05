@@ -1,8 +1,8 @@
-﻿@model User
+﻿@model DinderDL.Models.UserEntity
 <form asp-controller="User" asp-action="upsertProfilePic" id="file-form" name="form" enctype="multipart/form-data" method="post">
     <div>
         <picture>
-            <img src="@Model.ProfilePic.FirstOrDefault()" id="profilePic" alt="Profile picture">
+            <img src="data:image/*;base64,@(Convert.ToBase64String(@Model.ProfilePic))" id="profilePic" alt="Profile picture">
             <input type="file" name="files" accept="image/*" asp-for="ProfilePic" id="fileBrowser"
                    class="form-control">
         </picture>
