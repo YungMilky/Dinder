@@ -38,22 +38,21 @@ namespace Dinder.Controllers
 
         [Route("UpsertProfilePic")]
         [HttpPost]
-        [Consumes("multipart/form-data")]
-        public async Task UpsertProfilePicAsync([FromForm] Dinder.Models.FileViewModel file)
+        public async Task UpsertProfilePicAsync([FromForm] Dinder.Models.FileViewModel data)
         {
-                string filename = ContentDispositionHeaderValue.Parse(file.Image.ContentDisposition).FileName.Trim('"');
+                string filename = ContentDispositionHeaderValue.Parse(data.Image.ContentDisposition).FileName.Trim('"');
 
-                filename = correctFilename(filename);
+                filename = CorrectFilename(filename);
                 var fullPath = Path.Combine(_hostEnvironment + "/assets/", filename);
                 
                 using (FileStream newFile = new FileStream(fullPath, FileMode.Create))
                 {
-                    await file.Image.CopyToAsync(newFile);
+                    await data.Image.CopyToAsync(newFile);
                 }
 
-                if (_uecontext.Files.Any(u => u.UserID == file.ProfileID))
+                if (_uecontext.Files.Any(u => u.UserID == data.ProfileID))
                 {
-                    var dbfile = _uecontext.Files.FirstOrDefault(u => u.UserID == file.ProfileID);
+                    var dbfile = _uecontext.Files.FirstOrDefault(u => u.UserID == data.ProfileID);
                     dbfile.FilePath = fullPath;
                     dbfile.Filename = filename;
                 }
@@ -63,7 +62,7 @@ namespace Dinder.Controllers
                     {
                         FilePath = fullPath,
                         Filename = filename,
-                        UserID = file.ProfileID
+                        UserID = data.ProfileID
                     });
                 }
                 _uecontext.SaveChanges();
@@ -104,6 +103,20 @@ namespace Dinder.Controllers
                 user = _uecontext.Users.First(u => u.Email == data.Email);
             }
             user.Bio = data.Bio;
+
+            _uecontext.SaveChanges();
+        }
+
+        [Route("updateEmail")]
+        public void UpdateEmail([FromBody] UserEntity data)
+        {
+            var user = new UserEntity();
+            //data.Name is a new email. I borrowed a property from UserEntity to avoid making a new model just for this function.
+            if (data.Name != null)
+            {
+                user = _uecontext.Users.First(u => u.Email == data.Email);
+            }
+            user.Email = data.Name;
 
             _uecontext.SaveChanges();
         }
@@ -302,16 +315,31 @@ namespace Dinder.Controllers
         [Route("getUserID")]
         public int GetUserID()
         {
-            return _uecontext.Users.First(id => id.Email == User.Identity.Name).UserID;
+            try
+            {
+                return _uecontext.Users.First(id => id.Email == User.Identity.Name).UserID;
+
+            }
+            catch
+            {
+                return 0;
+            }
         }
 
         [Route("getUsername")]
         public string GetUsername()
         {
-            return _uecontext.Users.First(id => id.Email == User.Identity.Name).Name;
+            try
+            {
+                return _uecontext.Users.First(id => id.Email == User.Identity.Name).Name;
+            }
+            catch
+            {
+                return "";
+            }
         }
 
-        private string correctFilename(string filename)
+        private string CorrectFilename(string filename)
         {
             if (filename.Contains("\\")) {
                 filename = filename.Substring(filename.LastIndexOf("\\") + 1); 
