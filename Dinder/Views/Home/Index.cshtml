@@ -94,15 +94,6 @@
                         $("#user-button").attr("href", "/getProfile/" + result);
                     }
                 });
-
-                //set the navbar welcome message/button to the user's name
-                $.ajax({
-                    type: 'GET',
-                    url: '../api/UserEntities/getUsername',
-                    success: function (result) {
-                        $("#user-button").text("Hello, "+ result + "!");
-                    }
-                });
             }
         });
         </script>
