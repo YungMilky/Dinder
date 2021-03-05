@@ -6,7 +6,6 @@
     @if (SignInManager.IsSignedIn(User))
     {
         <li class="nav-item">
-            <a id="user-button" class="nav-link text-light" asp-controller="User" asp-action="Profile" title="Profile"></a>
         </li>
 
         <li class="nav-item dropdown">
@@ -15,31 +14,21 @@
             </a>
             <div class="dropdown-menu">
                 <a class="dropdown-item" href="#">Link 1</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item text-light" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage" type="button">Settings</a>
             </div>
         </li>
 
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
-                <img alt="Friend requests" src="../wwwroot/assets/friends.png" />
+                <img alt="Account" src="../wwwroot/assets/friends.png" />
             </a>
             <div class="dropdown-menu">
-
-                <a class="dropdown-item" href="#">Link 1</a>
-                    <div class="dropdown-divider"></div>
-                <a class="dropdown-item text-light" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage" type="button">Settings</a>
-                
-                <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                <a id="user-button" class="dropdown-item" asp-controller="User" asp-action="Profile" title="Profile">Profile</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage" type="button">Settings</a>
+                <form class="dropdown-item" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
                     <button type="submit" class="nav-link btn btn-link">Logout</button>
                 </form>
             </div>
-        </li>
-
-        <li class="nav-item">
-            <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                <button type="submit" class="nav-link btn btn-link text-light">Logout</button>
-            </form>
         </li>
     }
     else
