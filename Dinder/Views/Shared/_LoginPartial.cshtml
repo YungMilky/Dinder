@@ -13,7 +13,8 @@
                 <img alt="Friend requests" src="../wwwroot/assets/friends.png" />
             </a>
             <div class="dropdown-menu">
-                <a class="dropdown-item" href="#">Link 1</a>
+                <a class="dropdown-item" href="#"></a>
+                if(Model.FriendRequests.FirstOrDefault() is not null) { Model.FriendRequests.FirstOrDefault().Email; }
             </div>
         </li>
 
@@ -22,22 +23,25 @@
                 <img alt="Account" src="../wwwroot/assets/friends.png" />
             </a>
             <div class="dropdown-menu">
+                <form id="logout-form" class="dropdown-item" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                </form>
                 <a id="user-button" class="dropdown-item" asp-controller="User" asp-action="Profile" title="Profile">Profile</a>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage" type="button">Settings</a>
-                <form class="dropdown-item" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                    <button type="submit" class="nav-link btn btn-link">Logout</button>
-                </form>
+                <a class="dropdown-item" onclick="$('#logout-form').submit()">Logout</a>
             </div>
         </li>
     }
     else
     {
-        <li class="nav-item">
-            <a class="nav-link text-light" asp-area="Identity" asp-page="/Account/Register">Register</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link text-light" asp-area="Identity" asp-page="/Account/Login">Login</a>
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+                <img alt="Account" src="../wwwroot/assets/account.png" />
+            </a>
+            <div class="dropdown-menu">
+                <a class="dropdown-item" title="Register" asp-area="Identity" asp-page="/Account/Register">Register</a>
+                <a class="dropdown-item" title="Login" asp-area="Identity" asp-page="/Account/Login">Login</a>
+            </div>
         </li>
     }
 </ul>

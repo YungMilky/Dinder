@@ -9,6 +9,7 @@ namespace Dinder.Models
 {
     public class HomeModel
     {
+        public IEnumerable<UserEntity> FriendRequests { get; set; }
         public IEnumerable<UserEntity> UsersOne { get; set; }
         public IEnumerable<UserEntity> UsersTwo { get; set; }
         public IEnumerable<UserEntity> UsersThree { get; set; }

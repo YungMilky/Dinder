@@ -32,6 +32,8 @@ namespace Dinder.Controllers
             List<UserEntity> two = one;
             List<UserEntity> three = one;
 
+            HomeModel model = new HomeModel();
+
             try
             {
                 int latestID = _uecontext.Users.Max(u => u.UserID);
@@ -54,12 +56,24 @@ namespace Dinder.Controllers
                 Console.WriteLine("HomeModel error: " + ex.Message);
             }
 
-            return View(new HomeModel
+            if (User.Identity.IsAuthenticated)
             {
-                UsersOne = one,
-                UsersTwo = two,
-                UsersThree = three
-            });
+                var userid = _uecontext.Users.First(u => u.Email == User.Identity.Name).UserID;
+
+                var friendRequestIDs = _uecontext.Friendships.Where(f => f.FriendStatus == false && (f.Friend1ID == userid || f.Friend2ID == userid))
+                                                            .ToList();
+                var friendRequests = _uecontext.Users.Where(u => friendRequestIDs
+                                            .Select(f => f.Friend1ID).Contains(u.UserID) || friendRequestIDs.Select(f => f.Friend2ID).Contains(u.UserID))
+                                            .ToList();
+
+                model.FriendRequests = friendRequests;
+            }
+
+            model.UsersOne = one;
+            model.UsersTwo = two;
+            model.UsersThree = three;
+
+            return View(model);
         }
 
         public IActionResult Privacy()

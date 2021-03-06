@@ -36,7 +36,7 @@ namespace Dinder.Controllers
         [Authorize]
         [HttpGet]
         [Route("getProfile/{userid}")]
-        public IActionResult Profile(int userid)
+        public IActionResult Profile(int? userid)
         {
             //get profile of user with ID userid
             var userModel = _uecontext.Users.Where(u => u.UserID == userid).Include(u=>u.ReceivedPosts).ToList();
@@ -46,7 +46,7 @@ namespace Dinder.Controllers
 
             //get poster IDs with any user IDs in the database, along with poster names, to later display names by poster IDs in the view
             var posterNames = _uecontext.Users.Where(u => posterID.Contains(u.UserID))
-                .ToDictionary(u =>u.UserID, u=>u.Name);
+                                                .ToDictionary(u =>u.UserID, u=>u.Name);
 
             var friendIDs = _uecontext.Friendships.Where(f => f.FriendStatus == true && (f.Friend1ID == userid || f.Friend2ID == userid))
                                                     .ToList();
