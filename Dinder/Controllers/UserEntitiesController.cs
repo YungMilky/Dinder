@@ -169,14 +169,9 @@ namespace Dinder.Controllers
                 {
                     _uecontext.Friendships.Add(new Friendship
                     {
-                        FriendStatus = true,
                         Friend1ID = data.Friend1ID,
                         Friend2ID = data.Friend2ID
                     });
-                }
-                else
-                {
-                    friend.FriendStatus = true;
                 }
                 _uecontext.SaveChanges();
             }
@@ -191,10 +186,9 @@ namespace Dinder.Controllers
         [Route("removeFriend")]
         public void RemoveFriend([FromBody] Friendship data)
         {
-
             var exFriend = _uecontext.Friendships.First(f => (f.Friend1ID == data.Friend1ID && f.Friend2ID == data.Friend2ID) || (f.Friend1ID == data.Friend2ID && f.Friend2ID == data.Friend1ID));
-            exFriend.FriendStatus = false;
-            
+
+            _uecontext.Entry(exFriend).State = EntityState.Deleted;
             _uecontext.SaveChanges();
         }
 

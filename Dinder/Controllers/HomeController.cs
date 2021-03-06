@@ -63,10 +63,10 @@ namespace Dinder.Controllers
                 var friendRequestIDs = _uecontext.Friendships.Where(f => f.FriendStatus == false && (f.Friend1ID == userid || f.Friend2ID == userid))
                                                             .ToList();
                 var friendRequests = _uecontext.Users.Where(u => friendRequestIDs
-                                            .Select(f => f.Friend1ID).Contains(u.UserID) || friendRequestIDs.Select(f => f.Friend2ID).Contains(u.UserID))
+                                            .Select(f => f.Friend1ID).Contains(u.UserID))
                                             .ToList();
 
-                model.FriendRequests = friendRequests;
+                ViewBag.FriendRequests = friendRequests;
             }
 
             model.UsersOne = one;
