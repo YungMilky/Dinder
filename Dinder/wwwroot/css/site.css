@@ -299,3 +299,30 @@ body {
     .card .card-text{
         color:rgba(255, 255, 255, 0.60);
     }
+
+.dropdown-menu {
+    background-color: #212529;
+    width:138%;
+}
+.dropdown-item {
+    color: rgba(255, 255, 255, 0.78);
+}
+    .dropdown-item:hover {
+        color: rgba(255, 255, 255, 0.86);
+        background-color: transparent;
+    }
+.dropdown-menu a {
+    float: left;
+}
+.dropdown-menu span {
+    float: right;
+    display: inline-block;
+    margin-top: -28px;
+    margin-right:8px;
+    cursor: pointer;
+}
+    .dropdown-menu span img {
+        -webkit-filter: invert(1);
+        filter: invert(1);
+        opacity: 0.78;
+    }
