@@ -192,13 +192,13 @@ namespace Dinder.Controllers
             _uecontext.SaveChanges();
         }
 
-        [Route("AcceptOrDeclineFriendRequest")]
+        [Route("acceptFriendRequest/{requesterID}")]
         [HttpPost]
-        public void AcceptOrDeclineFriendRequest()
+        public void AcceptFriendRequest(int requesterID)
         {
             var friendship = new DinderDL.Models.Friendship();
             var userID = _uecontext.Users.First(u => u.Email == User.Identity.Name).UserID;
-            friendship = _uecontext.Friendships.First(f => f.Friend2ID == userID);
+            friendship = _uecontext.Friendships.First(f => f.Friend1ID == requesterID && f.Friend2ID == userID);
             friendship.FriendStatus = true;
 
             _uecontext.SaveChanges();
