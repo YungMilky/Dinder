@@ -3,12 +3,6 @@
 
 // Write your JavaScript code.
 function AcceptFriendRequest(requesterID) {
-    console.log(requesterID);
-
-    var data = {
-        requesterID: requesterID
-    };
-
     $.ajax({
         type: 'POST',
         url: '../../api/UserEntities/acceptFriendRequest/' + requesterID,
@@ -16,20 +10,10 @@ function AcceptFriendRequest(requesterID) {
     });
 }
 
-function DeclineFriendRequest(userid) {
-    console.log(userid);
-
-    var data = {
-        Friend1ID: userid,
-        Friend2ID: currentProfileID
-    };
-    $("#friend-status").text("Add me!");
-
+function DeclineFriendRequest(requesterID) {
     $.ajax({
         type: 'POST',
-        url: '../../api/UserEntities/declineFriendRequest',
-        contentType: 'application/json',
-        dataType: 'json',
-        data: JSON.stringify(data)
+        url: '../../api/UserEntities/declineFriendRequest/' + requesterID,
+        contentType: 'application/x-www-form-urlencoded',
     });
 }
