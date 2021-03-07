@@ -192,6 +192,18 @@ namespace Dinder.Controllers
             _uecontext.SaveChanges();
         }
 
+        [Route("acceptFriendRequest/{requesterID}")]
+        [HttpPost]
+        public void AcceptFriendRequest(int requesterID)
+        {
+            var friendship = new DinderDL.Models.Friendship();
+            var userID = _uecontext.Users.First(u => u.Email == User.Identity.Name).UserID;
+            friendship = _uecontext.Friendships.First(f => f.Friend1ID == requesterID && f.Friend2ID == userID);
+            friendship.FriendStatus = true;
+
+            _uecontext.SaveChanges();
+        }
+
         [Route("getProfile")]
         public List<Object> Profile([FromBody] UserEntity data)
         {
