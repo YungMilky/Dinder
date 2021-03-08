@@ -21,7 +21,7 @@
                             <!--wrapping in a form is the simplest way to prevent auto-hiding the dropdown menu on click-->
                             @foreach (var item in ViewBag.FriendRequests)
                             {
-                                <a class="dropdown-item" href="/getProfile/@item.UserID">
+                                <a class="dropdown-item" id="@item.UserID" href="/getProfile/@item.UserID">
                                     @item.Name &nbsp;
                                     <label class="heart-switch" style="margin-bottom:-8px; margin-left:4px; padding:2px;">
                                         <input type="checkbox" onChange="AcceptFriendRequest(@item.UserID); $(this).fadeOut(1500);">
@@ -30,7 +30,7 @@
                                         </svg>
                                     </label>
                                 </a>
-                                <span onclick="DeclineFriendRequest(@item.UserID); $(this).parent().find('.dropdown-item').fadeOut(100); $(this).fadeOut(100);">
+                                <span onclick="DeclineFriendRequest(@item.UserID); $('#'+@item.UserID).fadeOut(100); $(this).fadeOut(100);">
                                     <img alt="dismiss friend request" src="~/assets/dismiss.png" style="width:22px; margin:0px 6px 6px" />
                                 </span>
                             }

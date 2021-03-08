@@ -46,11 +46,10 @@ namespace Dinder.Controllers
                                             .Select(f => f.Friend1ID).Contains(u.UserID) || friendIDs.Select(f => f.Friend2ID).Contains(u.UserID))
                                             .ToList();
 
+            var authenticatedUserID = _uecontext.Users.First(u => u.Email == User.Identity.Name).UserID;
 
-            var authenticatedUserID = _uecontext.Users.First(u => u.UserID == userid).UserID;
-
-            var friendRequestIDs = _uecontext.Friendships.Where(f => f.FriendStatus == false && (f.Friend1ID == authenticatedUserID))
-                                                        .Select(f => f.Friend2ID)
+            var friendRequestIDs = _uecontext.Friendships.Where(f => f.FriendStatus == false && (f.Friend2ID == authenticatedUserID))
+                                                        .Select(f => f.Friend1ID)
                                                         .ToList();
             var friendRequests = _uecontext.Users.Where(u => friendRequestIDs.Contains(u.UserID)).ToList();
 

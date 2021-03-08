@@ -36,6 +36,11 @@ namespace Dinder.Controllers
 
             try
             {
+                /*  this logic is supposed to get the nine latest registered users,
+                *   but SQL Server has a feature for its identity column cache where
+                *   it increments the identity column by 1000 for security reasons, 
+                *   and idk how to work around that right now
+                */
                 int latestID = _uecontext.Users.Max(u => u.UserID);
 
                 int latestOne = latestID - 3;
@@ -60,8 +65,8 @@ namespace Dinder.Controllers
             {
                 var authenticatedUserID = _uecontext.Users.First(u => u.Email == User.Identity.Name).UserID;
 
-                var friendRequestIDs = _uecontext.Friendships.Where(f => f.FriendStatus == false && (f.Friend1ID == authenticatedUserID))
-                                                            .Select(f => f.Friend2ID)
+                var friendRequestIDs = _uecontext.Friendships.Where(f => f.FriendStatus == false && (f.Friend2ID == authenticatedUserID))
+                                                            .Select(f => f.Friend1ID)
                                                             .ToList();
                 var friendRequests = _uecontext.Users.Where(u => friendRequestIDs.Contains(u.UserID)).ToList();
 
