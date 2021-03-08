@@ -180,14 +180,6 @@
                 $('.nav-tabs a[href="' + activeTab + '"]').tab('show');
             }
 
-            $.ajax({
-                type: 'GET',
-                url: '../api/UserEntities/getUsername',
-                success: function (result) {
-                    $("#user-button").text("Hello, " + result + "!");
-                }
-            });
-
             //add/remove friend
             $("form").on("change", ":checkbox", function () {
                 addOrRemoveFriend(loggedInUserID);

@@ -208,11 +208,11 @@ namespace Dinder.Controllers
         [HttpPost]
         public void DeclineFriendRequest(int requesterID)
         {
-            var exFriend = new DinderDL.Models.Friendship();
+            var declinee = new DinderDL.Models.Friendship();
             var userID = _uecontext.Users.First(u => u.Email == User.Identity.Name).UserID;
-            exFriend = _uecontext.Friendships.First(f => f.Friend1ID == requesterID && f.Friend2ID == userID);
+            declinee = _uecontext.Friendships.First(f => f.Friend1ID == requesterID && f.Friend2ID == userID);
 
-            _uecontext.Entry(exFriend).State = EntityState.Deleted;
+            _uecontext.Entry(declinee).State = EntityState.Deleted;
             _uecontext.SaveChanges();
         }
 
