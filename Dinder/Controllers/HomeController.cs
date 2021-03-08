@@ -58,13 +58,12 @@ namespace Dinder.Controllers
 
             if (User.Identity.IsAuthenticated)
             {
-                var userid = _uecontext.Users.First(u => u.Email == User.Identity.Name).UserID;
+                var authenticatedUserID = _uecontext.Users.First(u => u.Email == User.Identity.Name).UserID;
 
-                var friendRequestIDs = _uecontext.Friendships.Where(f => f.FriendStatus == false && (f.Friend1ID == userid || f.Friend2ID == userid))
+                var friendRequestIDs = _uecontext.Friendships.Where(f => f.FriendStatus == false && (f.Friend1ID == authenticatedUserID))
+                                                            .Select(f => f.Friend2ID)
                                                             .ToList();
-                var friendRequests = _uecontext.Users.Where(u => friendRequestIDs
-                                            .Select(f => f.Friend1ID).Contains(u.UserID))
-                                            .ToList();
+                var friendRequests = _uecontext.Users.Where(u => friendRequestIDs.Contains(u.UserID)).ToList();
 
                 ViewBag.FriendRequests = friendRequests;
             }

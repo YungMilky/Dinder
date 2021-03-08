@@ -17,3 +17,18 @@ function DeclineFriendRequest(requesterID) {
         contentType: 'application/x-www-form-urlencoded',
     });
 }
+
+//$(document).ready(function () {
+//    var loggedIn = @User.Identity.IsAuthenticated.ToString().ToLower();
+//    if (loggedIn) {
+
+//        //route navbar welcome button with the logged in user ID
+//        $.ajax({
+//            type: 'GET',
+//            url: '../api/UserEntities/getUserID',
+//            success: function (result) {
+//                $("#user-button").attr("href", "/getProfile/" + result);
+//            }
+//        });
+//    }
+//});

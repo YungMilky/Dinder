@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Dynamic;
 using System.Linq;
 using System.Threading.Tasks;
 using DinderDL;
@@ -16,6 +17,7 @@ namespace Dinder.Areas.Identity.Pages.Account.Manage
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserEntityContext _uecontext;
+        public dynamic ViewBag { get; set; }
 
         public IndexModel(
             UserManager<IdentityUser> userManager,
@@ -55,7 +57,16 @@ namespace Dinder.Areas.Identity.Pages.Account.Manage
                 PhoneNumber = phoneNumber
             };
 
-            DinderUser = _uecontext.Users.First(u => u.Email == User.Identity.Name);
+            var authenticatedUserID = _uecontext.Users.First(u => u.Email == User.Identity.Name).UserID;
+
+            var friendRequestIDs = _uecontext.Friendships.Where(f => f.FriendStatus == false && (f.Friend1ID == authenticatedUserID))
+                                                        .Select(f => f.Friend2ID)
+                                                        .ToList();
+            var friendRequests = _uecontext.Users.Where(u => friendRequestIDs.Contains(u.UserID)).ToList();
+
+            ViewData["FriendRequests"] = friendRequests;
+            
+            DinderUser = _uecontext.Users.First(u => u.UserID == authenticatedUserID);
         }
 
         public async Task<IActionResult> OnGetAsync()

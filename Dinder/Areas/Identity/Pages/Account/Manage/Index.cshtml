@@ -57,7 +57,6 @@
                 console.log(result[0]);
             }
         });
-        $(".toast").toast('show');
 
         $("#name").on("input", function () {
             $("#name-success").hide();
@@ -136,49 +135,8 @@
         $(input).attr("src", window.URL.createObjectURL(input.files[0]));
 
         $("#file-form").submit();
-            
-            //var profileID = $("#fileBrowser").attr("profileID");
-
-            //var files = input.files;
-            //var data = new FormData();
-            //data.append("files", files[0]);
-            //data.append("FileName", files[0].name);
-            //data.append("ProfileID", profileID);
-
-            //$.ajax({
-            //    url: "/../../../../api/UserEntities/UpsertProfilePic",
-            //    data: data,
-            //    processData: false,
-            //    contentType: false,
-            //    type: "POST",
-            //    success: function (data) {
-            //        alert("Files Uploaded!");
-            //    }
-            //});
-
-            //var pp; //profile pic
-
-
-            //pp = $('#fileBrowser').prop('files')[0];
-            //var filename = $(this).val().replace(/C:\\fakepath\\/i, '');
-
-            //var data = new FormData();
-            //data.append("Image", pp);
-
-            //$.ajax({
-            //    url: "/../../../../api/UserEntities/UpsertProfilePic",
-            //    data: data,
-            //    processData: false,
-            //    contentType: false,
-            //    type: "POST",
-            //    success: function (data) {
-            //        alert("Files Uploaded!");
-            //    }
-            //}
-            //);
-        
     }
 </script>
 
-        <partial name="_ValidationScriptsPartial" />
-    }
+    <partial name="_ValidationScriptsPartial" />
+}
