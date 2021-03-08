@@ -11,5 +11,6 @@ namespace Dinder.Models
         public IEnumerable<DinderDL.Models.UserEntity> User { get; set; }
         public Dictionary<int, string> Posters { get; set; }
         public IEnumerable<DinderDL.Models.UserEntity> Friends { get; set; }
+        public bool FriendRequested { get; set; }
     }
 }

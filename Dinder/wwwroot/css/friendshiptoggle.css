@@ -17,7 +17,7 @@
         --s: 0.95;
     }
 
-    .heart-switch input {
+    .heart-switch input, .heart-switch a {
         -webkit-appearance: none;
         -moz-appearance: none;
         position: absolute;
@@ -36,7 +36,7 @@
         box-shadow: 0 1px 3px 0 var(--shadow);
     }
 
-        .heart-switch input + svg {
+        .heart-switch input + svg, .heart-switch a + svg {
             width: 36px;
             height: 25px;
             fill: var(--fill);

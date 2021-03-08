@@ -48,8 +48,22 @@
                                     <span id="friend-status">We're friends!</span>
                                 </li>
                                 <li class="nav-item">
-                                    <label class="heart-switch" id="add-friend-switch">
+                                    <label class="heart-switch" id="remove-friend-switch">
                                         <input type="checkbox" checked onChange="this.form.submit()">
+                                        <svg viewBox="0 0 33 23" fill="white">
+                                            <path d="M23.5,0.5 C28.4705627,0.5 32.5,4.52943725 32.5,9.5 C32.5,16.9484448 21.46672,22.5 16.5,22.5 C11.53328,22.5 0.5,16.9484448 0.5,9.5 C0.5,4.52952206 4.52943725,0.5 9.5,0.5 C12.3277083,0.5 14.8508336,1.80407476 16.5007741,3.84362242 C18.1491664,1.80407476 20.6722917,0.5 23.5,0.5 Z"></path>
+                                        </svg>
+                                    </label>
+                                </li>
+                            }
+                            else if (Model.FriendRequested == true)
+                            {
+                                <li class="nav-item ml-auto">
+                                    <span id="friend-status">Request pending...</span>
+                                </li>
+                                <li class="nav-item">
+                                    <label class="heart-switch" id="added-friend-switch" style=" --shadow: rgba(0, 0, 0, 0); --stroke-active: #ec4472; --fill-active: #ec638e;">
+                                        <input>
                                         <svg viewBox="0 0 33 23" fill="white">
                                             <path d="M23.5,0.5 C28.4705627,0.5 32.5,4.52943725 32.5,9.5 C32.5,16.9484448 21.46672,22.5 16.5,22.5 C11.53328,22.5 0.5,16.9484448 0.5,9.5 C0.5,4.52952206 4.52943725,0.5 9.5,0.5 C12.3277083,0.5 14.8508336,1.80407476 16.5007741,3.84362242 C18.1491664,1.80407476 20.6722917,0.5 23.5,0.5 Z"></path>
                                         </svg>
@@ -62,8 +76,8 @@
                                     <span id="friend-status">Add me!</span>
                                 </li>
                                 <li class="nav-item">
-                                    <label class="heart-switch" id="add-friend-switch">
-                                        <input type="checkbox" onChange="this.form.submit()">
+                                    <label class="heart-switch" id="add-friend-switch" style=" --shadow: rgba(0, 0, 0, 0); --stroke-active: #ec4472; --fill-active: #ec638e;">
+                                        <input onclick="$('#friend-status').text('Request sent!');">
                                         <svg viewBox="0 0 33 23" fill="white">
                                             <path d="M23.5,0.5 C28.4705627,0.5 32.5,4.52943725 32.5,9.5 C32.5,16.9484448 21.46672,22.5 16.5,22.5 C11.53328,22.5 0.5,16.9484448 0.5,9.5 C0.5,4.52952206 4.52943725,0.5 9.5,0.5 C12.3277083,0.5 14.8508336,1.80407476 16.5007741,3.84362242 C18.1491664,1.80407476 20.6722917,0.5 23.5,0.5 Z"></path>
                                         </svg>
@@ -162,7 +176,7 @@
             });
 
             /*if scroll position has a value, set to value
-            *note that this isn't best practice because the jump in scrolling is jarring for the user experience. 
+            *note that this isn't best practice because the jump in scrolling is jarring for the user experience.
             *I chose this to maintain consistency between how the website updates friends and to use more mvc over jquery
             */
             if (sessionStorage.scrollTop != "undefined") {
@@ -180,43 +194,54 @@
                 $('.nav-tabs a[href="' + activeTab + '"]').tab('show');
             }
 
-            //add/remove friend
-            $("form").on("change", ":checkbox", function () {
-                addOrRemoveFriend(loggedInUserID);
+            //if not friends, send request
+            $("#add-friend-switch").on("click", function () {
+                var data = {
+                    Friend1ID: loggedInUserID,
+                    Friend2ID: currentProfileID
+                };
+                addFriend(data);
+            });
+            //if request already sent
+            $("#added-friend-switch").on("click", function () {
+
+            });
+            //if friends, remove friend
+            $("#remove-friend-switch").on("click", function () {
+                var data = {
+                    Friend1ID: loggedInUserID,
+                    Friend2ID: currentProfileID
+                };
+                removeFriend(data);
             });
         });
 
-        function addOrRemoveFriend(userid) {
-            var data = {
-                Friend1ID: userid,
-                Friend2ID: currentProfileID
-            };
+        function removeFriend(data) {
+            $("#friend-status").text("Add me!");
 
-            if ($(":checkbox").is(':checked')) {
-                $("#friend-status").text("Friend request sent!");
+            $.ajax({
+                type: 'POST',
+                url: '../../api/UserEntities/removeFriend',
+                contentType: 'application/json',
+                dataType: 'text',
+                data: JSON.stringify(data),
+                success: function (result) {
+                    $("#user-" + "@Model.CurrentUserID").remove();
+                }
+            });
+            
+        }
 
-                $.ajax({
+        function addFriend(data) {
+            $("#friend-status").text("Friend request sent!");
+
+            $.ajax({
                 type: 'POST',
                 url: '../../api/UserEntities/addFriend',
                 contentType: 'application/json',
                 dataType: 'text',
                 data: JSON.stringify(data)
-                });
-
-            } else {
-                $("#friend-status").text("Add me!");
-
-                $.ajax({
-                    type: 'POST',
-                    url: '../../api/UserEntities/removeFriend',
-                    contentType: 'application/json',
-                    dataType: 'text',
-                    data: JSON.stringify(data),
-                    success: function (result) {
-                        $("#user-" + "@Model.CurrentUserID").remove();
-                    }
-                });
-            }
+            });
         }
 
         function postPost() {

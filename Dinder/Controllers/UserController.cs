@@ -27,7 +27,17 @@ namespace Dinder.Controllers
         [Route("getProfile")]
         public IActionResult Profile(int? userid)
         {
-            if (userid is null) { userid = _uecontext.Users.First(u => u.Email == User.Identity.Name).UserID; }
+            bool friendRequested;
+
+            if (userid is null) 
+            { 
+                userid = _uecontext.Users.First(u => u.Email == User.Identity.Name).UserID;
+                friendRequested = false;
+            }
+            else
+            {
+                friendRequested = _uecontext.Friendships.Any(f => f.Friend2ID == userid);
+            }
 
             //get profile of user with ID userid
             var userModel = _uecontext.Users.Where(u => u.UserID == userid).Include(u=>u.ReceivedPosts).ToList();
@@ -61,7 +71,8 @@ namespace Dinder.Controllers
                 CurrentUserID = _uecontext.Users.First(id => id.Email == User.Identity.Name).UserID,
                 User = userModel,
                 Posters = posterNames,
-                Friends = friends
+                Friends = friends,
+                FriendRequested = friendRequested
             });
         }
 
