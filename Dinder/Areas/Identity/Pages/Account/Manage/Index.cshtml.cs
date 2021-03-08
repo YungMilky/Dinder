@@ -17,7 +17,6 @@ namespace Dinder.Areas.Identity.Pages.Account.Manage
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserEntityContext _uecontext;
-        public dynamic ViewBag { get; set; }
 
         public IndexModel(
             UserManager<IdentityUser> userManager,
@@ -59,8 +58,8 @@ namespace Dinder.Areas.Identity.Pages.Account.Manage
 
             var authenticatedUserID = _uecontext.Users.First(u => u.Email == User.Identity.Name).UserID;
 
-            var friendRequestIDs = _uecontext.Friendships.Where(f => f.FriendStatus == false && (f.Friend1ID == authenticatedUserID))
-                                                        .Select(f => f.Friend2ID)
+            var friendRequestIDs = _uecontext.Friendships.Where(f => f.FriendStatus == false && (f.Friend2ID == authenticatedUserID))
+                                                        .Select(f => f.Friend1ID)
                                                         .ToList();
             var friendRequests = _uecontext.Users.Where(u => friendRequestIDs.Contains(u.UserID)).ToList();
 
