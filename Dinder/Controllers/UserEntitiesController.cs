@@ -186,10 +186,17 @@ namespace Dinder.Controllers
         [Route("removeFriend")]
         public void RemoveFriend([FromBody] Friendship data)
         {
-            var exFriend = _uecontext.Friendships.First(f => (f.Friend1ID == data.Friend1ID && f.Friend2ID == data.Friend2ID) || (f.Friend1ID == data.Friend2ID && f.Friend2ID == data.Friend1ID));
+            try
+            {
+                var exFriend = _uecontext.Friendships.First(f => (f.Friend1ID == data.Friend1ID && f.Friend2ID == data.Friend2ID) || (f.Friend1ID == data.Friend2ID && f.Friend2ID == data.Friend1ID));
 
-            _uecontext.Entry(exFriend).State = EntityState.Deleted;
-            _uecontext.SaveChanges();
+                _uecontext.Entry(exFriend).State = EntityState.Deleted;
+                _uecontext.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Probably already deleted somehow: " + e);
+            }
         }
 
         [Route("acceptFriendRequest/{requesterID}")]
