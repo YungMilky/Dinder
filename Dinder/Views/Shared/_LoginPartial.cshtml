@@ -2,12 +2,23 @@
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
 
-<ul class="navbar-nav">
+<ul class="navbar-nav" style="width:90%">
+    <li class="w-100">
+        <div class="form-group">
+            <form method="POST" class="form-inline my-2 my-lg-0" asp-action="SearchUsers">
+                <div class="input-group w-100">
+                    <input type="text" class="form-control" placeholder="Search users..." id="search-input" name="searchQuery">
+                    <button id="search-button" class="btn btn-primary shadow-none float-right" disabled onClick="this.form.submit()">
+                        &nbsp;Search
+                        <img src="~/assets/search.png" id="search-button-img" />
+                    </button>
+                </div>
+            </form>
+        </div>
+    </li>
+    
     @if (SignInManager.IsSignedIn(User))
     {
-        <li class="nav-item">
-        </li>
-
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
                 <img alt="Friend requests" src="../wwwroot/assets/friends.png" />
