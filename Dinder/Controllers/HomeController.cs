@@ -80,6 +80,14 @@ namespace Dinder.Controllers
             return View(model);
         }
 
+        [HttpPost]
+        public ActionResult SearchUsers(string searchQuery)
+        {
+            var searchResults = _uecontext.Users.Where(u => u.Name.Contains(searchQuery) || u.Email.Contains(searchQuery));
+
+            return View(searchResults);
+        }
+
         public IActionResult Privacy()
         {
             return View();

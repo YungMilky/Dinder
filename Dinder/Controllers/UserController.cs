@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using System.IO;
+using System.Text.RegularExpressions;
 
 namespace Dinder.Controllers
 {
@@ -95,5 +96,14 @@ namespace Dinder.Controllers
             _uecontext.SaveChanges();
             return Ok();
         }
+
+        [HttpPost]
+        public ActionResult SearchUsers(string searchQuery)
+        {
+            var searchResults = _uecontext.Users.Where(u => u.Name.Contains(searchQuery) || u.Email.Contains(searchQuery));
+
+            return View(searchResults);
+        }
+
     }
 }

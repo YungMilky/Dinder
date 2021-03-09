@@ -18,17 +18,33 @@ function DeclineFriendRequest(requesterID) {
     });
 }
 
-//$(document).ready(function () {
-//    var loggedIn = @User.Identity.IsAuthenticated.ToString().ToLower();
-//    if (loggedIn) {
+$(document).ready(function () {
+    //can't set in html or c# yells at you
+    $("#search-input").attr("asp-for", "searchQuery");
 
-//        //route navbar welcome button with the logged in user ID
-//        $.ajax({
-//            type: 'GET',
-//            url: '../api/UserEntities/getUserID',
-//            success: function (result) {
-//                $("#user-button").attr("href", "/getProfile/" + result);
-//            }
-//        });
-//    }
-//});
+    //keep search query between pages (same as tabs logic for Profile.cshtml)
+    $("#search-input").on('change input', function () {
+        localStorage.setItem('searchQuery', $("#search-input").val());
+    });
+
+    //keep search query between pages
+    var searchQuery = localStorage.getItem('searchQuery');
+    if (searchQuery) {
+        $("#search-input").val(searchQuery);
+    }
+
+    //enable search button when text is entered
+    $("#search-input").on("input", function () {
+        if ($("#search-input").val() != "") {
+            $("#search-button").css("background-color", "#e84a5f");
+            $("#search-button").prop("disabled", false);
+        } else {
+            $("#search-button").css("background-color", "#2d2d2d");
+            $("#search-button").prop("disabled", true);
+        }
+    });
+    if ($("#search-input").val() != "") {
+        $("#search-button").css("background-color", "#e84a5f");
+        $("#search-button").prop("disabled", false);
+    }
+});

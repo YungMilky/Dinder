@@ -1,0 +1,25 @@
+﻿#search-button {
+    border: none;
+    border-radius: 0.1em;
+    background-color: #2d2d2d;
+    padding: 2px 8px 2px;
+    margin-top: 8px;
+    margin-bottom: 6px;
+    margin-right: 0px;
+    color: rgba(255, 255, 255, 0.87);
+    font-size: 0.9em;
+    letter-spacing: 0.03em;
+}
+
+#search-input {
+    background-color: transparent;
+    outline: 0;
+    border-width: 0 0 1px;
+    border-radius: 0;
+    margin-left: -10px;
+}
+
+#search-button-img {
+    width: 16px;
+    margin:2px;
+}
