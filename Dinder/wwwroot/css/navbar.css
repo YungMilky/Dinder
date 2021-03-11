@@ -23,3 +23,7 @@
     width: 16px;
     margin:2px;
 }
+
+navbar-icon {
+    filter: invert(1) !important;
+}

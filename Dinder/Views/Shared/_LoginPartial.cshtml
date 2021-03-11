@@ -2,7 +2,7 @@
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
 
-<ul class="navbar-nav" style="width:90%">
+<ul class="navbar-nav" style="width:98%">
     <li class="w-100">
         <div class="form-group">
             <form method="POST" class="form-inline my-2 my-lg-0" asp-action="SearchUsers">
@@ -10,7 +10,7 @@
                     <input type="text" class="form-control" placeholder="Search users..." id="search-input" name="searchQuery">
                     <button id="search-button" class="btn btn-primary shadow-none float-right" disabled onClick="this.form.submit()">
                         &nbsp;Search
-                        <img src="~/assets/search.png" id="search-button-img" />
+                        <img class="navbar-icon" src="~/assets/search.png" id="search-button-img" />
                     </button>
                 </div>
             </form>
@@ -20,8 +20,8 @@
     @if (SignInManager.IsSignedIn(User))
     {
         <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
-                <img alt="Friend requests" src="../wwwroot/assets/friends.png" />
+            <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown" style="padding-left:24px;">
+                <img class="navbar-icon" alt="Friend requests" src="~/assets/friends.png" style="width: 30px; filter:invert(1); opacity:0.86;"/>
             </a>
             <div class="dropdown-menu" id="requests-dropdown">
                 @if (ViewBag is not null)
@@ -53,7 +53,7 @@
 
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
-                <img alt="Account" src="../wwwroot/assets/friends.png" />
+                <img alt="Account" src="~/assets/account.png" style="width: 30px; filter: invert(1); opacity: 0.86;"/>
             </a>
             <div class="dropdown-menu">
                 <form id="logout-form" class="dropdown-item" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
