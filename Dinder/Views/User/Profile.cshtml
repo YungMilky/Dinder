@@ -217,8 +217,6 @@
         });
 
         function removeFriend(data) {
-            $("#friend-status").text("Add me!");
-
             $.ajax({
                 type: 'POST',
                 url: '../../api/UserEntities/removeFriend',
@@ -226,6 +224,7 @@
                 dataType: 'text',
                 data: JSON.stringify(data),
                 success: function (result) {
+                    $("#friend-status").text("Add me!");
                     $("#user-" + "@Model.CurrentUserID").remove();
                 }
             });
@@ -233,14 +232,15 @@
         }
 
         function addFriend(data) {
-            $("#friend-status").text("Friend request sent!");
-
             $.ajax({
                 type: 'POST',
                 url: '../../api/UserEntities/addFriend',
                 contentType: 'application/json',
                 dataType: 'text',
-                data: JSON.stringify(data)
+                data: JSON.stringify(data),
+                success: function () {
+                    $("#friend-status").text("Friend request sent!");
+                }
             });
         }
 
