@@ -165,18 +165,36 @@ namespace Dinder.Controllers
 #nullable enable
                 Friendship? friend = _uecontext.Friendships.FirstOrDefault(f => f.Friend1ID == data.Friend2ID && f.Friend2ID == data.Friend1ID);
 
-                //if whoever you're trying to add has already requested your friendship
-                if (friend is not null)
-                {
-                    friend.FriendStatus = true;
-                }
-                else
+                if (friend is null)
                 {
                     _uecontext.Friendships.Add(new Friendship
                     {
                         Friend1ID = data.Friend1ID,
                         Friend2ID = data.Friend2ID
                     });
+                }
+                _uecontext.SaveChanges();
+            }
+            catch (Exception x)
+            {
+                Console.WriteLine("Friendship alive and thriving. Error: " + x.Message);
+            }
+#nullable disable
+        }
+
+        [HttpPost]
+        [Route("acceptFriend")]
+        public void AcceptFriend([FromBody] Friendship data)
+        {
+            try
+            {
+#nullable enable
+                Friendship? friend = _uecontext.Friendships.FirstOrDefault(f => f.Friend1ID == data.Friend2ID && f.Friend2ID == data.Friend1ID);
+
+                //if whoever you're trying to add has already requested your friendship
+                if (friend is not null)
+                {
+                    friend.FriendStatus = true;
                 }
                 _uecontext.SaveChanges();
             }

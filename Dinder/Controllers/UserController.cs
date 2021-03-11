@@ -28,18 +28,16 @@ namespace Dinder.Controllers
         [Route("getProfile")]
         public IActionResult Profile(int? userid)
         {
-            bool friendRequested;
+            var authenticatedUserID = _uecontext.Users.First(u => u.Email == User.Identity.Name).UserID;
+            
+            bool youFriendRequestedThem = _uecontext.Friendships.Any(f => f.Friend1ID == authenticatedUserID && f.Friend2ID == userid);
+            bool theyFriendRequestedYou = _uecontext.Friendships.Any(f => f.Friend1ID == userid && f.Friend2ID == authenticatedUserID);
 
             if (userid is null) 
             { 
                 userid = _uecontext.Users.First(u => u.Email == User.Identity.Name).UserID;
-                friendRequested = false;
             }
-            else
-            {
-                friendRequested = _uecontext.Friendships.Any(f => f.Friend2ID == userid);
-            }
-
+            
             //get profile of user with ID userid
             var userModel = _uecontext.Users.Where(u => u.UserID == userid).Include(u=>u.ReceivedPosts).ToList();
 
@@ -57,7 +55,6 @@ namespace Dinder.Controllers
                                             .Select(f => f.Friend1ID).Contains(u.UserID) || friendIDs.Select(f => f.Friend2ID).Contains(u.UserID))
                                             .ToList();
 
-            var authenticatedUserID = _uecontext.Users.First(u => u.Email == User.Identity.Name).UserID;
 
             var friendRequestIDs = _uecontext.Friendships.Where(f => f.FriendStatus == false && (f.Friend2ID == authenticatedUserID))
                                                         .Select(f => f.Friend1ID)
@@ -73,7 +70,8 @@ namespace Dinder.Controllers
                 User = userModel,
                 Posters = posterNames,
                 Friends = friends,
-                FriendRequested = friendRequested
+                YouFriendRequestedThem = youFriendRequestedThem,
+                TheyFriendRequestedYou = theyFriendRequestedYou
             });
         }
 
