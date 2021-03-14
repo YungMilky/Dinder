@@ -92,7 +92,7 @@ namespace Dinder.Controllers
             dbUser.ProfilePic = user.ProfilePic;
 
             _uecontext.SaveChanges();
-            return Ok();
+            return Redirect(Request.Headers["Referer"].ToString());
         }
 
         [HttpPost]
