@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -18,9 +19,24 @@ namespace Dinder
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        private string _contentRootPath = "";
+        public static string DinderMDFDirectory
         {
+            get
+            {
+                var directoryPath = AppDomain.CurrentDomain.BaseDirectory;
+                directoryPath = Path.GetFullPath(Path.Combine(directoryPath, "..//..//..//"));
+                return directoryPath;
+            }
+        }
+        public string ConnectionString { get; set; }
+
+
+        public Startup(IConfiguration configuration, IWebHostEnvironment environment)
+        {
+            _contentRootPath = environment.ContentRootPath;
             Configuration = configuration;
+            ConnectionString = "Server=(LocalDB)\\MSSQLLocalDB; " + "AttachDbFilename=" + DinderMDFDirectory + "\\Dinder.mdf;" + "Integrated Security=True;MultipleActiveResultSets=True;Connect Timeout=30;";
         }
 
         public IConfiguration Configuration { get; }
@@ -28,16 +44,23 @@ namespace Dinder
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<UserEntityContext>(options => options.UseSqlServer(Configuration.GetConnectionString("database")));
+            string conn = Configuration.GetConnectionString("IdentityDB");
+
+            string conn2 = Configuration.GetConnectionString("DinderDB");
+
+            conn2 = conn2.Replace("%CONTENTROOTPATH%", _contentRootPath);
+
+
+            services.AddDbContext<UserEntityContext>(options => options.UseSqlServer(conn2));
 
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddDatabaseDeveloperPageExceptionFilter();
 
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
+            services.AddTransient<DbInitializer>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

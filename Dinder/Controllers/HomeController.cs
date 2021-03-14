@@ -55,23 +55,24 @@ namespace Dinder.Controllers
                 
                 var usersThree = _uecontext.Users.Where(u => u.UserID >= latestThree && u.UserID < latestTwo).ToList();
                 three = usersThree;
+
+                if (User.Identity.IsAuthenticated)
+                {
+                var authenticatedUserID = _uecontext.Users.First(u => u.Email == User.Identity.Name).UserID;
+
+                    var friendRequestIDs = _uecontext.Friendships.Where(f => f.FriendStatus == false && (f.Friend2ID == authenticatedUserID))
+                                                                .Select(f => f.Friend1ID)
+                                                                .ToList();
+                    var friendRequests = _uecontext.Users.Where(u => friendRequestIDs.Contains(u.UserID)).ToList();
+
+                    ViewBag.FriendRequests = friendRequests;
+                }
             }
             catch (Exception ex)
             {
                 Console.WriteLine("HomeModel error: " + ex.Message);
             }
 
-            if (User.Identity.IsAuthenticated)
-            {
-                var authenticatedUserID = _uecontext.Users.First(u => u.Email == User.Identity.Name).UserID;
-
-                var friendRequestIDs = _uecontext.Friendships.Where(f => f.FriendStatus == false && (f.Friend2ID == authenticatedUserID))
-                                                            .Select(f => f.Friend1ID)
-                                                            .ToList();
-                var friendRequests = _uecontext.Users.Where(u => friendRequestIDs.Contains(u.UserID)).ToList();
-
-                ViewBag.FriendRequests = friendRequests;
-            }
 
             model.UsersOne = one;
             model.UsersTwo = two;
